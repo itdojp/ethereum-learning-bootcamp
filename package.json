@@ -1,0 +1,25 @@
+{
+  "name": "ethereum-learning-bootcamp",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "lint": "echo 'add linter if needed'",
+    "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/chai": "^4.3.11",
+    "@types/node": "^20.12.7",
+    "chai": "^4.4.1",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.1",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}
