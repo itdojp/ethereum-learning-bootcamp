@@ -62,7 +62,6 @@ Web UIで`ipfs/`フォルダをアップロード→取得したルートCIDを`
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"; // 可変URIが必要な場合
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
@@ -89,6 +88,7 @@ contract MyNFT is ERC721, Ownable, IERC2981 {
         returns (address receiver, uint256 royaltyAmount)
     { return (_royaltyReceiver, (salePrice * _royaltyBps) / 10000); }
 
+    // NOTE: IERC2981 は IERC165 準拠。ここでIFIDを認識し、その他は ERC721 実装へ委譲。
     function supportsInterface(bytes4 iid) public view override(ERC721) returns (bool) {
         return iid == type(IERC2981).interfaceId || super.supportsInterface(iid);
     }
@@ -153,7 +153,14 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-interface IERC721X { function safeTransferFrom(address,address,uint256) external; function getApproved(uint256) external view returns(address); function ownerOf(uint256) external view returns(address); }
+// NOTE: DEMO ONLY / NOT FOR PRODUCTION
+// 本契約は教材用の最小例です。実運用不可の主な理由:
+// - ReentrancyGuard/CEI等の再入防御なし
+// - クリエイターロイヤリティ未対応（EIP-2981非連動）
+// - キャンセル/有効期限/再出品の整合性なし
+// - 手数料・スリッページ・会計処理の考慮なし
+// 実運用時は監査済み実装と包括的テストを使用すること。
+interface IERC721X { function safeTransferFrom(address,address,uint256) external; function ownerOf(uint256) external view returns(address); }
 contract FixedPriceMarket {
     event Listed(address indexed nft, uint256 indexed id, address indexed seller, uint256 price);
     event Purchased(address indexed nft, uint256 indexed id, address indexed buyer, uint256 price);
@@ -162,6 +169,8 @@ contract FixedPriceMarket {
 
     function list(address nft, uint256 id, uint256 price) external {
         require(IERC721X(nft).ownerOf(id) == msg.sender, "owner");
+        require(price > 0, "price=0");
+        require(listings[nft][id].seller == address(0), "already listed");
         listings[nft][id] = Listing(msg.sender, price);
         emit Listed(nft,id,msg.sender,price);
     }
@@ -216,4 +225,3 @@ describe("MyNFT",()=>{
 - `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク。
 - `tokenURI(1)` の戻り値とOpenSeaテスト表示のスクリーンショット。
 - IPFSのCID、`1.json` の最終版。
-
