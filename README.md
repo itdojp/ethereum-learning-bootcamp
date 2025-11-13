@@ -10,6 +10,10 @@ cp .env.sample .env && edit .env
 npx hardhat test
 ```
 
+## 参考リンク
+- Optimism Etherscan: https://optimistic.etherscan.io/
+- Hardhat Etherscan plugin docs: https://hardhat.org/hardhat-runner/docs/guides/verifying
+
 ## 構成
 - `curriculum/` : Day01〜Day14 各日の教科書＋ハンズオン
 - `appendix/` : 補足資料（EIP, リソース集）
