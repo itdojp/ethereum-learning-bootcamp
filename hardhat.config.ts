@@ -19,7 +19,21 @@ const config: HardhatUserConfig = {
     polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL || '', accounts }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY || ''
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY || '',
+      optimism: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || ''
+    },
+    // Optimism向けverify時のcustomChains例（APIエンドポイントは環境に合わせて更新すること）
+    customChains: [
+      {
+        network: 'optimism',
+        chainId: 10,
+        urls: {
+          apiURL: 'https://api-optimistic.etherscan.io/api',
+          browserURL: 'https://optimistic.etherscan.io'
+        }
+      }
+    ]
   },
   gasReporter: {
     enabled: true,

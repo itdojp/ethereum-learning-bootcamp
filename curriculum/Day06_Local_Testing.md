@@ -55,6 +55,10 @@ contract GasBench {
         for (uint i=0; i<a.length; i++) r += a[i];
     }
 
+    // Tx化してgasReporterに載せるベンチ関数
+    function benchSumCalldata(uint256[] calldata a) external { uint256 r = sumCalldata(a); s = r; }
+    function benchSumMemory(uint256[] memory a) external { uint256 r = sumMemory(a); s = r; }
+
     // イベント多発のコスト比較
     event Ping(uint256 indexed i, uint256 v);
     function emitMany(uint256 n) external {
@@ -77,7 +81,7 @@ describe("GasBench", () => {
   it("storage write vs read-only ops", async () => {
     const F = await ethers.getContractFactory("GasBench");
     const c = await F.deploy();
-    await c.deployed();
+    await c.waitForDeployment();
     const tx = await c.setS(123);
     await tx.wait();
     expect(await c.s()).to.eq(123);
@@ -86,25 +90,22 @@ describe("GasBench", () => {
   it("memory vs calldata", async () => {
     const F = await ethers.getContractFactory("GasBench");
     const c = await F.deploy();
-    await c.deployed();
+    await c.waitForDeployment();
     const a = arr(200);
 
-    // memory 呼び出し
-    await (await c.sumMemory(a)).wait?.().catch(()=>{}); // view/pureはtx不要だが、gasReporter表示のためdummy
-
-    // calldata 呼び出し
-    await (await c.sumCalldata(a)).wait?.().catch(()=>{});
+    await (await c.benchSumMemory(a)).wait();
+    await (await c.benchSumCalldata(a)).wait();
   });
 
   it("event emission cost", async ()=>{
     const F = await ethers.getContractFactory("GasBench");
     const c = await F.deploy();
-    await c.deployed();
+    await c.waitForDeployment();
     await (await c.emitMany(5)).wait();
   });
 });
 ```
-> 注：`pure/view`は本来callでgas消費しないため、gasReporterでの表示には工夫が必要。必要に応じて`public`→`external`でダミー書込み追加や、Foundryの`gas-snapshot`を併用。
+> 注：`pure/view`は本来call扱いのためgasReporterに出ない。`bench*`関数のようにストレージ書込みを伴うTxへ変換するか、Foundryの`gas-snapshot`等を併用する。
 
 ---
 
@@ -178,4 +179,3 @@ jobs:
 - `npx hardhat test` と `coverage` の出力（スクリーンショット可）。
 - memory vs calldata、イベント数の差分を表に整理。
 - ガス最適化の所感を3行で記述。
-
