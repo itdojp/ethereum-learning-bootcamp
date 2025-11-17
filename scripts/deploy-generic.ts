@@ -6,7 +6,7 @@ async function main(){
   console.log('network:', network.name, 'contract:', name, 'args:', args);
   const F = await ethers.getContractFactory(name);
   const c = await F.deploy(...(args as any));
-  await c.deployed();
-  console.log('deployed:', c.address);
+  await c.waitForDeployment();
+  console.log('deployed:', await c.getAddress());
 }
 main().catch((e)=>{ console.error(e); process.exit(1); });
