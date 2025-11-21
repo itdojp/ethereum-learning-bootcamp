@@ -1,0 +1,8 @@
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "txHash": "0x23301c3835dbb4a8bb811c430665ed667a76c25826d24292b54180d2318cdd37",
+  "gasUsed": "34508",
+  "feeEth": "0.0",
+  "latencyMs": 15
+}
