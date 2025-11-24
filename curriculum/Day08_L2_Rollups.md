@@ -73,19 +73,19 @@ async function main(){
   const net = await ethers.provider.getNetwork();
   const [a,b] = await ethers.getSigners();
   const start = Date.now();
-  const tx = await a.sendTransaction({ to: b.address, value: ethers.utils.parseEther("0.0001") });
+  const tx = await a.sendTransaction({ to: b.address, value: ethers.parseEther("0.0001") });
   const rec = await tx.wait();
   const end = Date.now();
-  const used = rec.gasUsed;
-  const price = (rec.effectiveGasPrice||ethers.constants.Zero);
-  const feeWei = used.mul(price);
+  const used = rec.gasUsed ?? 0n;
+  const price = rec.effectiveGasPrice ?? 0n;
+  const feeWei = used * price;
   console.log(JSON.stringify({
     network: net.name,
-    chainId: net.chainId,
+    chainId: Number(net.chainId),
     txHash: tx.hash,
     gasUsed: used.toString(),
     effGasPriceWei: price.toString(),
-    feeEth: ethers.utils.formatEther(feeWei),
+    feeEth: ethers.formatEther(feeWei),
     latencyMs: end - start
   }, null, 2));
 }
@@ -111,15 +111,17 @@ async function main(){
   const abi=["function transfer(address,uint256) returns(bool)","function balanceOf(address) view returns(uint)"];
   const c = new ethers.Contract(TOKEN, abi, owner);
   const start = Date.now();
-  const tx = await c.transfer(bob.address, ethers.utils.parseEther("0.01"));
+  const tx = await c.transfer(bob.address, ethers.parseEther("0.01"));
   const rec = await tx.wait();
   const end = Date.now();
-  const fee = rec.gasUsed.mul(rec.effectiveGasPrice||0);
+  const used = rec.gasUsed ?? 0n;
+  const price = rec.effectiveGasPrice ?? 0n;
+  const feeWei = used * price;
   console.log(JSON.stringify({
     network: net.name,
     txHash: tx.hash,
-    gasUsed: rec.gasUsed.toString(),
-    feeEth: ethers.utils.formatEther(fee),
+    gasUsed: used.toString(),
+    feeEth: ethers.formatEther(feeWei),
     latencyMs: end-start
   }, null, 2));
 }
@@ -170,4 +172,3 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 - `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`。
 - Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク。
 - ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）。
-

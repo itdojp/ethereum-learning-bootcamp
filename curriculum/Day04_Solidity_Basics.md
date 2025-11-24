@@ -93,7 +93,7 @@ describe("WalletBox", () => {
     const [owner] = await ethers.getSigners();
     const F = await ethers.getContractFactory("WalletBox");
     const c = await F.deploy("init");
-    await c.deployed();
+    await c.waitForDeployment();
     expect(await c.note()).to.eq("init");
     expect(await c.owner()).to.eq(owner.address);
   });
@@ -101,7 +101,7 @@ describe("WalletBox", () => {
   it("reverts on empty note and emits on change", async ()=>{
     const [owner, alice] = await ethers.getSigners();
     const c = await (await ethers.getContractFactory("WalletBox")).deploy("n");
-    await c.deployed();
+    await c.waitForDeployment();
     await expect(c.setNote("")).to.be.revertedWithCustomError(c, "EmptyMessage");
     await expect(c.connect(alice).setNote("ok")).to.emit(c, "NoteChanged");
   });
@@ -109,17 +109,17 @@ describe("WalletBox", () => {
   it("accepts ether via receive and allows owner withdraw", async ()=>{
     const [owner, alice] = await ethers.getSigners();
     const c = await (await ethers.getContractFactory("WalletBox")).deploy("n");
-    await c.deployed();
+    await c.waitForDeployment();
 
     // deposit 0.1 ETH
-    await owner.sendTransaction({ to: c.address, value: ethers.utils.parseEther("0.1") });
-    expect(await c.balance()).to.eq(ethers.utils.parseEther("0.1"));
+    await owner.sendTransaction({ to: c.address, value: ethers.parseEther("0.1") });
+    expect(await c.balance()).to.eq(ethers.parseEther("0.1"));
 
     // non-owner cannot withdraw
     await expect(c.connect(alice).withdraw(alice.address, 1)).to.be.revertedWithCustomError(c, "NotOwner");
 
     // owner withdraws
-    await expect(c.withdraw(owner.address, ethers.utils.parseEther("0.05"))).to.emit(c, "Withdrawn");
+    await expect(c.withdraw(owner.address, ethers.parseEther("0.05"))).to.emit(c, "Withdrawn");
   });
 });
 ```
@@ -147,7 +147,7 @@ npx hardhat run scripts/deploy-walletbox.ts --network sepolia
 ### 2.4 送金とイベント確認
 ```bash
 # 0.01 ETH送金（任意）
-node -e "(async()=>{const{ethers}=require('hardhat');const [s]=await ethers.getSigners();await s.sendTransaction({to:'<DEPLOYED_ADDR>',value:ethers.utils.parseEther('0.01')});console.log('sent')})()"
+node -e "(async()=>{const{ethers}=require('hardhat');const [s]=await ethers.getSigners();await s.sendTransaction({to:'<DEPLOYED_ADDR>',value:ethers.parseEther('0.01')});console.log('sent')})()"
 ```
 Etherscan（Sepolia）で`Deposited`/`Withdrawn`イベントを確認。
 
@@ -164,4 +164,3 @@ Etherscan（Sepolia）で`Deposited`/`Withdrawn`イベントを確認。
 - テスト出力スクリーンショット（`3 passed` など）。
 - デプロイアドレス、Txハッシュ、イベントのキャプチャ。
 - `custom errors` vs `require` の計測結果（簡潔な表）。
-

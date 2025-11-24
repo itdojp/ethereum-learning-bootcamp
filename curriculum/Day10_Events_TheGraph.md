@@ -49,8 +49,8 @@ import { ethers } from "hardhat";
 async function main(){
   const F = await ethers.getContractFactory("EventToken");
   const c = await F.deploy();
-  await c.deployed();
-  console.log("EventToken:", c.address);
+  await c.waitForDeployment();
+  console.log("EventToken:", await c.getAddress());
 }
 main().catch(e=>{console.error(e);process.exit(1)});
 ```
@@ -243,4 +243,3 @@ Graph Studio（またはローカルGraphノード）で実行：
 - EventTokenアドレス、`useEvents`でのリアルタイムログのスクリーンショット。
 - サブグラフの`graph build`ログとGraphQLクエリ結果。
 - `subgraph.yaml`の`startBlock`と`schema.graphql`の最終版。
-

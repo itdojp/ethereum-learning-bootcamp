@@ -96,6 +96,8 @@ const config: HardhatUserConfig = {
 export default config;
 ```
 
+> メモ：このテキストの TypeScript サンプルコードは **ethers v6** を前提としています。古い記事などにある `ethers.utils.parseEther` や `contract.deployed()` という表記は、v6 では `ethers.parseEther` や `waitForDeployment()` に対応します。
+
 ---
 
 ### 2.3 サンプルコントラクトのデプロイ
@@ -109,8 +111,8 @@ import { ethers } from "hardhat";
 async function main() {
   const Lock = await ethers.getContractFactory("Lock");
   const lock = await Lock.deploy(3600); // 1時間ロック
-  await lock.deployed();
-  console.log("Lock deployed to:", lock.address);
+  await lock.waitForDeployment();
+  console.log("Lock deployed to:", await lock.getAddress());
 }
 
 main().catch((error) => {
@@ -164,8 +166,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 |------|------|
 | Error: invalid private key | `.env`内の0xを付け忘れまたは誤記。 |
 | ECONNREFUSED / 403 | RPCキーの有効性を確認。 |
-| デプロイTxが失敗 | Gas不足またはネットワーク遅延。`
-| gasPrice` を手動指定して再送信。 |
+| デプロイTxが失敗 | Gas不足またはネットワーク遅延。`gasPrice` を手動指定して再送信。 |
 
 ---
 
@@ -180,4 +181,3 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 ## 5. 発展課題
 - Hardhat Networkでローカルテストを行い、`console.log()`でイベント内容を確認。
 - Foundryで`forge create`を使ってデプロイを自動化する。
-

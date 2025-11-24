@@ -37,6 +37,8 @@
 
 ## 2. ハンズオン演習
 
+> 用語メモ：以降、トランザクションを **Tx**、ブロックチェーンノードとの通信エンドポイントを **RPC** と書きます。16進数は `0x` から始まる表記です。
+
 ### 2.1 事前準備
 環境：Linux/macOS/WSL2。`curl`と`jq`コマンドを使用。
 
@@ -67,7 +69,7 @@ curl -s -X POST $RPC \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result
 ```
 
-16進数で返るため、10進変換したい場合：
+16進数（先頭が `0x` の数値）で返ってくるため、人間が読みやすい 10 進数に変換したい場合：
 ```bash
 printf "%d\n" 0x$(curl -s -X POST $RPC \
   -H 'Content-Type: application/json' \
