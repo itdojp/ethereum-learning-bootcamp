@@ -107,8 +107,8 @@ async function main(){
   const [owner] = await ethers.getSigners();
   const F = await ethers.getContractFactory("MyNFT");
   const c = await F.deploy(base, owner.address, bps);
-  await c.deployed();
-  console.log("MyNFT:", c.address);
+  await c.waitForDeployment();
+  console.log("MyNFT:", await c.getAddress());
 }
 main().catch(e=>{console.error(e);process.exit(1)});
 ```

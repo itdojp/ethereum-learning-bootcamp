@@ -74,18 +74,18 @@ import { expect } from "chai"; import { ethers } from "hardhat";
 describe("Reentrancy", ()=>{
   it("VulnBank gets drained", async()=>{
     const [deployer] = await ethers.getSigners();
-    const V = await (await ethers.getContractFactory("VulnBank")).deploy(); await V.deployed();
-    await deployer.sendTransaction({to:V.address, value: ethers.utils.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(V.address); await A.deployed();
-    await A.attack({value: ethers.utils.parseEther("1")});
-    expect(await ethers.provider.getBalance(V.address)).to.be.lt(ethers.utils.parseEther("10"));
+    const V = await (await ethers.getContractFactory("VulnBank")).deploy(); await V.waitForDeployment();
+    await deployer.sendTransaction({to:V.address, value: ethers.parseEther("10")});
+    const A = await (await ethers.getContractFactory("Attacker")).deploy(V.address); await A.waitForDeployment();
+    await A.attack({value: ethers.parseEther("1")});
+    expect(await ethers.provider.getBalance(V.address)).to.be.lt(ethers.parseEther("10"));
   });
   it("SafeBank resists", async()=>{
     const [deployer] = await ethers.getSigners();
-    const S = await (await ethers.getContractFactory("SafeBank")).deploy(); await S.deployed();
-    await deployer.sendTransaction({to:S.address, value: ethers.utils.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(S.address); await A.deployed();
-    await expect(A.attack({value: ethers.utils.parseEther("1")})).to.be.reverted; // or no drain
+    const S = await (await ethers.getContractFactory("SafeBank")).deploy(); await S.waitForDeployment();
+    await deployer.sendTransaction({to:S.address, value: ethers.parseEther("10")});
+    const A = await (await ethers.getContractFactory("Attacker")).deploy(S.address); await A.waitForDeployment();
+    await expect(A.attack({value: ethers.parseEther("1")})).to.be.reverted; // or no drain
   });
 });
 ```
@@ -227,4 +227,3 @@ forge test --match-contract Invariant -vvvv
 - Slitherレポート（主要警告の抜粋）と対応方針。
 - Invariantテストの結果スクリーンショット。
 - 監査チェックリストの自己評価（5項目以上）。
-

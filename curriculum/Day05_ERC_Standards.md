@@ -51,8 +51,8 @@ contract MyToken is ERC20, Ownable {
 import { ethers } from "hardhat";
 async function main(){
   const F = await ethers.getContractFactory("MyToken");
-  const c = await F.deploy(ethers.utils.parseEther("1000000"));
-  await c.deployed();
+  const c = await F.deploy(ethers.parseEther("1000000"));
+  await c.waitForDeployment();
   console.log("MTK:", c.address);
 }
 main().catch(e=>{console.error(e);process.exit(1)});
@@ -71,7 +71,7 @@ async function main(){
   const abi=["function balanceOf(address) view returns(uint)","function transfer(address,uint) returns(bool)"];
   const c = new ethers.Contract(ADDR, abi, owner);
   console.log("owner before:",(await c.balanceOf(owner.address)).toString());
-  await (await c.transfer(bob.address, ethers.utils.parseEther("10"))).wait();
+  await (await c.transfer(bob.address, ethers.parseEther("10"))).wait();
   console.log("bob after:",(await c.balanceOf(bob.address)).toString());
 }
 main().catch(console.error);
@@ -97,12 +97,12 @@ async function main(){
   const cSpender = new ethers.Contract(ADDR, abi, spender);
 
   // 1) 承認
-  await (await cOwner.approve(spender.address, ethers.utils.parseEther("1"))).wait();
+  await (await cOwner.approve(spender.address, ethers.parseEther("1"))).wait();
   const allow = await cOwner.allowance(owner.address, spender.address);
   console.log("allowance:", allow.toString());
 
   // 2) 委任送金（spenderが実行）
-  await (await cSpender.transferFrom(owner.address, to.address, ethers.utils.parseEther("0.5"))).wait();
+  await (await cSpender.transferFrom(owner.address, to.address, ethers.parseEther("0.5"))).wait();
 }
 main().catch(console.error);
 ```
@@ -118,10 +118,10 @@ describe("MyToken",()=>{
   it("approve/transferFrom flow", async()=>{
     const [owner, sp, to] = await ethers.getSigners();
     const F = await ethers.getContractFactory("MyToken");
-    const c = await F.deploy(ethers.utils.parseEther("100")); await c.deployed();
-    await (await c.approve(sp.address, ethers.utils.parseEther("1"))).wait();
-    expect(await c.allowance(owner.address, sp.address)).to.eq(ethers.utils.parseEther("1"));
-    await (await c.connect(sp).transferFrom(owner.address, to.address, ethers.utils.parseEther("0.5"))).wait();
+    const c = await F.deploy(ethers.parseEther("100")); await c.waitForDeployment();
+    await (await c.approve(sp.address, ethers.parseEther("1"))).wait();
+    expect(await c.allowance(owner.address, sp.address)).to.eq(ethers.parseEther("1"));
+    await (await c.connect(sp).transferFrom(owner.address, to.address, ethers.parseEther("0.5"))).wait();
   });
 });
 ```
@@ -163,7 +163,7 @@ import { ethers } from "hardhat";
 async function main(){
   const F = await ethers.getContractFactory("MyNFT");
   const c = await F.deploy("ipfs://<CID>/");
-  await c.deployed();
+  await c.waitForDeployment();
   console.log("MyNFT:", c.address);
 }
 main().catch(console.error);
@@ -212,4 +212,3 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/"
 - トークン・NFTのコントラクトアドレス、Verifyリンク。
 - `approve→transferFrom`の実行ログと`allowance`の値。
 - OpenSea（テストネット）の表示キャプチャ。
-

@@ -68,8 +68,8 @@ import { expect } from "chai";
 
 describe("GasPack", ()=>{
   it("compare add() gas", async()=>{
-    const N = await (await ethers.getContractFactory("GasNaive")).deploy(); await N.deployed();
-    const P = await (await ethers.getContractFactory("GasPacked")).deploy(); await P.deployed();
+    const N = await (await ethers.getContractFactory("GasNaive")).deploy(); await N.waitForDeployment();
+    const P = await (await ethers.getContractFactory("GasPacked")).deploy(); await P.waitForDeployment();
     const tx1 = await N.add(1_000_000, 100); const r1 = await tx1.wait();
     const tx2 = await P.add(1_000_000, 100); const r2 = await tx2.wait();
     console.log("naive", r1.gasUsed.toString(), "packed", r2.gasUsed.toString());
@@ -111,9 +111,10 @@ import { ethers } from "hardhat";
 
 describe("GasArgs", ()=>{
   it("compare calldata vs memory", async()=>{
-    const C = await (await ethers.getContractFactory("GasArgs")).deploy(); await C.deployed();
-    const arr = Array.from({length:1000}, (_,i)=>i+1);
-    // call はガス課金されないが、ガスレポータで見るならtx化
+    const C = await (await ethers.getContractFactory("GasArgs")).deploy(); await C.waitForDeployment();
+    const arr = Array.from({length:1000}, (_,i)=>BigInt(i+1));
+    // view/pure 関数を call で呼び出した場合は実行時ガスは課金されない。
+    // hardhat-gas-reporter に表示させるため、あえて sum*Tx 系関数で Tx に変換する方法もある。
     await (await C.sumCalldata(arr)).wait?.().catch(()=>{});
     await (await C.sumMemory(arr)).wait?.().catch(()=>{});
   });
@@ -205,4 +206,3 @@ PRで差分をレビューできる。
 - `metrics/gas_day13.md`（表を埋める）。
 - `hardhat test` 出力ログ（差分をコメント）。
 - 最適化の設計判断を3行で要約。
-

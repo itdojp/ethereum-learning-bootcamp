@@ -28,16 +28,16 @@ OPTIMISTIC_ETHERSCAN_API_KEY=
 ```ts
 import { ethers, network } from "hardhat";
 
-// デプロイ対象と引数は環境変数で指定可能
-// 例: CONTRACT=MyToken ARGS=100000000000000000000 npx hardhat run ...
+// デプロイ対象とコンストラクタ引数は環境変数で指定可能
+// 例: CONTRACT=MyToken ARGS="100000000000000000000" npx hardhat run ...
 async function main(){
   const name = process.env.CONTRACT || "Lock";
   const args = (process.env.ARGS||"").split(" ").filter(Boolean);
   console.log("network:", network.name, "contract:", name, "args:", args);
   const F = await ethers.getContractFactory(name);
   const c = await F.deploy(...(args as any));
-  await c.deployed();
-  console.log("deployed:", c.address);
+  await c.waitForDeployment();
+  console.log("deployed:", await c.getAddress());
 }
 
 main().catch((e)=>{console.error(e);process.exit(1)});
@@ -195,4 +195,3 @@ jobs:
 - Etherscan/BlockscoutのVerifyリンク。
 - `DEPLOYMENTS.md`の追記差分。
 - GitHub Actions実行ページのスクリーンショット（承認→完了）。
-
