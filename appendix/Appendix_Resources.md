@@ -29,7 +29,10 @@
 | 2718 | Typed Transaction Envelope | Tx型定義（EIP‑1559含む） |
 | 2771 | Meta‑Transactions | Relayer経由トランザクション |
 | 2981 | NFT Royalty Standard | 二次流通ロイヤリティ通知 |
-| 4844 | Proto‑Danksharding (Blob) | L2データ可用性改善 |
+| 4337 | Account Abstraction via EntryPoint | コンセンサス変更なしでAAを実現（UserOperation/EntryPoint/Bundler） |
+| 4844 | Proto‑Danksharding (Blob) | L2のデータ可用性（DA）コスト改善 |
+| 7691 | Blob throughput increase | blob の target/max を 3/6 → 6/9 に増やす（Pectra） |
+| 7702 | EOA delegation | EOAが delegation indicator を持ち、実行時に別コードへ委譲し得る |
 
 ---
 
@@ -103,4 +106,3 @@
 
 ## I. まとめ
 この補足資料はDay1〜14の学習内容を横断的に補強する。特に、セキュリティ・監査・L2構築・ZK応用を次段階のテーマとして推奨する。
-
