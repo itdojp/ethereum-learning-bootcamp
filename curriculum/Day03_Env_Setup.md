@@ -39,9 +39,28 @@
 
 ### 2.1 環境構築
 #### (1) Node.jsと依存パッケージ
+> 推奨：**Node.js 20（LTS）**。Ubuntu の `apt` で入る Node が古い場合があるため、初心者は `nvm` を使うと躓きにくいです。
+
+**A. nvm（推奨）**
+```bash
+sudo apt update && sudo apt install -y git curl ca-certificates
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+# 以降はシェルを再起動するか、次を実行
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh"
+
+nvm install 20
+nvm use 20
+node -v
+npm -v
+```
+
+**B. apt（手早いが、Nodeが古い場合あり）**
 ```bash
 sudo apt update && sudo apt install -y nodejs npm git
-npm install -g npm@latest
+node -v
+npm -v
 ```
 
 #### (2) Hardhatプロジェクト作成
@@ -166,7 +185,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 |------|------|
 | Error: invalid private key | `.env`内の0xを付け忘れまたは誤記。 |
 | ECONNREFUSED / 403 | RPCキーの有効性を確認。 |
-| デプロイTxが失敗 | Gas不足またはネットワーク遅延。`gasPrice` を手動指定して再送信。 |
+| デプロイTxが失敗 | 手数料不足またはネットワーク遅延。EIP‑1559（`maxFeePerGas`/`maxPriorityFeePerGas`）の自動推定が外れる場合があるので、時間をおいて再送信。 |
 
 ---
 

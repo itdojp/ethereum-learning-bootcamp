@@ -1,8 +1,8 @@
-# Day11：NFT実装（IPFS・メタデータ）とOpenSeaテスト表示
+# Day11：NFT実装（IPFS・メタデータ）と表示確認（`tokenURI`/IPFS Gateway）
 
 ## 学習目的
 - ERC‑721の`tokenURI`設計とIPFSメタデータのベストプラクティスを理解。
-- 画像→IPFS→`baseURI`→ミント→OpenSea（テスト）表示まで一気通貫。
+- 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認まで一気通貫。
 - EIP‑2981（ロイヤリティ）導入と固定価格販売の最小例を実装。
 
 ---
@@ -64,8 +64,11 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 contract MyNFT is ERC721, Ownable, IERC2981 {
+    using Strings for uint256;
     string private _base;
     address private _royaltyReceiver;
     uint96  private _royaltyBps; // 10000 = 100%
@@ -83,13 +86,23 @@ contract MyNFT is ERC721, Ownable, IERC2981 {
 
     function mint(address to, uint256 id) external onlyOwner { _safeMint(to, id); }
 
+    // tokenURI: baseURI + tokenId + ".json"（IPFSで `1.json` のように保存しやすい形）
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        _requireOwned(tokenId);
+        string memory base = _baseURI();
+        if (bytes(base).length == 0) return "";
+        string memory suffix = string.concat(tokenId.toString(), ".json");
+        if (bytes(base)[bytes(base).length - 1] == bytes1("/")) return string.concat(base, suffix);
+        return string.concat(base, "/", suffix);
+    }
+
     // EIP‑2981
     function royaltyInfo(uint256, uint256 salePrice) external view override
         returns (address receiver, uint256 royaltyAmount)
     { return (_royaltyReceiver, (salePrice * _royaltyBps) / 10000); }
 
     // NOTE: IERC2981 は IERC165 準拠。ここでIFIDを認識し、その他は ERC721 実装へ委譲。
-    function supportsInterface(bytes4 iid) public view override(ERC721) returns (bool) {
+    function supportsInterface(bytes4 iid) public view override(ERC721, IERC165) returns (bool) {
         return iid == type(IERC2981).interfaceId || super.supportsInterface(iid);
     }
 }
@@ -141,10 +154,14 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $
 
 ---
 
-## 5. OpenSea（テスト）での表示
-- サイト：`testnets.opensea.io`（UI変更の可能性あり）。
-- コントラクトアドレスを検索 → `tokenURI(1)` が `ipfs://<CID>/1.json` を返すこと。
-- 反映に時間がかかる場合は**Refresh metadata**を実行。またはGateway URLを直接開いて内容確認。
+## 5. 表示確認（`tokenURI` と IPFS Gateway）
+OpenSea はテストネット表示を終了したため、次の手順で確認します。
+
+1) `tokenURI(1)` が `ipfs://<CID>/1.json` を返すこと（スクリプト、またはエクスプローラの Read Contract で確認）。  
+2) `ipfs://<CID>/1.json` を HTTP に置き換えて開く（例：`https://ipfs.io/ipfs/<CID>/1.json`）。  
+3) JSON 内の `image` も同様に置き換えて開き、画像が表示されることを確認。  
+
+> メモ：IPFS Gateway は複数あります。表示できない場合は別Gatewayで再確認します。
 
 ---
 
@@ -202,9 +219,9 @@ describe("MyNFT",()=>{
   it("mint+tokenURI", async()=>{
     const [o,a] = await ethers.getSigners();
     const F = await ethers.getContractFactory("MyNFT");
-    const c = await F.deploy("ipfs://cid/", o.address, 500); await c.deployed();
+    const c = await F.deploy("ipfs://cid/", o.address, 500); await c.waitForDeployment();
     await (await c.mint(a.address,1)).wait();
-    expect(await c.tokenURI(1)).to.eq("ipfs://cid/1");
+    expect(await c.tokenURI(1)).to.eq("ipfs://cid/1.json");
   });
 });
 ```
@@ -214,7 +231,7 @@ describe("MyNFT",()=>{
 ## 8. トラブルシュート
 | 症状 | 原因 | 対応 |
 |---|---|---|
-| OpenSeaに表示されない | キャッシュ/同期遅延 | `Refresh metadata`、数分待機、Gateway直確認 |
+| Gatewayで開けない | Gateway側の障害/レート制限、またはURIのパス不一致 | 別Gatewayで再確認。`tokenURI` とファイル名（`1.json` 等）が一致しているか確認 |
 | 画像が表示されない | `image`がHTTP/HTTPSや拡張子誤り | `ipfs://CID/...png` を再確認 |
 | Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・`solidity`バージョン確認 |
 | `safeTransferFrom`失敗 | `approve`不足 | `setApprovalForAll` または `approve(id)` 実行 |
@@ -223,5 +240,5 @@ describe("MyNFT",()=>{
 
 ## 9. 提出物
 - `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク。
-- `tokenURI(1)` の戻り値とOpenSeaテスト表示のスクリーンショット。
+- `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット。
 - IPFSのCID、`1.json` の最終版。

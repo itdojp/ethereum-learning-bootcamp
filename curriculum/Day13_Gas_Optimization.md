@@ -93,15 +93,20 @@ npx hardhat test test/gas-pack.ts
 pragma solidity ^0.8.24;
 error TooLong();
 contract GasArgs {
+    uint256 public last;
     // calldata: コピー無しで読み取り
-    function sumCalldata(uint256[] calldata a) external pure returns(uint256 r){
+    function sumCalldata(uint256[] calldata a) public pure returns(uint256 r){
         uint256 n=a.length; if(n>10_000) revert TooLong();
         for(uint256 i; i<n;){ unchecked { r+=a[i]; i++; } }
     }
     // memory: 引数受領時にコピーが発生
-    function sumMemory(uint256[] memory a) external pure returns(uint256 r){
+    function sumMemory(uint256[] memory a) public pure returns(uint256 r){
         for(uint256 i; i<a.length;){ unchecked { r+=a[i]; i++; } }
     }
+
+    // Tx化してgasReporterに載せる（Day6と同じ考え方）
+    function sumCalldataTx(uint256[] calldata a) external { last = sumCalldata(a); }
+    function sumMemoryTx(uint256[] memory a) external { last = sumMemory(a); }
 }
 ```
 
@@ -113,10 +118,8 @@ describe("GasArgs", ()=>{
   it("compare calldata vs memory", async()=>{
     const C = await (await ethers.getContractFactory("GasArgs")).deploy(); await C.waitForDeployment();
     const arr = Array.from({length:1000}, (_,i)=>BigInt(i+1));
-    // view/pure 関数を call で呼び出した場合は実行時ガスは課金されない。
-    // hardhat-gas-reporter に表示させるため、あえて sum*Tx 系関数で Tx に変換する方法もある。
-    await (await C.sumCalldata(arr)).wait?.().catch(()=>{});
-    await (await C.sumMemory(arr)).wait?.().catch(()=>{});
+    await (await C.sumCalldataTx(arr)).wait();
+    await (await C.sumMemoryTx(arr)).wait();
   });
 });
 ```
@@ -160,7 +163,6 @@ solidity: {
 `foundry.toml`
 ```toml
 [profile.default]
-evmodin = false
 optimizer = true
 optimizer_runs = 200
 ```

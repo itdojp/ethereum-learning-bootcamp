@@ -112,7 +112,8 @@ describe("WalletBox", () => {
     await c.waitForDeployment();
 
     // deposit 0.1 ETH
-    await owner.sendTransaction({ to: c.address, value: ethers.parseEther("0.1") });
+    const addr = await c.getAddress();
+    await owner.sendTransaction({ to: addr, value: ethers.parseEther("0.1") });
     expect(await c.balance()).to.eq(ethers.parseEther("0.1"));
 
     // non-owner cannot withdraw
@@ -135,8 +136,8 @@ import { ethers } from "hardhat";
 async function main(){
   const F = await ethers.getContractFactory("WalletBox");
   const c = await F.deploy("hello");
-  await c.deployed();
-  console.log("WalletBox:", c.address);
+  await c.waitForDeployment();
+  console.log("WalletBox:", await c.getAddress());
 }
 main().catch(e=>{console.error(e);process.exit(1)});
 ```
