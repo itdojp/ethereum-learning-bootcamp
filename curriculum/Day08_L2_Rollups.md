@@ -5,6 +5,8 @@
 - Dencun（EIP‑4844 Blob）の要点を押さえ、L2手数料の実測を行う。
 - 既存コントラクトをL2（Optimism, 任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較する。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 1. 理論解説（教科書）
@@ -21,19 +23,19 @@
 ### 1.3 Dencun（EIP‑4844：Proto‑Danksharding / Blob）
 - L2データを**Blob**として一時的にL1へ格納。calldataより安価。
 - Blobは数週間で**非可用化**されるが、DA要件は満たす。結果としてL2手数料が大幅に低減。
-  - EIP‑4844 は **blob-carrying transactions** を導入し、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっています。
+  - EIP‑4844 は **blob-carrying transactions** を導入し、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっている。
 
 ### 1.4 L2手数料の内訳（概念）
-ロールアップの手数料は、ざっくり次の2つに分かれます（表示名はL2やエクスプローラで異なります）。
+ロールアップの手数料は、ざっくり次の2つに分かれる（表示名はL2やエクスプローラで異なる）。
 
 ```
 L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 ```
 
-このため、L2上で同じ操作をしても **Blobの混雑**（base fee）次第で費用が変動します。
+このため、L2上で同じ操作をしても **Blobの混雑**（base fee）次第で費用が変動する。
 
 ### 1.5 Pectra（EIP‑7691）：Blob throughput increase
-**EIP‑7691** により、Blob の供給枠が増えています。
+**EIP‑7691** により、Blob の供給枠が増える。
 
 | パラメータ（1ブロックあたり） | EIP‑4844 初期値 | EIP‑7691（Pectra） |
 |---|---:|---:|
@@ -43,7 +45,7 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 - **target**：この値を基準に blob の base fee が上下しやすい（混雑の“中心”）。
 - **max**：1ブロックで許容される上限。
 
-> 注：アップグレードの有効化タイミングはチェーンや時期で異なります。実際のネットワーク状況は各チェーンの公式アナウンスやEIPを確認してください。
+> 注：アップグレードの有効化タイミングはチェーンや時期で異なる。実際のネットワーク状況は各チェーンの公式アナウンスやEIPを確認すること。
 
 ### 1.6 比較観点
 | 観点 | Optimistic | ZK |
@@ -67,7 +69,7 @@ networks: {
   // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
 }
 ```
-`.env.sample`
+`.env.example`
 ```
 OPTIMISM_RPC_URL=
 POLYGON_ZKEVM_RPC_URL=
@@ -84,75 +86,31 @@ CONTRACT=MyToken ARGS=1000000000000000000000 \
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000
 ```
+> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら `appendix/verify.md` を参照する。
 
 ---
 
 ## 3. 実測：手数料・確定時間を取る
 
 ### 3.1 スクリプトで送金と計測
-`scripts/measure-fee.ts`
-```ts
-import { ethers } from "hardhat";
-async function main(){
-  const net = await ethers.provider.getNetwork();
-  const [a,b] = await ethers.getSigners();
-  const start = Date.now();
-  const tx = await a.sendTransaction({ to: b.address, value: ethers.parseEther("0.0001") });
-  const rec = await tx.wait();
-  const end = Date.now();
-  const used = rec.gasUsed ?? 0n;
-  const price = rec.effectiveGasPrice ?? 0n;
-  const feeWei = used * price;
-  console.log(JSON.stringify({
-    network: net.name,
-    chainId: Number(net.chainId),
-    txHash: tx.hash,
-    gasUsed: used.toString(),
-    effGasPriceWei: price.toString(),
-    feeEth: ethers.formatEther(feeWei),
-    latencyMs: end - start
-  }, null, 2));
-}
-main().catch(e=>{console.error(e);process.exit(1)});
-```
+このリポジトリの `scripts/measure-fee.ts` を使う。
+
 実行：
 ```bash
-# L1 or Sepolia
-npx hardhat run scripts/measure-fee.ts --network sepolia
-# Optimism
-npx hardhat run scripts/measure-fee.ts --network optimism
+# 宛先を指定して計測（`TO` を省略した場合は自分宛になる）
+TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network sepolia
+TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optimism
 ```
-**出力**の`feeEth`と`latencyMs`を表に記録。
+出力JSONの `feeEth` と `latencyMs` を表に記録する。
 
 ### 3.2 コントラクト関数の計測
-`scripts/measure-contract.ts`
-```ts
-import { ethers } from "hardhat";
-const TOKEN = process.env.TOKEN!; // L2にデプロイしたERC20
-async function main(){
-  const net = await ethers.provider.getNetwork();
-  const [owner, bob] = await ethers.getSigners();
-  const abi=["function transfer(address,uint256) returns(bool)","function balanceOf(address) view returns(uint)"];
-  const c = new ethers.Contract(TOKEN, abi, owner);
-  const start = Date.now();
-  const tx = await c.transfer(bob.address, ethers.parseEther("0.01"));
-  const rec = await tx.wait();
-  const end = Date.now();
-  const used = rec.gasUsed ?? 0n;
-  const price = rec.effectiveGasPrice ?? 0n;
-  const feeWei = used * price;
-  console.log(JSON.stringify({
-    network: net.name,
-    txHash: tx.hash,
-    gasUsed: used.toString(),
-    feeEth: ethers.formatEther(feeWei),
-    latencyMs: end-start
-  }, null, 2));
-}
-main().catch(console.error);
-```
+このリポジトリの `scripts/measure-contract.ts` を使う（環境変数 `TOKEN` が必須）。
+
+- `TOKEN`：計測したいERC‑20アドレス
+- 任意：`TO`（宛先）、`AMOUNT_ETH`（送る量。デフォルト `0.01`）
+
 ```bash
-TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimism
+TOKEN=0x... TO=0x... AMOUNT_ETH=0.01 npx hardhat run scripts/measure-contract.ts --network optimism
 ```
 
 ### 3.3 CSV出力（任意）

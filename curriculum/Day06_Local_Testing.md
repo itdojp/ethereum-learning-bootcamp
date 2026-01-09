@@ -5,6 +5,8 @@
 - `solidity-coverage` と `hardhat-gas-reporter` を導入し、品質とコストを数値で把握する。
 - `storage`/`memory`/`calldata` とイベント量の違いを実測する。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 1. 事前準備

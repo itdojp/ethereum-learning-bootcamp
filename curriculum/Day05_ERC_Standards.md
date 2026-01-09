@@ -5,6 +5,8 @@
 - `approve/allowance/transferFrom` のフローを実取引で確認。
 - NFTの`tokenURI`とメタデータの基礎を理解。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 1. 理論解説（教科書）
@@ -26,6 +28,7 @@
 ## 2. ハンズオン（ERC‑20）
 
 ### 2.1 依存導入
+このリポジトリでは `@openzeppelin/contracts` は導入済み（ルートで `npm ci` 済みならスキップ可）。ゼロから作る場合は次を実行する。
 ```bash
 npm i @openzeppelin/contracts
 ```
@@ -62,23 +65,11 @@ npx hardhat run scripts/deploy-token.ts --network sepolia
 ```
 
 ### 2.4 基本操作（直接送金）
-`scripts/token-transfer.ts`
-```ts
-import { ethers } from "hardhat";
-const ADDR = process.env.TOKEN!;
-async function main(){
-  const [owner, bob] = await ethers.getSigners();
-  const abi=["function balanceOf(address) view returns(uint)","function transfer(address,uint) returns(bool)"];
-  const c = new ethers.Contract(ADDR, abi, owner);
-  console.log("owner before:",(await c.balanceOf(owner.address)).toString());
-  await (await c.transfer(bob.address, ethers.parseEther("10"))).wait();
-  console.log("bob after:",(await c.balanceOf(bob.address)).toString());
-}
-main().catch(console.error);
-```
+このリポジトリの `scripts/token-transfer.ts` を使う。
 ```bash
-TOKEN=0x... npx hardhat run scripts/token-transfer.ts --network sepolia
+TOKEN=0x... TO=0x... npx hardhat run scripts/token-transfer.ts --network sepolia
 ```
+> `TO` を省略した場合、ローカルでは2番目の署名者、そうでなければ自分宛になる。
 
 ### 2.5 委任送金フロー（approve→transferFrom）
 `scripts/token-approve.ts`
@@ -106,9 +97,7 @@ async function main(){
 }
 main().catch(console.error);
 ```
-```bash
-TOKEN=0x... npx hardhat run scripts/token-approve.ts --network sepolia
-```
+> このスクリプトは複数署名者が必要（owner/spender/to）。最短は 2.6 のテストで確認する。
 
 ### 2.6 テスト（最小）
 `test/erc20.ts`
@@ -134,7 +123,7 @@ npx hardhat test test/erc20.ts
 ## 3. ハンズオン（ERC‑721）
 
 ### 3.1 実装：NFT（ERC‑721）と`tokenURI`
-このリポジトリでは、後半（Day11）でも使うため `contracts/MyNFT.sol` は **EIP‑2981（ロイヤリティ）** も含みます。Day5ではまず **ERC‑721 と `tokenURI` の挙動**だけ確認し、ロイヤリティの意味はDay11で扱います。
+このリポジトリでは、後半（Day11）でも使うため `contracts/MyNFT.sol` は **EIP‑2981（ロイヤリティ）** も含む。Day5ではまず **ERC‑721 と `tokenURI` の挙動**だけ確認し、ロイヤリティの意味はDay11で扱う。
 
 ### 3.2 メタデータ（雛形）
 `ipfs://<CID>/1.json`
@@ -159,22 +148,11 @@ main().catch(console.error);
 npx hardhat run scripts/deploy-nft.ts --network sepolia
 ```
 ミント：
-```ts
-// scripts/mint-nft.ts
-import { ethers } from "hardhat";
-const ADDR = process.env.NFT!;
-async function main(){
-  const [owner, alice] = await ethers.getSigners();
-  const abi=["function mint(address,uint256)","function tokenURI(uint256) view returns(string)"];
-  const c = new ethers.Contract(ADDR, abi, owner);
-  await (await c.mint(alice.address, 1)).wait();
-  console.log("tokenURI:", await c.tokenURI(1));
-}
-main().catch(console.error);
-```
+このリポジトリの `scripts/mint-nft.ts` を使う。
 ```bash
-NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
+NFT_ADDRESS=0x... TOKEN_ID=1 TO=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
 ```
+> `TO` を省略した場合、ローカルでは2番目の署名者、そうでなければ自分宛になる。
 `tokenURI` の戻り値（例：`ipfs://<CID>/1.json`）を、IPFS Gateway（例：`https://ipfs.io/ipfs/<CID>/1.json`）に置き換えて、メタデータと画像が開けることを確認。
 
 ---
@@ -185,6 +163,7 @@ npm i -D @nomicfoundation/hardhat-verify
 npx hardhat verify --network sepolia <TOKEN_ADDRESS> 1000000000000000000000000
 npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECEIVER_ADDR> 500
 ```
+> つまずいたら `appendix/verify.md` を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
 
 ---
 

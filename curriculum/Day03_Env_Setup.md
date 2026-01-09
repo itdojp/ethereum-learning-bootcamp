@@ -4,6 +4,8 @@
 - HardhatおよびFoundryを導入し、開発・テスト・デプロイの基礎環境を構築する。
 - Sepoliaテストネットに接続し、コントラクトをデプロイして動作を確認する。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 1. 理論解説（教科書）
@@ -37,9 +39,35 @@
 
 ## 2. ハンズオン演習
 
-### 2.1 環境構築
+### 2.0 本リポジトリで進める場合（推奨）
+このリポジトリには Hardhat プロジェクト（コントラクト・スクリプト・テスト）が同梱されている。ゼロから作る場合は 2.1 以降へ進む。
+
+1) 依存を入れる（リポジトリルート）：
+```bash
+npm ci
+```
+
+2) `.env` を作る：
+```bash
+cp .env.example .env
+```
+`.env` を編集し、少なくとも `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を埋める。
+
+3) テストを実行する（ローカルで一通り動くことを確認）：
+```bash
+npm test
+```
+
+4) Sepolia にデプロイする（例：MyToken）：
+```bash
+npx hardhat run scripts/deploy-token.ts --network sepolia
+```
+
+> Verifyで詰まったら `appendix/verify.md` を参照する。
+
+### 2.1 環境構築（参考：ゼロから作る場合）
 #### (1) Node.jsと依存パッケージ
-> 推奨：**Node.js 20（LTS）**。Ubuntu の `apt` で入る Node が古い場合があるため、初心者は `nvm` を使うと躓きにくいです。
+> 推奨：**Node.js 20（LTS）**。Ubuntu の `apt` で入る Node が古い場合があるため、初心者は `nvm` を使うと躓きにくい。
 
 **A. nvm（推奨）**
 ```bash
@@ -79,7 +107,7 @@ npm install --save-dev @nomicfoundation/hardhat-toolbox dotenv
 
 #### (4) .envファイルを準備
 ```bash
-cat > .env.sample <<'ENV'
+cat > .env.example <<'ENV'
 SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/<YOUR_KEY>
 PRIVATE_KEY=0x<YOUR_PRIVATE_KEY>
 ETHERSCAN_API_KEY=<YOUR_KEY>
@@ -87,7 +115,7 @@ ENV
 ```
 コピーして設定：
 ```bash
-cp .env.sample .env && nano .env
+cp .env.example .env && nano .env
 ```
 
 ---
@@ -115,12 +143,13 @@ const config: HardhatUserConfig = {
 export default config;
 ```
 
-> メモ：このテキストの TypeScript サンプルコードは **ethers v6** を前提としています。古い記事などにある `ethers.utils.parseEther` や `contract.deployed()` という表記は、v6 では `ethers.parseEther` や `waitForDeployment()` に対応します。
+> メモ：このテキストの TypeScript サンプルコードは **ethers v6** を前提とする。古い記事などにある `ethers.utils.parseEther` や `contract.deployed()` という表記は、v6 では `ethers.parseEther` や `waitForDeployment()` に対応する。
 
 ---
 
 ### 2.3 サンプルコントラクトのデプロイ
 `contracts/Lock.sol`（初期テンプレート）を使用。
+> 注：本リポジトリには `Lock.sol` は同梱していない（Hardhatを新規作成した場合のテンプレート例）。
 
 #### (1) デプロイスクリプト作成
 ```bash
@@ -156,6 +185,7 @@ Lock deployed to: 0xF1234...7890
 1. [Sepolia Etherscan](https://sepolia.etherscan.io/) にアクセス。
 2. 上記のアドレスを検索し、デプロイTxの確認。
 3. `Contract`タブでソースコードVerifyを実施（後日自動化）。
+> Hardhat Verify を使う場合は `appendix/verify.md` を参照する。
 
 ---
 

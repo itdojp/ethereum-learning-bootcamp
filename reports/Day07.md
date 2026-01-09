@@ -16,7 +16,7 @@ CONTRACT=WalletBox ARGS=hello \
    - 生成アドレスを `DEPLOYMENTS.md` に追記。
 
 ## 参考
-- `.env.sample` には Mainnet / Optimism / Etherscan キー欄がすでに存在。Secrets を GitHub Environment に置けばワークフローがそのまま使える。
+- `.env.example` には Mainnet / Optimism / Etherscan キー欄がすでに存在。Secrets を GitHub Environment に置けばワークフローがそのまま使える。
 - Verify コマンド例（未実行）
   - `npx hardhat verify --network mainnet <ADDR> 3600`
   - `npx hardhat verify --network optimism <ADDR> <args...>`

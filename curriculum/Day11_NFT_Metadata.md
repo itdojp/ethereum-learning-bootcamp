@@ -5,13 +5,15 @@
 - 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認まで一気通貫。
 - EIP‑2981（ロイヤリティ）導入と固定価格販売の最小例を実装。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 0. 事前準備
 - PinataまたはInfura IPFS（Project ID/Secret）を用意。
 - 画像ファイル（例：`assets/1.png`）。
 
-`.env.sample` 追記：
+`.env.example` 追記：
 ```
 NFT_BASE=ipfs://<CID>/
 NFT_ROYALTY_BPS=500   # 5% = 500 basis points
@@ -130,38 +132,28 @@ npx hardhat run scripts/deploy-nft.ts --network sepolia
 ```
 
 ミント：
-`scripts/mint-nft.ts`
-```ts
-import { ethers } from "hardhat";
-const ADDR = process.env.NFT!;
-async function main(){
-  const [owner, alice] = await ethers.getSigners();
-  const abi=["function mint(address,uint256)","function tokenURI(uint256) view returns(string)"];
-  const c = new ethers.Contract(ADDR, abi, owner);
-  await (await c.mint(alice.address, 1)).wait();
-  console.log("tokenURI:", await c.tokenURI(1));
-}
-main().catch(console.error);
-```
+このリポジトリの `scripts/mint-nft.ts` を使う。
 ```bash
-NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
+NFT_ADDRESS=0x... TOKEN_ID=1 TO=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
 ```
+> `TO` を省略した場合、ローカルでは2番目の署名者、そうでなければ自分宛になる。
 
 Verify：
 ```bash
 npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $NFT_ROYALTY_BPS
 ```
+> Verifyで詰まったら `appendix/verify.md` を参照する（引数不一致が典型）。
 
 ---
 
 ## 5. 表示確認（`tokenURI` と IPFS Gateway）
-OpenSea はテストネット表示を終了したため、次の手順で確認します。
+OpenSea はテストネット表示を終了したため、次の手順で確認する。
 
 1) `tokenURI(1)` が `ipfs://<CID>/1.json` を返すこと（スクリプト、またはエクスプローラの Read Contract で確認）。  
 2) `ipfs://<CID>/1.json` を HTTP に置き換えて開く（例：`https://ipfs.io/ipfs/<CID>/1.json`）。  
 3) JSON 内の `image` も同様に置き換えて開き、画像が表示されることを確認。  
 
-> メモ：IPFS Gateway は複数あります。表示できない場合は別Gatewayで再確認します。
+> メモ：IPFS Gateway は複数ある。表示できない場合は別Gatewayで再確認する。
 
 ---
 
@@ -171,7 +163,7 @@ OpenSea はテストネット表示を終了したため、次の手順で確認
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 // NOTE: DEMO ONLY / NOT FOR PRODUCTION
-// 本契約は教材用の最小例です。実運用不可の主な理由:
+// 本契約は教材用の最小例。実運用不可の主な理由:
 // - ReentrancyGuard/CEI等の再入防御なし
 // - クリエイターロイヤリティ未対応（EIP-2981非連動）
 // - キャンセル/有効期限/再出品の整合性なし
