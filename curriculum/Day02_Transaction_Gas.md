@@ -127,15 +127,19 @@ expr $(printf "%d" 0x5208) \* $(printf "%d" 0x19a3af8b6) / 1000000000000000000
 ---
 
 ### 2.6 追加実験：再書込みのGas差
-同じ値を2回書き込んだ場合のGas使用量差を測定。
+`SSTORE` のガスは「元の値」と「新しい値」の組み合わせで変わります。代表的な3パターン（0→非0 / 非0→別の非0 / 非0→0）を比較します。
 
 ```solidity
-function testRewrite(uint256 x) external {
-    count = x;
-    count = x; // 同値再書き込み（Refund有）
-}
+function set(uint256 x) external { count = x; }
+function setTwice(uint256 a, uint256 b) external { count = a; count = b; }
+function clear() external { count = 0; }
 ```
-`store()` と比較し、Ethereumは同値再書込みでGas Refundが発生することを確認。
+実験手順（例）：
+1. `set(1)`（0→非0）
+2. `set(2)`（非0→別の非0）
+3. `clear()`（非0→0）
+
+> メモ：Gas Refund は近年のアップデートで縮小され、上限もあります。**Refund狙いの最適化は推奨されません**（まずはストレージ書込み回数そのものを減らす）。
 
 ---
 
@@ -148,5 +152,4 @@ function testRewrite(uint256 x) external {
 - `REPORT.md` に以下を記載：
   - `store()` と `add()` のGas使用量比較（表形式）
   - Etherscanで確認したTx詳細（スクリーンショットまたは値）
-  - `testRewrite()` 実験の結果
-
+  - 2.6の追加実験の結果（3パターンの比較）

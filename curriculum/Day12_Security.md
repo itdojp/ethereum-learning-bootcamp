@@ -53,7 +53,7 @@ contract Attacker {
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 contract SafeBank is ReentrancyGuard {
     mapping(address=>uint256) public bal;
     function dep() external payable { bal[msg.sender]+=msg.value; }
@@ -75,16 +75,18 @@ describe("Reentrancy", ()=>{
   it("VulnBank gets drained", async()=>{
     const [deployer] = await ethers.getSigners();
     const V = await (await ethers.getContractFactory("VulnBank")).deploy(); await V.waitForDeployment();
-    await deployer.sendTransaction({to:V.address, value: ethers.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(V.address); await A.waitForDeployment();
+    const vAddr = await V.getAddress();
+    await deployer.sendTransaction({to: vAddr, value: ethers.parseEther("10")});
+    const A = await (await ethers.getContractFactory("Attacker")).deploy(vAddr); await A.waitForDeployment();
     await A.attack({value: ethers.parseEther("1")});
-    expect(await ethers.provider.getBalance(V.address)).to.be.lt(ethers.parseEther("10"));
+    expect(await ethers.provider.getBalance(vAddr)).to.be.lt(ethers.parseEther("10"));
   });
   it("SafeBank resists", async()=>{
     const [deployer] = await ethers.getSigners();
     const S = await (await ethers.getContractFactory("SafeBank")).deploy(); await S.waitForDeployment();
-    await deployer.sendTransaction({to:S.address, value: ethers.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(S.address); await A.waitForDeployment();
+    const sAddr = await S.getAddress();
+    await deployer.sendTransaction({to: sAddr, value: ethers.parseEther("10")});
+    const A = await (await ethers.getContractFactory("Attacker")).deploy(sAddr); await A.waitForDeployment();
     await expect(A.attack({value: ethers.parseEther("1")})).to.be.reverted; // or no drain
   });
 });
@@ -113,7 +115,7 @@ if (tx.origin != owner) revert(); // NG
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 contract AdminBox is Ownable, Pausable {
     string private data; constructor() Ownable(msg.sender) {}
     function set(string calldata d) external onlyOwner whenNotPaused { data=d; }
@@ -138,7 +140,8 @@ contract Roles is AccessControl {
 ## 3. delegatecall と Proxyの落とし穴
 
 ### 3.1 delegatecallの危険
-呼び出し先の**ストレージレイアウト**を共有。誤ると上書きや**selfdestruct**誘発。
+呼び出し先の**ストレージレイアウト**を共有。誤ると上書きや資産流出につながる。
+> 補足：`SELFDESTRUCT` は近年のアップグレードで挙動が大きく変わっています（設計・監査時に都度確認）。
 
 ### 3.2 ストレージ衝突（Proxy）
 UUPS/Transparent Proxyでは**永続化変数の並び**が重要。新実装で順序変更・削除は禁止。`storage gap` を確保する。

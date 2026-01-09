@@ -53,7 +53,7 @@ async function main(){
   const F = await ethers.getContractFactory("MyToken");
   const c = await F.deploy(ethers.parseEther("1000000"));
   await c.waitForDeployment();
-  console.log("MTK:", c.address);
+  console.log("MTK:", await c.getAddress());
 }
 main().catch(e=>{console.error(e);process.exit(1)});
 ```
@@ -133,22 +133,8 @@ npx hardhat test test/erc20.ts
 
 ## 3. ハンズオン（ERC‑721）
 
-### 3.1 実装：シンプルNFT + baseURI
-`contracts/MyNFT.sol`
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract MyNFT is ERC721, Ownable {
-    string private _base;
-    constructor(string memory base) ERC721("MyNFT","MNFT") Ownable(msg.sender) { _base = base; }
-    function _baseURI() internal view override returns (string memory){ return _base; }
-    function setBase(string calldata b) external onlyOwner { _base = b; }
-    function mint(address to, uint256 id) external onlyOwner { _safeMint(to,id); }
-}
-```
+### 3.1 実装：NFT（ERC‑721）と`tokenURI`
+このリポジトリでは、後半（Day11）でも使うため `contracts/MyNFT.sol` は **EIP‑2981（ロイヤリティ）** も含みます。Day5ではまず **ERC‑721 と `tokenURI` の挙動**だけ確認し、ロイヤリティの意味はDay11で扱います。
 
 ### 3.2 メタデータ（雛形）
 `ipfs://<CID>/1.json`
@@ -161,10 +147,11 @@ contract MyNFT is ERC721, Ownable {
 ```ts
 import { ethers } from "hardhat";
 async function main(){
+  const [owner] = await ethers.getSigners();
   const F = await ethers.getContractFactory("MyNFT");
-  const c = await F.deploy("ipfs://<CID>/");
+  const c = await F.deploy("ipfs://<CID>/", owner.address, 500);
   await c.waitForDeployment();
-  console.log("MyNFT:", c.address);
+  console.log("MyNFT:", await c.getAddress());
 }
 main().catch(console.error);
 ```
@@ -188,7 +175,7 @@ main().catch(console.error);
 ```bash
 NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
 ```
-OpenSea（テストネット）でコレクションを確認。
+`tokenURI` の戻り値（例：`ipfs://<CID>/1.json`）を、IPFS Gateway（例：`https://ipfs.io/ipfs/<CID>/1.json`）に置き換えて、メタデータと画像が開けることを確認。
 
 ---
 
@@ -196,7 +183,7 @@ OpenSea（テストネット）でコレクションを確認。
 ```bash
 npm i -D @nomicfoundation/hardhat-verify
 npx hardhat verify --network sepolia <TOKEN_ADDRESS> 1000000000000000000000000
-npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/"
+npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECEIVER_ADDR> 500
 ```
 
 ---
@@ -211,4 +198,4 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/"
 ## 6. 提出物
 - トークン・NFTのコントラクトアドレス、Verifyリンク。
 - `approve→transferFrom`の実行ログと`allowance`の値。
-- OpenSea（テストネット）の表示キャプチャ。
+- `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ。

@@ -132,7 +132,7 @@ const events = useTransferEvents(EVT);
 npm i -g @graphprotocol/graph-cli
 ```
 
-### 4.2 ひな形生成（Hosted/Studioどちらでも）
+### 4.2 ひな形生成（Subgraph Studio 前提）
 ```bash
 graph init \
   --from-contract <EVENT_TOKEN_ADDR> \
@@ -202,7 +202,7 @@ datasources:
 ```bash
 graph codegen
 graph build
-# デプロイはGraph Studio/Hostedの手順に従う（Authトークンが必要）
+# デプロイは The Graph Studio（Subgraph Studio）の手順に従う（Authトークンが必要）
 # 例: graph auth --studio <TOKEN>
 #     graph deploy --studio event-token
 ```
