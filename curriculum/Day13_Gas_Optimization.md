@@ -101,7 +101,8 @@ contract GasArgs {
     }
     // memory: 引数受領時にコピーが発生
     function sumMemory(uint256[] memory a) public pure returns(uint256 r){
-        for(uint256 i; i<a.length;){ unchecked { r+=a[i]; i++; } }
+        uint256 n=a.length;
+        for(uint256 i; i<n;){ unchecked { r+=a[i]; i++; } }
     }
 
     // Tx化してgasReporterに載せる（Day6と同じ考え方）
