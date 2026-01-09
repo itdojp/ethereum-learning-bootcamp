@@ -5,13 +5,18 @@
 - ソース検証（Verify）と成果の可観測性を確保。
 - GitHub Actionsに“人間の手動承認”ゲートを設け、誤デプロイを防ぐ。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 0. 前提
 - Hardhat構成はDay3までに完了。
 - `.env`に鍵とRPCを設定し、**秘密情報はGitにコミットしない**。
+- つまずきやすい点は補足を参照する：
+  - Verify：`appendix/verify.md`
+  - GitHub Actions / CI：`appendix/ci-github-actions.md`
 
-`.env.sample`
+`.env.example`
 ```
 SEPOLIA_RPC_URL=
 MAINNET_RPC_URL=
@@ -45,7 +50,7 @@ main().catch((e)=>{console.error(e);process.exit(1)});
 
 **実行例**（MainnetにLockを小額で）
 ```bash
-NETWORK=mainnet npx hardhat run scripts/deploy-generic.ts --network mainnet
+npx hardhat run scripts/deploy-generic.ts --network mainnet
 ```
 **実行例**（OptimismにERC20を供給量指定で）
 ```bash
@@ -66,7 +71,7 @@ npx hardhat verify --network mainnet <DEPLOYED_ADDR> 3600
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
 ```
-> L2ごとにAPIキーが異なる。Blockscout系エクスプローラを使うチェーンでは別途設定が必要。
+> L2ごとにAPIキーが異なる。Blockscout系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら `appendix/verify.md` を参照する。
 
 ---
 
@@ -91,66 +96,16 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - `OPTIMISTIC_ETHERSCAN_API_KEY`
 
 ### 4.2 ワークフロー（手動トリガ + 承認ゲート）
-`.github/workflows/deploy.yml`
-```yaml
-name: deploy
-on:
-  workflow_dispatch:
-    inputs:
-      network:
-        description: "target network"
-        required: true
-        default: mainnet
-        type: choice
-        options: [mainnet, optimism]
-      contract:
-        description: "contract name"
-        required: true
-        default: MyToken
-      args:
-        description: "constructor args separated by space"
-        required: false
-        default: "1000000000000000000000000"
+このリポジトリでは `.github/workflows/deploy.yml` を同梱している。必要に応じて編集する。
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: production  # ← 承認が必要
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: npm ci
-      - name: Select RPC by network
-        id: sel
-        run: |
-          if [ "${{ inputs.network }}" = "mainnet" ]; then
-            echo "RPC=${{ secrets.PRODUCTION_MAINNET_RPC_URL }}" >> $GITHUB_OUTPUT
-            echo "SCAN_KEY=${{ secrets.ETHERSCAN_API_KEY }}" >> $GITHUB_OUTPUT
-          else
-            echo "RPC=${{ secrets.PRODUCTION_OPTIMISM_RPC_URL }}" >> $GITHUB_OUTPUT
-            echo "SCAN_KEY=${{ secrets.OPTIMISTIC_ETHERSCAN_API_KEY }}" >> $GITHUB_OUTPUT
-          fi
-      - name: Build
-        run: npx hardhat compile
-      - name: Deploy
-        env:
-          PRIVATE_KEY: ${{ secrets.PRODUCTION_PRIVATE_KEY }}
-          ETHERSCAN_API_KEY: ${{ steps.sel.outputs.SCAN_KEY }}
-          RPC_URL: ${{ steps.sel.outputs.RPC }}
-        run: |
-          echo "network=${{ inputs.network }}"
-          CONTRACT=${{ inputs.contract }} ARGS="${{ inputs.args }}" \
-          npx hardhat run scripts/deploy-generic.ts --network ${{ inputs.network }}
-      - name: Verify
-        if: ${{ inputs.network == 'mainnet' || inputs.network == 'optimism' }}
-        env:
-          ETHERSCAN_API_KEY: ${{ steps.sel.outputs.SCAN_KEY }}
-        run: |
-          # DEPLOYED_ADDR は上のログから手入力 or アーティファクト連携で自動化
-          echo "Run manual verify with hardhat if needed"
-```
-> 注：**Environment**により、実行前にGitHub上での**人間承認**が必須になる。誤起動を防げる。
+`.github/workflows/deploy.yml` を開いて確認する。
+
+ポイント：
+- `workflow_dispatch` で `network`/`contract`/`args` を受け取る。
+- `environment: production` により、実行前にGitHub上での**人間承認**が必須になる。
+- Secrets を `hardhat.config.ts` が参照する環境変数名（`MAINNET_RPC_URL` / `OPTIMISM_RPC_URL` など）に揃えて渡す。
+
+> 承認が出ない／Secretsが読めない等で詰まったら `appendix/ci-github-actions.md` を参照する。
 
 ---
 

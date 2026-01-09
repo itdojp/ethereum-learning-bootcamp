@@ -1,245 +1,112 @@
 # Day10：イベント購読とThe Graph（サブグラフ）
 
 ## 学習目的
-- Solidityイベントの`indexed`設計と購読方法を理解。
-- ブラウザからリアルタイム購読（ethers）。
-- The Graphで履歴データをインデックス化し、GraphQLで取得。
+- Solidityイベントの`indexed`設計と購読方法を理解する。
+- ブラウザからリアルタイム購読（ethers）を動かす。
+- The Graphで履歴データをインデックス化し、GraphQLで取得する。
+
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
+---
+
+## 0. 前提
+- Day9 の `dapp/` を起動できる。
+- `EventToken` を任意ネットワークへデプロイできる（ローカル/テストネット/L2のどれでもよい）。
+- The Graph で詰まりやすい点は `appendix/the-graph.md` を参照する。
 
 ---
 
 ## 1. 理論解説（教科書）
 
 ### 1.1 イベントの役割
-- オンチェーン状態を直接列挙するのはコスト高。**イベントログ**を使うとオフチェーンで効率取得。
-- `indexed` を付けた引数は**topic**になり、フィルタが高速。
+- オンチェーン状態を直接列挙するのはコスト高。**イベントログ**を使うとオフチェーンで効率取得できる。
+- `indexed` を付けた引数は**topic**になり、フィルタが高速になる。
 
 ### 1.2 設計指針
-- 検索キーは `indexed`。多すぎるとtopicが増え非効率。
-- イベント名と引数は**安定**させる。将来互換性を考慮。
+- 検索キーは `indexed`。多すぎるとtopicが増え、ログのサイズも増えやすい。
+- イベント名と引数は**安定**させる。後方互換性を意識する。
 
 ---
 
-## 2. ハンズオンA：イベント発火コントラクト
+## 2. ハンズオンA：EventToken をデプロイしてイベントを発火する
+`contracts/EventToken.sol` とスクリプトは同梱してある。
 
-`contracts/EventToken.sol`
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
-
-contract EventToken {
-    mapping(address=>uint256) public bal;
-    event TransferLogged(address indexed from, address indexed to, uint256 amount);
-
-    function mint(uint256 a) external { bal[msg.sender]+=a; }
-    function transfer(address to, uint256 a) external {
-        require(bal[msg.sender] >= a, "bal");
-        bal[msg.sender]-=a; bal[to]+=a;
-        emit TransferLogged(msg.sender, to, a);
-    }
-}
-```
-
-**デプロイ**
+### 2.1 デプロイ
 ```bash
 npx hardhat run scripts/deploy-event-token.ts --network sepolia
 ```
-`scripts/deploy-event-token.ts`
-```ts
-import { ethers } from "hardhat";
-async function main(){
-  const F = await ethers.getContractFactory("EventToken");
-  const c = await F.deploy();
-  await c.waitForDeployment();
-  console.log("EventToken:", await c.getAddress());
-}
-main().catch(e=>{console.error(e);process.exit(1)});
-```
+出力されたアドレスを控える（`0x...`）。
 
-**動作**
-```ts
-// scripts/use-event-token.ts
-import { ethers } from "hardhat";
-const ADDR = process.env.EVT!;
-async function main(){
-  const [a,b] = await ethers.getSigners();
-  const abi=[
-    "function mint(uint256)",
-    "function transfer(address,uint256)",
-    "event TransferLogged(address indexed,address indexed,uint256)"
-  ];
-  const c = new ethers.Contract(ADDR, abi, a);
-  await (await c.mint(1000)).wait();
-  await (await c.transfer(b.address, 123)).wait();
-}
-main().catch(console.error);
-```
+### 2.2 イベント発火
 ```bash
 EVT=0x... npx hardhat run scripts/use-event-token.ts --network sepolia
 ```
+`TransferLogged` が複数回 `emit` される。
 
 ---
 
-## 3. ハンズオンB：ブラウザ購読（React + ethers）
+## 3. ハンズオンB：ブラウザ購読（dapp）
+このリポジトリの `dapp/` は、`TransferLogged` を購読して最新ログを表示できる（`dapp/src/hooks/useEvents.ts`）。
 
-`dapp/src/hooks/useEvents.ts`
-```ts
-import { useEffect, useRef, useState } from 'react';
-import { ethers } from 'ethers';
-
-export function useTransferEvents(addr: string){
-  const [logs, setLogs] = useState<any[]>([]);
-  const unsub = useRef<() => void>();
-  useEffect(()=>{
-    if(!(window as any).ethereum || !addr) return;
-    const provider = new ethers.BrowserProvider((window as any).ethereum);
-    const iface = new ethers.Interface([
-      'event TransferLogged(address indexed from, address indexed to, uint256 amount)'
-    ]);
-    const topic0 = iface.getEvent('TransferLogged').topicHash;
-    const filter = { address: addr, topics: [topic0] };
-    const handler = (log:any)=>{
-      const parsed = iface.parseLog({topics: log.topics, data: log.data});
-      setLogs(v=>[{ block: log.blockNumber, ...parsed.args }, ...v].slice(0,50));
-    };
-    (provider as any).on(filter, handler);
-    unsub.current = ()=> (provider as any).off(filter, handler);
-    return ()=> unsub.current?.();
-  },[addr]);
-  return logs;
-}
+### 3.1 設定
+`dapp/.env.local`（なければ `cp dapp/.env.example dapp/.env.local`）を編集する：
+```
+VITE_CHAIN_ID=11155111
+VITE_EVENT_TOKEN=0x...      # 2.1 の EventToken アドレス
 ```
 
-`dapp/src/App.tsx` に表示を追加：
-```tsx
-import { useTransferEvents } from './hooks/useEvents';
-const EVT = import.meta.env.VITE_EVENT_TOKEN as string;
-...
-const events = useTransferEvents(EVT);
-...
-<h3>Recent Transfers</h3>
-<ul>
-  {events.map((e,i)=> <li key={i}>#{String(e.block)} {String(e.from)} → {String(e.to)} : {String(e.amount)}</li>)}
-</ul>
-```
-`.env` に `VITE_EVENT_TOKEN=0x...` を追加。
+> `dapp/` は injected provider（MetaMask等）を使うため、MetaMask側の接続チェーンも揃える必要がある。
 
----
-
-## 4. ハンズオンC：The Graph（サブグラフ作成）
-
-### 4.1 CLI準備
+### 3.2 起動
 ```bash
-npm i -g @graphprotocol/graph-cli
+cd dapp
+npm run dev
 ```
+`http://localhost:5173` を開き、Connect Wallet → Switch to Chain →（必要なら）Refresh Balances を押す。
 
-### 4.2 ひな形生成（Subgraph Studio 前提）
+イベントが流れていれば、画面に `Recent TransferLogged events` が表示される。
+
+---
+
+## 4. ハンズオンC：The Graph（サブグラフ）
+The Graph の手順は更新されやすい。ここでは「作る場所」と「詰まりやすい点」だけ押さえ、詳細は補足へ寄せる。
+
+- 生成物はこのリポジトリでは同梱しない。
+- `subgraph/` 配下に生成する運用を推奨する（`subgraph/README.md`）。
+
+### 4.1 ひな形生成（例：Sepolia）
 ```bash
 graph init \
   --from-contract <EVENT_TOKEN_ADDR> \
   --network sepolia \
   subgraph/event-token
+```
+
+### 4.2 startBlock を入れる
+`startBlock` は「このブロック以降だけを見る」という範囲指定。**デプロイTxのブロック番号** を入れるのが基本。
+
+取得例やつまずきは `appendix/the-graph.md` を参照する。
+
+### 4.3 codegen / build
+```bash
 cd subgraph/event-token
 npm i
-```
-> 生成内容：`subgraph.yaml`（データソース定義）、`schema.graphql`（GraphQLスキーマ）、`src/mapping.ts`（イベント→エンティティ変換）。
-
-### 4.3 スキーマ編集
-`schema.graphql`
-```graphql
-type Transfer @entity {
-  id: ID!
-  block: BigInt!
-  txHash: Bytes!
-  from: Bytes!
-  to: Bytes!
-  amount: BigInt!
-}
-```
-
-### 4.4 マッピング実装
-`src/mapping.ts`
-```ts
-import { TransferLogged as Ev } from "../generated/EventToken/EventToken";
-import { Transfer } from "../generated/schema";
-
-export function handleTransferLogged(e: Ev): void {
-  const id = e.transaction.hash.toHex() + '-' + e.logIndex.toString();
-  const t = new Transfer(id);
-  t.block = e.block.number;
-  t.txHash = e.transaction.hash;
-  t.from = e.params.from;
-  t.to = e.params.to;
-  t.amount = e.params.amount;
-  t.save();
-}
-```
-
-`subgraph.yaml`（該当イベントをマッピング）
-```yaml
-datasources:
-  - kind: ethereum
-    name: EventToken
-    network: sepolia
-    source:
-      address: "<EVENT_TOKEN_ADDR>"
-      abi: EventToken
-      startBlock: <DEPLOY_BLOCK>
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities: [Transfer]
-      abis:
-        - name: EventToken
-          file: ./abis/EventToken.json
-      eventHandlers:
-        - event: TransferLogged(indexed address,indexed address,uint256)
-          handler: handleTransferLogged
-      file: ./src/mapping.ts
-```
-
-### 4.5 コード生成・ビルド・デプロイ
-```bash
 graph codegen
 graph build
-# デプロイは The Graph Studio（Subgraph Studio）の手順に従う（Authトークンが必要）
-# 例: graph auth --studio <TOKEN>
-#     graph deploy --studio event-token
 ```
 
-### 4.6 クエリ
-Graph Studio（またはローカルGraphノード）で実行：
-```graphql
-{
-  transfers(first: 5, orderBy: block, orderDirection: desc){
-    block
-    from
-    to
-    amount
-  }
-}
-```
+デプロイは The Graph Studio の手順に従う（Authトークンが必要）。
 
 ---
 
-## 5. 運用メモ
-- **startBlock** を正確に設定し、不要な全履歴スキャンを避ける。
-- 重大アップグレード時は**新サブグラフ**を切る（移行容易に）。
-- 大量イベントは**ページング**と**時間窓**でバッチ取得。
+## 5. トラブルシュート（入口）
+- startBlock が分からない / 遅すぎる：`appendix/the-graph.md`
+- build が落ちる（ABI/スキーマ不一致）：`appendix/the-graph.md`
+- ブラウザ購読が発火しない：チェーンID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---
 
-## 6. トラブルシュート
-| 症状 | 原因 | 対策 |
-|---|---|---|
-| レシートにイベントが出ない | `emit`忘れ、署名不一致 | ABI/シグネチャ確認（型順序/`indexed`） |
-| Provider購読が発火しない | フィルタtopic不一致 | `iface.getEvent().topicHash`を再確認 |
-| サブグラフbuild失敗 | ABI/スキーマ不整合 | `codegen`→型の再生成 |
-| 取得が遅い | startBlockが古すぎる | 部分同期 or 新規サブグラフで範囲限定 |
-
----
-
-## 7. 提出物
-- EventTokenアドレス、`useEvents`でのリアルタイムログのスクリーンショット。
-- サブグラフの`graph build`ログとGraphQLクエリ結果。
-- `subgraph.yaml`の`startBlock`と`schema.graphql`の最終版。
+## 6. 提出物
+- EventTokenアドレスと、イベント発火スクリプトの実行ログ。
+- dapp でリアルタイムログが表示されているスクリーンショット。
+- （任意）サブグラフの `graph build` ログと GraphQL クエリ結果。

@@ -13,6 +13,7 @@ const config: HardhatUserConfig = {
     settings: { optimizer: { enabled: true, runs: 200 } }
   },
   networks: {
+    localhost: { url: 'http://127.0.0.1:8545' },
     sepolia: { url: process.env.SEPOLIA_RPC_URL || '', accounts },
     mainnet: { url: process.env.MAINNET_RPC_URL || '', accounts },
     optimism: { url: process.env.OPTIMISM_RPC_URL || '', accounts },
@@ -21,6 +22,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY || '',
+      sepolia: process.env.ETHERSCAN_API_KEY || '',
       optimism: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || ''
     },
     // Optimism向けverify時のcustomChains例（APIエンドポイントは環境に合わせて更新すること）

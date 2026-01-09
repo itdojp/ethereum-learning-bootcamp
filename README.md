@@ -6,8 +6,8 @@ Node.js 20 以上（npm 10+）を前提としています。
 ## Quick Start
 ```bash
 npm ci
-cp .env.sample .env && edit .env
-npx hardhat test
+cp .env.example .env && edit .env
+npm test
 ```
 
 ## 参考リンク

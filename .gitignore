@@ -1,0 +1,33 @@
+## Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+## Hardhat / Solidity
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+gasReporterOutput.json
+
+## Environment files
+.env
+.env.*
+!.env.example
+
+## Vite / React (dapp)
+dapp/node_modules/
+dapp/dist/
+dapp/.vite/
+dapp/.env
+dapp/.env.*
+!dapp/.env.example
+
+## OS / editor
+.DS_Store
+.idea/
+.vscode/
+

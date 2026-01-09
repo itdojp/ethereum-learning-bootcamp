@@ -5,6 +5,8 @@
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装。
 - Slither（静的解析）とFoundry/Echidna（プロパティテスト）で自動検出を体験。
 
+> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+
 ---
 
 ## 0. 前提
@@ -141,7 +143,7 @@ contract Roles is AccessControl {
 
 ### 3.1 delegatecallの危険
 呼び出し先の**ストレージレイアウト**を共有。誤ると上書きや資産流出につながる。
-> 補足：`SELFDESTRUCT` は近年のアップグレードで挙動が大きく変わっています（設計・監査時に都度確認）。
+> 補足：`SELFDESTRUCT` は近年のアップグレードで挙動が大きく変わっている（設計・監査時に都度確認）。
 
 ### 3.2 ストレージ衝突（Proxy）
 UUPS/Transparent Proxyでは**永続化変数の並び**が重要。新実装で順序変更・削除は禁止。`storage gap` を確保する。

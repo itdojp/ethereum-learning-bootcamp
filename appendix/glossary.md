@@ -1,17 +1,23 @@
 # Glossary
 - Account Abstraction（AA）: ウォレット（アカウント）に、バッチ実行やガス代スポンサーなどの“プログラム可能な”機能を持たせる考え方。
 - Blob（EIP‑4844）: ロールアップがL1へ投稿するデータを、calldataより安価に扱うための仕組み（blob-carrying transactions）。L2手数料の「L1データ可用性（DA）」コストに直結する。
+- Blockscout: Etherscan系ではないブロックエクスプローラ実装の一つ。L2で採用されることがある。
 - Bridge: L1/L2間で資産を移す仕組み。
 - Bundler（ERC‑4337）: UserOperationを集めてトランザクション化し、EntryPointへ送る中継者。
+- CI（Continuous Integration）: Pull Request などを契機にテストを自動実行し、差分の不具合を早期に検出する仕組み。
 - Data Availability（DA）: 誰でも検証できるよう必要データが公開され続ける性質。
 - Delegation indicator（EIP‑7702）: EOAが設定できる“委任先マーカー”。実行時に別アドレスのコードへ委譲して動く挙動が入り得る。
 - EOA（Externally Owned Account）: 秘密鍵で制御されるアカウント。従来は「コードを持たない」と説明されることが多いが、EIP‑7702 により委任（delegation indicator）を持つ可能性がある。
 - EntryPoint（ERC‑4337）: AAの実行基盤となるコントラクト。BundlerがUserOperationをまとめて呼び出す。
+- Etherscan: Ethereum系チェーンのブロックエクスプローラ。トランザクションやコントラクト、Verify（ソース検証）の確認に使う。
 - EIP‑7691: Blob throughput increase。blob の target/max（1ブロックあたりの目安/上限）を 3/6 → 6/9 に増やす。
 - Finality: 取り消されないとみなせる確定性。
 - Fraud Proof: Optimisticで不正を検知する異議申立て証明。
+- GraphQL: The Graph などで使われるクエリ言語。必要な項目だけを問い合わせられる。
 - Meta-Transaction（EIP‑2771）: 代理実行でユーザーのガス負担を軽減する仕組み。
 - Permit（EIP‑2612）: 署名承認によるトークン許可方式。
 - Sequencer: L2でトランザクション順序を決める役割。
+- Subgraph: The Graph の「インデックス定義」。どのコントラクトのどのイベントを、どの形で保存するかを宣言する。
 - UserOperation（ERC‑4337）: 4337系AAでユーザーが署名する「実行依頼」データ。BundlerがTxにまとめる。
 - Validity Proof: ZKで正当性を示す暗号学的証明。
+- Verify（ソース検証）: エクスプローラ上で、ソースコードとデプロイ済みバイトコードを対応付ける作業。

@@ -12,7 +12,7 @@
 - 主要コマンド：
   - `npx hardhat compile` → 変更なし、既存契約を再コンパイル。
   - `npx hardhat test` → Hello / GasBench のサンプルテストがすべて成功（4 passing）。
-- `.env.sample` に外部RPC項目は揃っているが、今回の検証ではローカルRPCのみ利用。
+- `.env.example` に外部RPC項目は揃っているが、今回の検証ではローカルRPCのみ利用。
 
 ## Foundry 連携
 - `~/.foundry/bin/cast block-number --rpc-url http://127.0.0.1:8545` → `9`
