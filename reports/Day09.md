@@ -1,32 +1,26 @@
-# Day09 実行ログ
+# Day09 実行ログ（2026-01 更新）
 
-## フロントエンド構築
-- `dapp/` ディレクトリに React + Vite (+ TypeScript) プロジェクトを新規作成。
-- 主要ファイル：
-  - `package.json`（React18 + Vite + ethers + node-polyfills）
-  - `src/App.tsx`：ウォレット接続／ネットワーク切替／ETH・ERC20残高参照／トークン送信UI。
-  - `src/lib/web3.ts`：`ethers.BrowserProvider` を用いたユーティリティ。
-  - `vite.config.ts`, `tsconfig*.json`, `.env.example`（`VITE_TOKEN_ADDRESS`, `VITE_CHAIN_ID`, `VITE_RPC`）。
+## 変更点（教材改訂後）
+- DApp は `dapp/` に同梱（新規 `npm create vite` は不要）。
+- Vite の環境変数は `dapp/.env.local` を使う（`VITE_*`）。
 
-## コマンド
-```
+## 実行
+```bash
 cd dapp
-npm install
+npm ci
 npm run build
 ```
-→ `vite build` が成功し、`dist/` に成果物を生成。
 
-## 実装ポイント
-- ethers v6 を利用し、`BrowserProvider` + `getSigner()` でアカウントを取得。
-- `window.ethereum.on('accountsChanged'|'chainChanged')` でUIを再読み込み。
-- `Switch to Chain` ボタンは `wallet_switchEthereumChain` を呼び、`.env` の `VITE_CHAIN_ID` を目標チェーンとして使用。
-- `Send` ボタンは `ethers.parseUnits` で任意桁数に対応し、トランザクション完了後に残高をリフレッシュ。
+### 結果（抜粋）
+- `tsc && vite build` が成功。
+- 生成物：
+  - `dist/index.html`：0.32 kB
+  - `dist/assets/index-*.js`：412.60 kB（gzip: 145.38 kB）
 
-## 動作確認
-- `npm run build` により TypeScript / Vite ビルドを通過。ブラウザで `npm run dev` を実行すれば MetaMask と連携可能（ローカル Hardhat RPC でも動作）。
-- `.env.example` の値をコピーして `.env` を作成し、`VITE_TOKEN_ADDRESS` を Day05 で発行したトークンアドレス（例: `0x6101...`）へ差し替えることで即テスト可能。
+## 次に行うとよい確認（ブラウザ必須）
+1) `cp dapp/.env.example dapp/.env.local`  
+2) `dapp/.env.local` に `VITE_CHAIN_ID` / `VITE_TOKEN_ADDRESS` を設定  
+3) `npm run dev` で `http://localhost:5173` を開き、Connect/Switch/Refresh/Send を確認
 
-## まとめ
-1. Day09 で要求される DApp フロントの基本機能（接続/切替/残高/送金）を React + Vite で実装。
-2. ビルドが通る形でテンプレート化したため、`npm run dev` で容易にホットリロード開発が可能。
-3. ハードハットでローカルに立てた ERC-20 (`MyToken`) の送金UIとしても再利用できる。
+## 補足
+- `npm ci` 実行時に `npm audit` の脆弱性警告が出たため、依存更新は別途対応候補（動作確認優先で今回は未対応）。

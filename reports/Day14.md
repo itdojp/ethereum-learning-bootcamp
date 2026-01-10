@@ -1,39 +1,55 @@
-# Day14 実行ログ
+# Day14 実行ログ（2026-01 更新）
 
-## 統合状況
-- **コントラクト**: ERC-20 (`MyToken`), NFT (`MyNFT`), FixedPriceMarket, EventToken などを `deploy-generic.ts` 等でローカルOptimism相当（Hardhat）にデプロイ。`DEPLOYMENTS.md` にアドレスを追記。
-- **DApp**: Day09で構築した `dapp/` は `VITE_CHAIN_ID`/`VITE_TOKEN_ADDRESS`/`VITE_EVENT_TOKEN` を切り替えるだけでL2向けにも利用可能。イベント購読（Day10）を統合済み。
-- **計測**: Day08/Day13で作成した `measure-fee.ts`, `metrics/metrics.csv`, `metrics/gas_day13.md` を使用して手数料・ガス差を記録。
+## 実施内容（localhostで統合リハーサル）
+- Hardhat node を起動し、`MyToken` / `EventToken` / `MyNFT` をデプロイ。
+- スクリプトで「送金」「イベント発火」「NFT mint」を確認。
+- 計測スクリプト（`measure-fee.ts` / `measure-contract.ts`）のJSON出力を確認。
 
-## 実行コマンド（ローカルでの統合リハーサル）
+## 実行
+```bash
+npx hardhat node
 ```
-# 既存汎用スクリプトで順番にデプロイ
-CONTRACT=MyToken ARGS=1000000000000000000000000 \
-  npx hardhat run scripts/deploy-generic.ts --network localhost
-CONTRACT=MyNFT ARGS="ipfs://cid/ 0xf39Fd... 500" \
-  npx hardhat run scripts/deploy-generic.ts --network localhost
-CONTRACT=FixedPriceMarket \
-  npx hardhat run scripts/deploy-generic.ts --network localhost
 
-# DAppビルド（L2 RPCを想定）
-cd dapp && npm run build
+別ターミナルで：
+```bash
+# Deploy
+npx hardhat run scripts/deploy-token.ts --network localhost
+npx hardhat run scripts/deploy-event-token.ts --network localhost
+npx hardhat run scripts/deploy-nft.ts --network localhost
 
-# 計測
+# Use
+TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
+  npx hardhat run scripts/token-transfer.ts --network localhost
+
+EVT=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0 \
+  npx hardhat run scripts/use-event-token.ts --network localhost
+
+NFT_ADDRESS=0x5FC8d32690cc91D4c39d9d3abcBD16989F875707 \
+  npx hardhat run scripts/mint-nft.ts --network localhost
+
+# Measure
 npx hardhat run scripts/measure-fee.ts --network localhost
-TOKEN=<MyToken addr> npx hardhat run scripts/measure-contract.ts --network localhost
+TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
+  npx hardhat run scripts/measure-contract.ts --network localhost
 ```
 
-## ドキュメント連携
-- `DEPLOYMENTS.md`：ローカルでのERC20/NFT/Market/EventTokenアドレスと日付を一覧化。
-- `reports/Day0X.md`：Day01〜Day14の各章で実行したコマンド・結果をMarkdown化。
-- `metrics/*.json/csv`：手数料・ガス比較をファイルとして保存し、将来Mainnet/Optimism結果を追記できる状態。
+## 結果（抜粋）
+- `MyToken: 0x5FbDB2315678afecb367f032d93F642f64180aa3`
+- `EventToken: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0`
+- `MyNFT: 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707`
 
-## 今後（本番L2）に向けたTODO
-1. `.env` に `OPTIMISM_RPC_URL` / `PRIVATE_KEY` / `ETHERSCAN` キーをセットし、`--network optimism` で `deploy-generic.ts` を再実行。
-2. DAppの `.env` を L2 用に更新し、`npm run dev` で実機テスト → `npm run build` で静的ホストへ配置。
-3. The Graph CLI (`graph init ...`) を使い `FixedPriceMarket` の `Listed`/`Purchased` イベントをIndex化。Day10の `useEvents` と併用してUIに履歴を表示。
-4. `measure-fee.ts` の出力を `metrics/metrics.csv` に追記し、Mainnet vs Optimism の手数料差をドキュメント化。
+`measure-fee.ts`：
+```json
+{"network":"localhost","chainId":31337,"txHash":"0x11672f...","gasUsed":"21000","feeEth":"0.0"}
+```
+`measure-contract.ts`：
+```json
+{"network":"localhost","chainId":31337,"txHash":"0x8ea292...","gasUsed":"34508","feeEth":"0.0"}
+```
+> ローカルHardhat node は `gasPrice=0` のため `feeEth` は `0.0` になる。実ネットワークでは実費が出る。
 
-## まとめ
-- Day14で求められる「契約／フロント／イベント／メトリクス」の統合要素は既存コンポーネントで再利用できる状態にあり、手順は `reports/Day01-14.md` ＋ `DEPLOYMENTS.md` に集約済み。
-- 本番環境への切り替えは `.env` (Hardhat/DApp) と GitHub Actions（Day07）で Secrets を更新し、`workflow_dispatch` から承認付きデプロイを実行するだけで完了できるよう準備済み。
+## DApp / Verify / CI / The Graph（入口）
+- DApp：`cd dapp && npm ci && npm run build` が成功（UI動作はMetaMask等が必要）。
+- Verify：`appendix/verify.md`
+- CI：`.github/workflows/test.yml`（PR/Pushで `npm test`）
+- The Graph：`appendix/the-graph.md` / `subgraph/README.md`

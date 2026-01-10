@@ -1,36 +1,53 @@
-# Day08 実行ログ
+# Day08 実行ログ（2026-01 更新）
 
-## 実装/更新
-- `scripts/measure-fee.ts`：任意ネットワークでEOA→EOA送金を行い、`gasUsed`/`effectiveGasPrice`/`feeEth`/`latencyMs` をJSON出力。
-- `scripts/measure-contract.ts`：ERC-20の`transfer`を呼び出して同様の指標を取得。`TOKEN`環境変数で対象アドレスを指定。
-- `tools/to-csv.sh`：`jq`を用いてJSON→CSVに変換。`metrics/metrics.csv` へ追記するための小さなユーティリティ。
-- `metrics/metrics.csv`：測定結果（ネットワーク、Txハッシュ、ガス、手数料、レイテンシ）を蓄積するファイル。
+## 対象
+- `scripts/measure-fee.ts`：EOA→EOA送金の `gasUsed` / `feeEth` / `latencyMs` をJSON出力。
+- `scripts/measure-contract.ts`：ERC‑20 `transfer` の `gasUsed` / `feeEth` / `latencyMs` をJSON出力（`TOKEN` 必須）。
+- `tools/to-csv.sh`：JSON→CSV 変換。
 
-## 実行コマンド
+## 実行（localhost）
+```bash
+npx hardhat node
 ```
-# 送金の手数料計測
+
+別ターミナルで：
+```bash
+# 事前にERC-20をデプロイ（例）
+npx hardhat run scripts/deploy-token.ts --network localhost
+
+# 送金の手数料計測（宛先や金額は任意で上書きできる）
 npx hardhat run scripts/measure-fee.ts --network localhost | tee metrics/fee-local.json
 cat metrics/fee-local.json | tools/to-csv.sh > metrics/metrics.csv
 
-# ERC-20 transfer計測
-TOKEN=0x610178dA211FEF7D417bC0e6FeD39F05609AD788 \
+# ERC-20 transfer 計測
+TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
   npx hardhat run scripts/measure-contract.ts --network localhost | tee metrics/contract-local.json
 cat metrics/contract-local.json | tools/to-csv.sh >> metrics/metrics.csv
 ```
 
-`metrics/metrics.csv`
+### 結果（抜粋）
+`measure-fee.ts`：
+```json
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "txHash": "0x11672f988af75c5527c63a6dd9fbb1dd4015ff7ba39b5f8b45dd7262d12ac9d8",
+  "gasUsed": "21000",
+  "feeEth": "0.0",
+  "latencyMs": 16
+}
 ```
-"localhost","0x3d7f57...","21000","0.0",14
-"localhost","0x23301c...","34508","0.0",15
+
+`measure-contract.ts`：
+```json
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "txHash": "0x8ea292b948fda640138368509dfdb2895e15b1f35213fd511cff600f581733e1",
+  "gasUsed": "34508",
+  "feeEth": "0.0",
+  "latencyMs": 16
+}
 ```
-> ローカルHardhatネットワークはgasPrice=0設定のため `feeEth` は `0.0`。実ネットワークで実行すればそのまま有効な数値を取得できる。
 
-## 追加メモ
-- `measure-contract.ts` は Day05 でローカルにデプロイ済みの MyToken (0x6101...) を再利用。
-- 本番やL2（Optimism等）で実行する場合は `.env` に RPC URL と鍵を設定し、`--network optimism` などと併用するだけで手数料が計測できる。
-- Blob手数料やLatency比較用に `metrics.csv` を継続的に追記できる構成にしてある。
-
-## まとめ
-1. L2比較ハンズオンで要求される「手数料計測スクリプト」と「指標の表」をローカルで動作確認済み。
-2. 計測結果は JSON + CSV で保存し、後続の章やレポートで参照可能。
-3. 実ネットワークでの検証はAPIキー／RPC準備後に `--network optimism` 等へ切り替えるだけで再現できる。
+> ローカルHardhat node は `gasPrice=0` のため `feeEth` は `0.0` になる。実ネットワークで実行すればそのまま有効な数値を取得できる。
