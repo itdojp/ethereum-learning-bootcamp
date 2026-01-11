@@ -133,7 +133,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 1. **小額**でL2（例：Optimism）へ先行デプロイ。
 2. Etherscan/BlockscoutでVerify。
 3. DApp・サブグラフ・モニタを接続して動作確認（Day10以降）。
-4. Mainnetに本デプロイ。`DEPLOYMENTS.md`更新、リリースタグ付与。
+4. Mainnetに本デプロイ。[`DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
 
 ---
 
@@ -150,5 +150,8 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ## 8. 提出物
 - デプロイログ一式（ネットワーク、アドレス、TxHash）。
 - Etherscan/BlockscoutのVerifyリンク。
-- `DEPLOYMENTS.md`の追記差分。
+- [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分。
 - GitHub Actions実行ページのスクリーンショット（承認→完了）。
+
+## 9. 実行例
+- 実行ログ例：[`reports/Day07.md`](../reports/Day07.md)
