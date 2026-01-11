@@ -173,15 +173,24 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 
 ---
 
-## 4. まとめ
+## 4. つまずきポイント
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| `execution reverted` / `reverted with custom error` | 前提条件を満たしていない（空文字、権限、残高など） | テストの期待値（`revertedWithCustomError`/イベント）を手がかりに、どの条件で落ちたか切り分ける |
+| 送金が失敗する | コントラクト残高不足 / 送金額が大きい | `balance()` と `amount` を確認し、まずは少額で試す |
+| Sepoliaへデプロイできない | `.env` 未設定 / 手数料不足 | `SEPOLIA_RPC_URL` / `PRIVATE_KEY` と残高を確認する |
+
+---
+
+## 5. まとめ
 - `WalletBox` を題材に、状態・エラー・イベント・ETH受領/引出の最小構成を実装した。
 - Hardhatテストで「revertする条件」「イベント」「ETHの入出金」を検証する流れを確認した。
 - テストネットにデプロイし、TxHash/イベントをエクスプローラで追跡できる状態にした。
 
-## 5. 提出物
+## 6. 提出物
 - テスト出力スクリーンショット（`3 passed` など）。
 - デプロイアドレス、Txハッシュ、イベントのキャプチャ。
 - `custom errors` vs `require` の計測結果（簡潔な表）。
 
-## 6. 実行例
+## 7. 実行例
 - 実行ログ例：[`reports/Day04.md`](../reports/Day04.md)
