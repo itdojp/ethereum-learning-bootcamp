@@ -88,7 +88,7 @@ CONTRACT=MyToken ARGS=1000000000000000000000 \
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000
 ```
-> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら `appendix/verify.md` を参照する。
+> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 

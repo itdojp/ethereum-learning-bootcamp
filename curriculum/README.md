@@ -33,6 +33,6 @@
   - `await contract.waitForDeployment()` / `await contract.getAddress()`
 
 ## 5. つまずきポイント（先に読む）
-- ソース検証（Verify）：`appendix/verify.md`
-- GitHub Actions / CI：`appendix/ci-github-actions.md`
-- The Graph（Subgraph Studio）：`appendix/the-graph.md`
+- ソース検証（Verify）：[`appendix/verify.md`](../appendix/verify.md)
+- GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- The Graph（Subgraph Studio）：[`appendix/the-graph.md`](../appendix/the-graph.md)

@@ -25,7 +25,7 @@
   - 状態はMerkle-Patricia Trie（MPT）で管理される。
 - **アカウントの種類**：
   - EOA（Externally Owned Account）：人間が秘密鍵で操作。
-    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **delegation indicator（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は `appendix/account-abstraction.md`）。
+    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **delegation indicator（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は [`appendix/account-abstraction.md`](../appendix/account-abstraction.md)）。
   - コントラクトアカウント：コードを持ち、EVM上で実行される。
 
 ### 1.3 Proof of Stake (PoS) の仕組み

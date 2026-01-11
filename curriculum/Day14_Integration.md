@@ -13,9 +13,9 @@
 
 ## 0. 前提
 - つまずきやすい点は補足を参照する：
-  - Verify：`appendix/verify.md`
-  - GitHub Actions / CI：`appendix/ci-github-actions.md`
-  - The Graph：`appendix/the-graph.md` / `subgraph/README.md`
+  - Verify：[`appendix/verify.md`](../appendix/verify.md)
+  - GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+  - The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md) / [`subgraph/README.md`](../subgraph/README.md)
 
 ---
 
@@ -58,7 +58,7 @@ npx hardhat run scripts/deploy-event-token.ts --network optimism
 
 出力されたアドレスを控える。
 
-### 2.3 `DEPLOYMENTS.md` に残す
+### 2.3 [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) に残す
 最低限、次を残すと後で詰まりにくい：
 - network / chainId
 - コントラクト名とアドレス
@@ -112,7 +112,7 @@ npx hardhat verify --network sepolia <TOKEN_ADDR> 1000000000000000000000000
 npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 ```
 
-> つまずきやすいのは「引数不一致」「コンパイラ設定不一致」「反映待ち」。`appendix/verify.md` を参照する。
+> つまずきやすいのは「引数不一致」「コンパイラ設定不一致」「反映待ち」。[`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
@@ -120,12 +120,12 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - テストCI：`.github/workflows/test.yml`（`npm test` を自動実行）
 - 手動承認付きデプロイ：`.github/workflows/deploy.yml`（workflow_dispatch + Environment）
 
-運用・つまずきは `appendix/ci-github-actions.md` と Day7 を参照する。
+運用・つまずきは [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と Day7 を参照する。
 
 ---
 
 ## 6. フェーズ5：The Graph（任意）
-サブグラフの生成・運用は `subgraph/README.md` と `appendix/the-graph.md` を参照する。
+サブグラフの生成・運用は [`subgraph/README.md`](../subgraph/README.md) と [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 最小は Day10 と同様に「EventToken を対象」にするのが分かりやすい。
 

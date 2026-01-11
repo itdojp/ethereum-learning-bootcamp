@@ -65,7 +65,7 @@ npm test
 npx hardhat run scripts/deploy-token.ts --network sepolia
 ```
 
-> Verifyで詰まったら `appendix/verify.md` を参照する。
+> Verifyで詰まったら [`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ### 2.1 環境構築（参考：ゼロから作る場合）
 #### (1) Node.jsと依存パッケージ
@@ -187,7 +187,7 @@ Lock deployed to: 0xF1234...7890
 1. [Sepolia Etherscan](https://sepolia.etherscan.io/) にアクセス。
 2. 上記のアドレスを検索し、デプロイTxの確認。
 3. `Contract`タブでソースコードVerifyを実施（後日自動化）。
-> Hardhat Verify を使う場合は `appendix/verify.md` を参照する。
+> Hardhat Verify を使う場合は [`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
