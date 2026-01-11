@@ -11,11 +11,11 @@
 
 ---
 
-## 0. 事前準備
+## 0. 前提
 - PinataまたはInfura IPFS（Project ID/Secret）を用意。
 - 画像ファイル（例：`assets/1.png`）。
 
-`.env.example` 追記：
+`.env.example`（項目は同梱してあるので、`.env` に値を入れる）：
 ```
 NFT_BASE=ipfs://<CID>/
 NFT_ROYALTY_BPS=500   # 5% = 500 basis points
@@ -206,16 +206,20 @@ contract FixedPriceMarket {
 ---
 
 ## 7. テスト（抜粋）
-`test/nft.ts`
+`test/mynft.ts`
 ```ts
-import { expect } from "chai"; import { ethers } from "hardhat";
-describe("MyNFT",()=>{
-  it("mint+tokenURI", async()=>{
-    const [o,a] = await ethers.getSigners();
-    const F = await ethers.getContractFactory("MyNFT");
-    const c = await F.deploy("ipfs://cid/", o.address, 500); await c.waitForDeployment();
-    await (await c.mint(a.address,1)).wait();
-    expect(await c.tokenURI(1)).to.eq("ipfs://cid/1.json");
+import { expect } from 'chai';
+import { ethers } from 'hardhat';
+
+describe('MyNFT', () => {
+  it('mints and returns tokenURI', async () => {
+    const [owner, alice] = await ethers.getSigners();
+    const F = await ethers.getContractFactory('MyNFT');
+    const base = 'ipfs://cid/';
+    const c = await F.deploy(base, owner.address, 500);
+    await c.waitForDeployment();
+    await (await c.mint(alice.address, 1)).wait();
+    expect(await c.tokenURI(1)).to.eq(`${base}1.json`);
   });
 });
 ```
@@ -236,3 +240,6 @@ describe("MyNFT",()=>{
 - `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク。
 - `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット。
 - IPFSのCID、`1.json` の最終版。
+
+## 10. 実行例
+- 実行ログ例：[`reports/Day11.md`](../reports/Day11.md)

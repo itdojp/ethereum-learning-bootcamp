@@ -11,10 +11,23 @@
 - Node.js のバージョン違い：ローカルとCIで `node -v` が違うと落ちやすい。
 - `npm install` ではなく `npm ci`：CIは `npm ci` 前提のほうが再現性が高い。
 
+### 失敗したときの最短デバッグ手順
+1) GitHub の Actions タブ → 該当 Run → **落ちた Step のログ**を開く。  
+2) ローカルで **CIと同じ手順**を再現する（このrepoは Node.js 20 前提）：
+```bash
+node -v
+npm ci
+npm test
+```
+3) `npm ci` が落ちる場合は、まず `package-lock.json` と `package.json` の差分（依存追加/更新漏れ）を疑う。
+
 ## 2. 手動承認付きデプロイ（workflow_dispatch + Environment）
 目的：誤デプロイを避けるため、**手動トリガ**＋**人間承認**でデプロイする。
 
 このリポジトリでは `.github/workflows/deploy.yml` を使う。
+
+### 2.0 どこから実行するか
+- GitHub の Actions タブ → `deploy` → `Run workflow`（手動実行）から起動する。
 
 ### 2.1 つまずき：承認が出ない
 - GitHub の Settings > Environments で `production` を作り、Required reviewers を設定する。
@@ -33,4 +46,3 @@
 
 ## 3. Verifyは別メモへ
 - Verify周りは `appendix/verify.md` を参照する。
-
