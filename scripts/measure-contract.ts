@@ -1,5 +1,20 @@
 import { ethers } from 'hardhat';
 
+type RpcTxReceipt = {
+  effectiveGasPrice?: string;
+  gasPrice?: string;
+};
+
+async function getGasPriceFromRpc(txHash: string): Promise<bigint> {
+  const receipt = (await ethers.provider.send('eth_getTransactionReceipt', [
+    txHash
+  ])) as RpcTxReceipt | null;
+  if (!receipt) throw new Error('rpc receipt missing');
+  const priceHex = receipt.effectiveGasPrice ?? receipt.gasPrice;
+  if (!priceHex) throw new Error('gas price missing in receipt');
+  return BigInt(priceHex);
+}
+
 async function main() {
   const tokenAddress = process.env.TOKEN;
   if (!tokenAddress) throw new Error('TOKEN env var required');
@@ -20,20 +35,21 @@ async function main() {
   if (!receipt) throw new Error('receipt missing');
   const end = Date.now();
   const gasUsed = receipt.gasUsed ?? 0n;
-  const effectivePrice = receipt.effectiveGasPrice ?? 0n;
+  const effectivePrice = await getGasPriceFromRpc(tx.hash);
   const feeWei = gasUsed * effectivePrice;
   console.log(
     JSON.stringify(
-        {
-          network: network.name,
-          chainId: Number(network.chainId),
-          txHash: tx.hash,
-          to,
-          amount: amount.toString(),
-          gasUsed: gasUsed.toString(),
-          feeEth: ethers.formatEther(feeWei),
-          latencyMs: end - start
-        },
+      {
+        network: network.name,
+        chainId: Number(network.chainId),
+        txHash: tx.hash,
+        to,
+        amount: amount.toString(),
+        gasUsed: gasUsed.toString(),
+        effGasPriceWei: effectivePrice.toString(),
+        feeEth: ethers.formatEther(feeWei),
+        latencyMs: end - start
+      },
       null,
       2
     )

@@ -15,7 +15,7 @@ npm run build
 - `tsc && vite build` が成功。
 - 生成物：
   - `dist/index.html`：0.32 kB
-  - `dist/assets/index-*.js`：412.60 kB（gzip: 145.38 kB）
+  - `dist/assets/index-*.js`：402.25 kB（gzip: 142.68 kB）
 
 ## 次に行うとよい確認（ブラウザ必須）
 1) `cp dapp/.env.example dapp/.env.local`  
@@ -23,4 +23,4 @@ npm run build
 3) `npm run dev` で `http://localhost:5173` を開き、Connect/Switch/Refresh/Send を確認
 
 ## 補足
-- `npm ci` 実行時に `npm audit` の脆弱性警告が出たため、依存更新は別途対応候補（動作確認優先で今回は未対応）。
+- `npm audit`：0 vulnerabilities を確認。

@@ -1,4 +1,4 @@
-# Day04 実行ログ
+# Day04 実行ログ（2026-01 更新）
 
 ## 実装
 - `contracts/WalletBox.sol` を教材どおりに追加（`NotOwner`/`EmptyMessage` カスタムエラー、`receive()` ログ、`withdraw` のCEI順守）。
@@ -10,18 +10,20 @@
 
 ## コマンド
 ```
-# ビルド & テスト
-npx hardhat test
+# WalletBox のテストのみ
+npx hardhat test test/walletbox.ts
+# => 3 passing
 
 # ローカルネットへデプロイ例
+./node_modules/.bin/hardhat node
 npx hardhat run scripts/deploy-walletbox.ts --network localhost
-→ WalletBox: 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318
+→ WalletBox: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```
-テスト結果：`7 passing`（GasBench/Hello/WalletBox）。
+全体テストは `npx hardhat test` で `16 passing` を確認。
 
 ## 観測事項
 - `ethers.parseEther` / `waitForDeployment()` など ethers v6 API へ置き換え済み。
-- `withdraw` の事件検証でイベント引数もアサートして CEI + custom error の動作を確認。
+- `withdraw` の挙動検証でイベント引数もアサートして CEI + custom error の動作を確認。
 
 ## 未実施
 - Sepolia デプロイは `.env` に RPC / PRIVATE_KEY を設定していないため未実行。環境が整い次第、`npx hardhat run scripts/deploy-walletbox.ts --network sepolia` で再現可能。
