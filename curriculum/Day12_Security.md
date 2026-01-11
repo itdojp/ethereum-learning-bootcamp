@@ -234,3 +234,6 @@ forge test --match-contract Invariant -vvvv
 - Slitherレポート（主要警告の抜粋）と対応方針。
 - Invariantテストの結果スクリーンショット。
 - 監査チェックリストの自己評価（5項目以上）。
+
+## 9. 実行例
+- 実行ログ例：[`reports/Day12.md`](../reports/Day12.md)

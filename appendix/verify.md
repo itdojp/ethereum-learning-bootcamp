@@ -22,23 +22,32 @@
 ### 4.1 ネットワークを間違える
 - `--network` と、実際にデプロイしたチェーンが一致していることを確認する。
 
-### 4.2 コンストラクタ引数の不一致
+### 4.2 APIキーが未設定 / 空
+- `.env` の `ETHERSCAN_API_KEY`（または `OPTIMISTIC_ETHERSCAN_API_KEY`）が空だとVerifyできない。
+- `hardhat.config.ts` は `dotenv` を読むため、まず `.env` が存在することも確認する。
+
+### 4.3 コンストラクタ引数の不一致
 - もっとも多い原因。**引数の順序・型・値**が一致しないとVerifyが通らない。
 - 文字列（例：`ipfs://.../`）はクォートが必要なことがある：
   - 例：`"ipfs://<CID>/"`（空白を含む場合は必須）
 - デプロイ時の引数を [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) やデプロイログに残しておくと再現しやすい。
 
-### 4.3 コンパイラ設定の不一致
+### 4.4 コンパイラ設定の不一致
 - `solidity` バージョン、optimizer（`runs`）、`viaIR` などがデプロイ時と一致しないと通らない。
 - “デプロイ後に `hardhat.config.ts` を変えた”場合は特に注意する。
 
-### 4.4 反映遅延（インデックス待ち）
+### 4.5 反映遅延（インデックス待ち）
 - デプロイ直後は、エクスプローラ側の取り込みが追いつかないことがある。
 - 少し待ってから再実行する。
 
-### 4.5 すでにVerify済み
+### 4.6 すでにVerify済み
 - すでにVerify済みの場合、エラー表示になることがある。
 - エクスプローラ側でソースが表示できるなら実害はない。
+
+### 4.7 同じファイルに複数コントラクトがある
+- 1ファイル内に複数コントラクトがある場合、Verify対象の指定が曖昧になって失敗することがある。
+- Hardhat Verify は `--contract` で fully qualified name（`path:ContractName`）を指定できる。
+  - 例：`npx hardhat verify --network sepolia --contract contracts/GasPack.sol:GasPacked <ADDRESS>`
 
 ## 5. 補足：L2 / Blockscout
 - L2はエクスプローラがEtherscan系とは限らない（Blockscout等）。

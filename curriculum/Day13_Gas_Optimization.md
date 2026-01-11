@@ -188,8 +188,8 @@ PRで差分をレビューできる。
 |------|--------:|
 | Naive.add |  
 | Packed.add |  
-| sumCalldata(1k) |  
-| sumMemory(1k) |  
+| sumCalldataTx(1k) |  
+| sumMemoryTx(1k) |  
 | e1 |  
 | e2 |  
 
@@ -213,3 +213,6 @@ PRで差分をレビューできる。
 - `metrics/gas_day13.md`（表を埋める）。
 - `hardhat test` 出力ログ（差分をコメント）。
 - 最適化の設計判断を3行で要約。
+
+## 10. 実行例
+- 実行ログ例：[`reports/Day13.md`](../reports/Day13.md)

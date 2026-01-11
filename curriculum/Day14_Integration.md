@@ -147,3 +147,6 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - DApp の動作スクリーンショット
 - TxHash（送金・イベント発火の実績）
 - （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
+
+## 9. 実行例
+- 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)
