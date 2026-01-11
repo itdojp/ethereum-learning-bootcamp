@@ -11,6 +11,13 @@
 
 ---
 
+## 0. 前提
+- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
+- Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 ERC‑20 要点
@@ -180,3 +187,6 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 - トークン・NFTのコントラクトアドレス、Verifyリンク。
 - `approve→transferFrom`の実行ログと`allowance`の値。
 - `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ。
+
+## 7. 実行例
+- 実行ログ例：[`reports/Day05.md`](../reports/Day05.md)

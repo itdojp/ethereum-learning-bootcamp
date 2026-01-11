@@ -10,6 +10,12 @@
 
 ---
 
+## 0. 前提
+- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 代表的な型
@@ -152,9 +158,11 @@ npx hardhat run scripts/deploy-walletbox.ts --network sepolia
 ### 2.4 送金とイベント確認
 ```bash
 # 0.01 ETH送金（任意）
-node -e "(async()=>{const{ethers}=require('hardhat');const [s]=await ethers.getSigners();await s.sendTransaction({to:'<DEPLOYED_ADDR>',value:ethers.parseEther('0.01')});console.log('sent')})()"
+# - ウォレット（MetaMask 等）で、`<DEPLOYED_ADDR>` 宛に 0.01 ETH を送る
+# - CLIで送る場合は、次のように Hardhat 経由で Tx を送る
+TO=<DEPLOYED_ADDR> VALUE_ETH=0.01 npx hardhat run scripts/measure-fee.ts --network sepolia
 ```
-Etherscan（Sepolia）で`Deposited`/`Withdrawn`イベントを確認。
+Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 
 ---
 
@@ -169,3 +177,6 @@ Etherscan（Sepolia）で`Deposited`/`Withdrawn`イベントを確認。
 - テスト出力スクリーンショット（`3 passed` など）。
 - デプロイアドレス、Txハッシュ、イベントのキャプチャ。
 - `custom errors` vs `require` の計測結果（簡潔な表）。
+
+## 5. 実行例
+- 実行ログ例：[`reports/Day04.md`](../reports/Day04.md)
