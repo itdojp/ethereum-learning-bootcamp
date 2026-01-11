@@ -1,5 +1,7 @@
 # Day9：DAppフロント（React + ethers）— ウォレット接続／ネットワーク切替／残高・送金UI
 
+[← 目次](./TOC.md) | [前: Day8](./Day08_L2_Rollups.md) | [次: Day10](./Day10_Events_TheGraph.md)
+
 ## 学習目的
 - ブラウザからMetaMask等に接続し、アカウント・ネットワークを取得する。
 - ネットワーク切替（Local/Sepolia/Optimism）とエラー処理の考え方を把握する。

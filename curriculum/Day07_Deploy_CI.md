@@ -1,5 +1,7 @@
 # Day7：本番・L2デプロイ／Etherscan検証／手動承認付きCI
 
+[← 目次](./TOC.md) | [前: Day6](./Day06_Local_Testing.md) | [次: Day8](./Day08_L2_Rollups.md)
+
 ## 学習目的
 - 少額でMainnetまたはL2に安全にデプロイする流れを体得。
 - ソース検証（Verify）と成果の可観測性を確保。

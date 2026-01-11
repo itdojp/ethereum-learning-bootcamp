@@ -1,5 +1,7 @@
 # Day11：NFT実装（IPFS・メタデータ）と表示確認（`tokenURI`/IPFS Gateway）
 
+[← 目次](./TOC.md) | [前: Day10](./Day10_Events_TheGraph.md) | [次: Day12](./Day12_Security.md)
+
 ## 学習目的
 - ERC‑721の`tokenURI`設計とIPFSメタデータのベストプラクティスを理解。
 - 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認まで一気通貫。

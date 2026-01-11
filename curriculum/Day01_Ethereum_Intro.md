@@ -1,5 +1,7 @@
 # Day1：ブロックチェーン原理とEthereum全体像
 
+[← 目次](./TOC.md) | [次: Day2](./Day02_Transaction_Gas.md)
+
 ## 学習目的
 - ブロックチェーンの構造とEthereumの基本概念を理解する。
 - 実際にRPCを叩いてネットワーク情報を取得する。

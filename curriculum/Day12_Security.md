@@ -1,5 +1,7 @@
 # Day12：セキュリティ入門（再入・権限・静的解析・ファジング）
 
+[← 目次](./TOC.md) | [前: Day11](./Day11_NFT_Metadata.md) | [次: Day13](./Day13_Gas_Optimization.md)
+
 ## 学習目的
 - 代表的脆弱性（Reentrancy, tx.origin誤用, delegatecall乱用, Proxyのストレージ衝突）を理解。
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装。

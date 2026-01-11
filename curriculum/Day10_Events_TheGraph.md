@@ -1,5 +1,7 @@
 # Day10：イベント購読とThe Graph（サブグラフ）
 
+[← 目次](./TOC.md) | [前: Day9](./Day09_DApp_Frontend.md) | [次: Day11](./Day11_NFT_Metadata.md)
+
 ## 学習目的
 - Solidityイベントの`indexed`設計と購読方法を理解する。
 - ブラウザからリアルタイム購読（ethers）を動かす。

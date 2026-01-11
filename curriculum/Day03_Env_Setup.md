@@ -1,5 +1,7 @@
 # Day3：開発環境構築（Hardhat / Foundry）とテストネット接続
 
+[← 目次](./TOC.md) | [前: Day2](./Day02_Transaction_Gas.md) | [次: Day4](./Day04_Solidity_Basics.md)
+
 ## 学習目的
 - HardhatおよびFoundryを導入し、開発・テスト・デプロイの基礎環境を構築する。
 - Sepoliaテストネットに接続し、コントラクトをデプロイして動作を確認する。

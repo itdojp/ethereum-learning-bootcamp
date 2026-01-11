@@ -1,5 +1,7 @@
 # Day13：ガス最適化（設計原則・実測・比較）
 
+[← 目次](./TOC.md) | [前: Day12](./Day12_Security.md) | [次: Day14](./Day14_Integration.md)
+
 ## 学習目的
 - ガスコストの主要要因（ストレージ、calldata、イベント、ループ）を理解。
 - 設計で削減できるポイント（packing、immutable/constant、custom errors、関数属性）を実践。
