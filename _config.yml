@@ -57,6 +57,5 @@ exclude:
   - tsconfig.json
   - README.md
   - LICENSE.md
-  - DEPLOYMENTS.md
   - STYLEGUIDE.md
   - curriculum/_Chapter_Template.md

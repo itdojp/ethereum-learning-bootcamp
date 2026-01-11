@@ -15,8 +15,8 @@
 - Hardhat構成はDay3までに完了。
 - `.env`に鍵とRPCを設定し、**秘密情報はGitにコミットしない**。
 - つまずきやすい点は補足を参照する：
-  - Verify：`appendix/verify.md`
-  - GitHub Actions / CI：`appendix/ci-github-actions.md`
+  - Verify：[`appendix/verify.md`](../appendix/verify.md)
+  - GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
 
 `.env.example`
 ```
@@ -73,7 +73,7 @@ npx hardhat verify --network mainnet <DEPLOYED_ADDR> 3600
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
 ```
-> L2ごとにAPIキーが異なる。Blockscout系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら `appendix/verify.md` を参照する。
+> L2ごとにAPIキーが異なる。Blockscout系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
@@ -107,12 +107,12 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - `environment: production` により、実行前にGitHub上での**人間承認**が必須になる。
 - Secrets を `hardhat.config.ts` が参照する環境変数名（`MAINNET_RPC_URL` / `OPTIMISM_RPC_URL` など）に揃えて渡す。
 
-> 承認が出ない／Secretsが読めない等で詰まったら `appendix/ci-github-actions.md` を参照する。
+> 承認が出ない／Secretsが読めない等で詰まったら [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照する。
 
 ---
 
 ## 5. デプロイ前後のドキュメント化
-`DEPLOYMENTS.md`（新規作成）
+[`DEPLOYMENTS.md`](../DEPLOYMENTS.md)（新規作成）
 ```
 # Deployments
 

@@ -14,7 +14,7 @@
 ## 0. 前提
 - Day9 の `dapp/` を起動できる。
 - `EventToken` を任意ネットワークへデプロイできる（ローカル/テストネット/L2のどれでもよい）。
-- The Graph で詰まりやすい点は `appendix/the-graph.md` を参照する。
+- The Graph で詰まりやすい点は [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 ---
 
@@ -87,7 +87,7 @@ graph init \
 ### 4.2 startBlock を入れる
 `startBlock` は「このブロック以降だけを見る」という範囲指定。**デプロイTxのブロック番号** を入れるのが基本。
 
-取得例やつまずきは `appendix/the-graph.md` を参照する。
+取得例やつまずきは [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 ### 4.3 codegen / build
 ```bash
@@ -102,8 +102,8 @@ graph build
 ---
 
 ## 5. トラブルシュート（入口）
-- startBlock が分からない / 遅すぎる：`appendix/the-graph.md`
-- build が落ちる（ABI/スキーマ不一致）：`appendix/the-graph.md`
+- startBlock が分からない / 遅すぎる：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- build が落ちる（ABI/スキーマ不一致）：[`appendix/the-graph.md`](../appendix/the-graph.md)
 - ブラウザ購読が発火しない：チェーンID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---

@@ -144,7 +144,7 @@ Verify：
 ```bash
 npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $NFT_ROYALTY_BPS
 ```
-> Verifyで詰まったら `appendix/verify.md` を参照する（引数不一致が典型）。
+> Verifyで詰まったら [`appendix/verify.md`](../appendix/verify.md) を参照する（引数不一致が典型）。
 
 ---
 

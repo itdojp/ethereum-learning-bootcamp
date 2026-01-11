@@ -165,7 +165,7 @@ npm i -D @nomicfoundation/hardhat-verify
 npx hardhat verify --network sepolia <TOKEN_ADDRESS> 1000000000000000000000000
 npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECEIVER_ADDR> 500
 ```
-> つまずいたら `appendix/verify.md` を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
+> つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
 
 ---
 
