@@ -219,7 +219,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 
 ---
 
-## 3. トラブルシューティング
+## 3. つまずきポイント
 | 症状 | 対応 |
 |------|------|
 | Error: invalid private key | `.env`内の0xを付け忘れまたは誤記。 |
@@ -228,17 +228,22 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 
 ---
 
-## 4. 提出物
+## 4. 発展課題
+- Hardhat Networkでローカルテストを行い、`console.log()`でイベント内容を確認。
+- Foundryで`forge create`を使ってデプロイを自動化する。
+
+---
+
+## 5. まとめ
+- ルートで `npm ci` し、`npm test` でローカル実行できる状態を確認した。
+- `.env` に `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、秘密情報をコミットしない運用を押さえた。
+- `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
+
+## 6. 提出物
 - Hardhatプロジェクト構成のスクリーンショット。
 - デプロイ時のログとコントラクトアドレス。
 - `cast block-number` の出力。
 - `.env` 設定（APIキーなどは伏せる）。
 
----
-
-## 5. 発展課題
-- Hardhat Networkでローカルテストを行い、`console.log()`でイベント内容を確認。
-- Foundryで`forge create`を使ってデプロイを自動化する。
-
-## 6. 実行例
+## 7. 実行例
 - 実行ログ例：[`reports/Day03.md`](../reports/Day03.md)

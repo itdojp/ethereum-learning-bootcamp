@@ -152,19 +152,24 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 
 ---
 
-## 6. トラブルシュート
+## 6. つまずきポイント
 | 症状 | 原因 | 対策 |
 |---|---|---|
 | `insufficient funds` | L2で手数料不足 | L2のETHをブリッジまたは取引所から供給 |
-| Verify失敗 | コンパイラ設定差分 | `hardhat.config.ts` の `solidity` を一致させる |
+| Verify失敗 | コンパイラ設定差分 | `hardhat.config.ts` の設定を一致させる。詰まったら [`appendix/verify.md`](../appendix/verify.md) |
 | 異常な`latencyMs` | RPC遅延/混雑 | 別RPCで再測、再試行、バッチ間隔を変える |
 
 ---
 
-## 7. 提出物
+## 7. まとめ
+- rollup-centric 前提では、L2コスト構造の中心が「L1へ投稿するデータ（DA）」になりやすいことを押さえた。
+- L1/L2へデプロイし、手数料（fee）と確定までの体感（latency）を同じ物差しで測る方法を整理した。
+- 計測結果は `metrics.csv` や `DEPLOYMENTS.md` に残し、後から比較できる形にするのが重要だ。
+
+## 8. 提出物
 - `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`。
 - Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク。
 - ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）。
 
-## 8. 実行例
+## 9. 実行例
 - 実行ログ例：[`reports/Day08.md`](../reports/Day08.md)

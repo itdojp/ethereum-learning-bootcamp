@@ -226,20 +226,25 @@ describe('MyNFT', () => {
 
 ---
 
-## 8. トラブルシュート
+## 8. つまずきポイント
 | 症状 | 原因 | 対応 |
 |---|---|---|
 | Gatewayで開けない | Gateway側の障害/レート制限、またはURIのパス不一致 | 別Gatewayで再確認。`tokenURI` とファイル名（`1.json` 等）が一致しているか確認 |
 | 画像が表示されない | `image`がHTTP/HTTPSや拡張子誤り | `ipfs://CID/...png` を再確認 |
-| Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・`solidity`バージョン確認 |
+| Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・設定を確認。詰まったら [`appendix/verify.md`](../appendix/verify.md) |
 | `safeTransferFrom`失敗 | `approve`不足 | `setApprovalForAll` または `approve(id)` 実行 |
 
 ---
 
-## 9. 提出物
+## 9. まとめ
+- `tokenURI` とIPFSメタデータの設計（CID/パス/凍結方針）を、実装と表示確認の流れで整理した。
+- デプロイ→ミント→Gatewayで表示確認までをつなぎ、`tokenURI` とファイル名の一致が重要だと分かった。
+- 固定価格マーケットの最小例を通して、実運用で必要な防御（再入対策等）を明確化した。
+
+## 10. 提出物
 - `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク。
 - `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット。
 - IPFSのCID、`1.json` の最終版。
 
-## 10. 実行例
+## 11. 実行例
 - 実行ログ例：[`reports/Day11.md`](../reports/Day11.md)

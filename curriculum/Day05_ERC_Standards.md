@@ -183,10 +183,15 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 
 ---
 
-## 6. 提出物
+## 6. まとめ
+- ERC‑20/721 の必須要素と、OpenZeppelin を使う理由（標準準拠・安全性）を押さえた。
+- ERC‑20 の `approve→transferFrom` フローを、テストまたはスクリプトで再現した。
+- NFT の `tokenURI` とメタデータ（IPFS/HTTP Gateway）の確認方法を整理した。
+
+## 7. 提出物
 - トークン・NFTのコントラクトアドレス、Verifyリンク。
 - `approve→transferFrom`の実行ログと`allowance`の値。
 - `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ。
 
-## 7. 実行例
+## 8. 実行例
 - 実行ログ例：[`reports/Day05.md`](../reports/Day05.md)
