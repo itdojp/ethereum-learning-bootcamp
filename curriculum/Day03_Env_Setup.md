@@ -228,7 +228,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 
 ---
 
-## 4. レポート提出内容
+## 4. 提出物
 - Hardhatプロジェクト構成のスクリーンショット。
 - デプロイ時のログとコントラクトアドレス。
 - `cast block-number` の出力。
