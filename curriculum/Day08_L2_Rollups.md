@@ -1,5 +1,7 @@
 # Day8：L2ロールアップ（Optimistic vs ZK）とDencun/Blob実測
 
+[← 目次](./TOC.md) | [前: Day7](./Day07_Deploy_CI.md) | [次: Day9](./Day09_DApp_Frontend.md)
+
 ## 学習目的
 - Optimistic Rollup と ZK Rollup の仕組み差（証明、引出し、最終性）を理解する。
 - Dencun（EIP‑4844 Blob）の要点を押さえ、L2手数料の実測を行う。

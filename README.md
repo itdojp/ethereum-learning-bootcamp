@@ -16,6 +16,7 @@ npm test
 
 ## 構成
 - `curriculum/` : Day01〜Day14 各日の教科書＋ハンズオン
+- 読む順序（目次）：`curriculum/TOC.md`
 - `appendix/` : 補足資料（EIP, リソース集）
 - `contracts/`, `scripts/`, `test/`: 実践サンプル
 - `.github/workflows/`: CI/CD雛形

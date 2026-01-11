@@ -1,5 +1,7 @@
 # Day2：トランザクションとGas、EIP‑1559
 
+[← 目次](./TOC.md) | [前: Day1](./Day01_Ethereum_Intro.md) | [次: Day3](./Day03_Env_Setup.md)
+
 ## 学習目的
 - トランザクション構造、署名、Gas、EIP‑1559料金モデルを理解する。
 - コントラクトを用いてGas使用量を比較し、Etherscanで手数料を解析する。

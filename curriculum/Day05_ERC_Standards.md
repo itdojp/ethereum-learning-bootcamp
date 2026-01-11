@@ -1,5 +1,7 @@
 # Day5：ERC標準（ERC‑20 / ERC‑721）とOpenZeppelin実装
 
+[← 目次](./TOC.md) | [前: Day4](./Day04_Solidity_Basics.md) | [次: Day6](./Day06_Local_Testing.md)
+
 ## 学習目的
 - ERC‑20/721 の最小実装を安全に組み立てる。
 - `approve/allowance/transferFrom` のフローを実取引で確認。

@@ -1,5 +1,7 @@
 # Day6：ローカル検証・カバレッジ・ガス計測（Hardhat中心）
 
+[← 目次](./TOC.md) | [前: Day5](./Day05_ERC_Standards.md) | [次: Day7](./Day07_Deploy_CI.md)
+
 ## 学習目的
 - ローカルノード（Hardhat Network）で素早く再現可能なテストを書く。
 - `solidity-coverage` と `hardhat-gas-reporter` を導入し、品質とコストを数値で把握する。
