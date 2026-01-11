@@ -10,6 +10,14 @@
 
 ---
 
+## 0. 前提
+- OS：Linux/macOS/WSL2（コマンドは `bash` 想定）
+- 必要コマンド：`curl`, `jq`
+- 必要なもの：Sepolia などの RPC エンドポイント（Alchemy/Infura 等）
+- この章は **Tx を送らない**。テストETHは不要だ。
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 ブロックチェーンの基本構造
@@ -54,6 +62,8 @@
 sudo apt update && sudo apt install -y curl jq
 ```
 
+> Ubuntu/WSL2 以外は各OSの方法で `curl`/`jq` を用意する。
+
 ### 2.2 RPCエンドポイント設定
 AlchemyまたはInfuraで取得したRPCを設定。
 
@@ -72,14 +82,14 @@ echo $RPC
 Ethereumノードの最新ブロック番号を取得する。
 
 ```bash
-curl -s -X POST $RPC \
+curl -s -X POST "$RPC" \
   -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result
 ```
 
 16進数（先頭が `0x` の数値）で返ってくるため、人間が読みやすい 10 進数に変換したい場合：
 ```bash
-printf "%d\n" 0x$(curl -s -X POST $RPC \
+printf "%d\n" 0x$(curl -s -X POST "$RPC" \
   -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result | cut -c3-)
 ```
@@ -90,10 +100,10 @@ printf "%d\n" 0x$(curl -s -X POST $RPC \
 直近のブロックデータを取得し、主要フィールドを確認。
 
 ```bash
-BLOCK=$(curl -s -X POST $RPC -H 'Content-Type: application/json' \
+BLOCK=$(curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result)
 
-curl -s -X POST $RPC -H 'Content-Type: application/json' \
+curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK"'", true],"id":2}' | jq '{number, hash, baseFeePerGas, gasUsed, gasLimit, miner, timestamp, transactions:(.transactions|length)}'
 ```
 
@@ -115,13 +125,16 @@ curl -s -X POST $RPC -H 'Content-Type: application/json' \
 2. 3ブロック分を連続取得して比較。
 
 ```bash
-for i in {0..2}; do
-  BLOCK=$(printf "0x%x" $((0x$(curl -s -X POST $RPC \
-    -H 'Content-Type: application/json' \
-    --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result | cut -c3-) - i)))
-  echo "Block $BLOCK"
-  curl -s -X POST $RPC -H 'Content-Type: application/json' \
-    --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK"'", false],"id":2}' | jq '{gasUsed, gasLimit}'
+LATEST_HEX=$(curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result)
+LATEST_DEC=$((16#${LATEST_HEX#0x}))
+
+for i in 0 1 2; do
+  BLOCK_DEC=$((LATEST_DEC - i))
+  BLOCK_HEX=$(printf "0x%x" "$BLOCK_DEC")
+  echo "Block $BLOCK_HEX"
+  curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
+    --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK_HEX"'", false],"id":2}' | jq '{gasUsed, gasLimit}'
   sleep 1
 done
 ```
@@ -138,3 +151,6 @@ done
   - 実行したコマンドと出力例
   - 3ブロック分の混雑度分析
   - 学んだ内容を3行で要約
+
+### 実行例
+- 実行ログ例：[`reports/Day01.md`](../reports/Day01.md)

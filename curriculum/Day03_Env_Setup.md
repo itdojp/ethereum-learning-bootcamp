@@ -10,6 +10,13 @@
 
 ---
 
+## 0. 前提
+- 推奨：Node.js 20（LTS）
+- テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテストETHを入れておく
+  - メイン資産の鍵は使わない（流出時の被害が大きい）
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 Hardhatとは
@@ -232,3 +239,6 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 ## 5. 発展課題
 - Hardhat Networkでローカルテストを行い、`console.log()`でイベント内容を確認。
 - Foundryで`forge create`を使ってデプロイを自動化する。
+
+## 6. 実行例
+- 実行ログ例：[`reports/Day03.md`](../reports/Day03.md)

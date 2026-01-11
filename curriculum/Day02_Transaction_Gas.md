@@ -10,6 +10,12 @@
 
 ---
 
+## 0. 前提
+- Day1 で `RPC` を設定済み（2.5 の CLI パートで使う）
+- Remix IDE を使う場合はブラウザで操作する（ウォレット連携は環境により異なる）
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 トランザクションの構造
@@ -22,7 +28,7 @@ Ethereumのトランザクション（Tx）は以下のフィールドを持つ�
 | `data` | コントラクト呼び出し情報（関数 + 引数） |
 | `gasLimit` | 実行可能な最大Gas量 |
 | `maxFeePerGas` | 1単位Gasに支払う最大額（EIP‑1559） |
-| `maxPriorityFeePerGas` | マイナー（バリデータ）へのチップ |
+| `maxPriorityFeePerGas` | バリデータ（ブロック提案者）へのチップ |
 | `v, r, s` | 署名情報 |
 
 ### 1.2 ガスと料金計算
@@ -76,15 +82,13 @@ contract GasTest {
 1. Remix の **Deployed Contracts** パネルで：
    - `store(123)` を呼び出し。
    - `add(10,20)` を呼び出し。
-2. 各Txの詳細で **Gas Used** を比較。
+2. `store(123)` の Tx で **Gas Used** を確認する。
 
-例：
-```
-store():  21,000 Gas
-add():      8,000 Gas
-```
+補足：
+- `add()` は `pure` のため、Remix では **Txを送らずに call（読み取り）** として実行されることがある。
+- 「Txとして呼んだときのガス差」を見たい場合は、Day6 のようにベンチ用関数（Tx化）を用意して測定する。
 
-`SSTORE` は永続ストレージ書込みでコストが高いことを確認する。
+`SSTORE` は永続ストレージ書込みでコストが高いことを確認する（Tx の最低コスト 21,000 Gas に加算される）。
 
 ---
 
@@ -110,7 +114,7 @@ Gas Used × Effective Gas Price = 総手数料（Wei）
 ```bash
 TX=<任意のトランザクションハッシュ>
 
-curl -s -X POST $RPC -H 'Content-Type: application/json' \
+curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["'"$TX"'"],"id":1}' | jq '{blockNumber, gasUsed, effectiveGasPrice, status}'
 ```
 
@@ -127,6 +131,7 @@ Gas消費量が16進数で表示されるので、次のように変換してETH
 ```bash
 expr $(printf "%d" 0x5208) \* $(printf "%d" 0x19a3af8b6) / 1000000000000000000
 ```
+> メモ：`expr` は整数演算のため、小額だと 0 になることがある。小数まで見たい場合は `node` や `python` で計算する。
 
 ---
 
@@ -157,3 +162,6 @@ function clear() external { count = 0; }
   - `store()` と `add()` のGas使用量比較（表形式）
   - Etherscanで確認したTx詳細（スクリーンショットまたは値）
   - 2.6の追加実験の結果（3パターンの比較）
+
+### 実行例
+- 実行ログ例：[`reports/Day02.md`](../reports/Day02.md)
