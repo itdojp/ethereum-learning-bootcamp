@@ -159,7 +159,7 @@ function clear() external { count = 0; }
 
 ### 提出物
 - `REPORT.md` に以下を記載：
-  - `store()` と `add()` のGas使用量比較（表形式）
+  - `store()`（Tx）のGas Used と、2.6 の3パターンのGas差（表形式）
   - Etherscanで確認したTx詳細（スクリーンショットまたは値）
   - 2.6の追加実験の結果（3パターンの比較）
 
