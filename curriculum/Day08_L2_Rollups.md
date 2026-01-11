@@ -11,6 +11,12 @@
 
 ---
 
+## 0. 前提
+- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- L2（例：Optimism）へ送る場合は、対象チェーン側に手数料分のETHが必要だ（ブリッジ等で用意する）
+
+---
+
 ## 1. 理論解説（教科書）
 
 ### 1.1 ロールアップの基本
@@ -61,7 +67,10 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 
 ## 2. ハンズオン：L2追加と再デプロイ
 
-### 2.1 HardhatにL2を追加
+### 2.1 HardhatにL2を追加（参考）
+このリポジトリでは `sepolia` / `optimism` / `polygonZk` のネットワーク設定は同梱済みだ（`hardhat.config.ts` を確認する）。  
+自分のプロジェクトに追加する場合は、次を参考にする。
+
 `hardhat.config.ts`
 ```ts
 networks: {
@@ -156,3 +165,6 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 - `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`。
 - Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク。
 - ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）。
+
+## 8. 実行例
+- 実行ログ例：[`reports/Day08.md`](../reports/Day08.md)

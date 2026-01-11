@@ -112,3 +112,6 @@ graph build
 - EventTokenアドレスと、イベント発火スクリプトの実行ログ。
 - dapp でリアルタイムログが表示されているスクリーンショット。
 - （任意）サブグラフの `graph build` ログと GraphQL クエリ結果。
+
+## 7. 実行例
+- 実行ログ例：[`reports/Day10.md`](../reports/Day10.md)
