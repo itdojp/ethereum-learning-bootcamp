@@ -1,0 +1,62 @@
+title: "Ethereum Learning Bootcamp"
+description: "14日間でEthereum開発の基礎から応用まで学ぶ完全教材"
+author: "ITDO Inc."
+version: "2026.01"
+lang: "ja"
+
+# GitHub Pages settings
+url: "https://itdojp.github.io"
+baseurl: "/ethereum-learning-bootcamp"
+repository: "itdojp/ethereum-learning-bootcamp"
+
+# Jekyll settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Theme (base)
+theme: minima
+
+# Plugins (GitHub Pages supported)
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+
+# Kramdown configuration
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Use custom book layout as default
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "book"
+
+# Exclude non-book files/directories from Pages build
+exclude:
+  - .github/
+  - node_modules/
+  - dapp/
+  - contracts/
+  - scripts/
+  - test/
+  - tools/
+  - metrics/
+  - artifacts/
+  - cache/
+  - typechain-types/
+  - package.json
+  - package-lock.json
+  - hardhat.config.ts
+  - tsconfig.json
+  - README.md
+  - LICENSE.md
+  - DEPLOYMENTS.md
+  - STYLEGUIDE.md
+  - curriculum/_Chapter_Template.md
