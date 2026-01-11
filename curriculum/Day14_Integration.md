@@ -142,16 +142,26 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ---
 
-## 8. まとめ
+## 8. つまずきポイント
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| DApp が動かない / 残高が出ない | chainId とアドレスが不一致 | `dapp/.env.local` と MetaMask のチェーンを揃え、アドレスを再確認する |
+| Verifyが通らない | APIキー/引数/設定不一致、反映待ち | [`appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
+| 手動デプロイの承認が出ない | Environment設定・Secretsの場所違い | [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
+| サブグラフが同期しない | `startBlock`/アドレス不一致 | [`appendix/the-graph.md`](../appendix/the-graph.md) を参照して確認する |
+
+---
+
+## 9. まとめ
 - デプロイ記録（`DEPLOYMENTS.md`）→DApp接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
 - `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
-## 9. 提出物
+## 10. 提出物
 - `DEPLOYMENTS.md` の追記（鍵は伏せる）
 - DApp の動作スクリーンショット
 - TxHash（送金・イベント発火の実績）
 - （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
 
-## 10. 実行例
+## 11. 実行例
 - 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)

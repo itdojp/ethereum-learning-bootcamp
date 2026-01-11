@@ -186,15 +186,24 @@ jobs:
 
 ---
 
-## 9. まとめ
+## 9. つまずきポイント
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| gasReporter に出ない / 差が見えない | `pure/view` が call 扱いになり、Txとして計測されていない | 章中の `bench*` のように Tx 化して測る |
+| `hardhat coverage` が落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | まず `npm ci` で揃え、Node.js 20 で再実行する |
+| CIでだけ落ちる | ローカルとCIの差分 | 付録 [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「最短デバッグ手順」を参照する |
+
+---
+
+## 10. まとめ
 - テスト・カバレッジ・ガス計測をローカルで一通り回し、品質とコストを数値で把握する入口を作った。
 - `pure/view` は call 扱いになりやすいため、計測したい処理は「Tx化」して測る方針を押さえた。
 - CI で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
 
-## 10. 提出物
+## 11. 提出物
 - `npx hardhat test` と `coverage` の出力（スクリーンショット可）。
 - memory vs calldata、イベント数の差分を表に整理。
 - ガス最適化の所感を3行で記述。
 
-## 11. 実行例
+## 12. 実行例
 - 実行ログ例：[`reports/Day06.md`](../reports/Day06.md)

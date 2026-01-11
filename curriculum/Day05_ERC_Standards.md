@@ -183,15 +183,24 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 
 ---
 
-## 6. まとめ
+## 6. つまずきポイント
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm ci`（または `npm i @openzeppelin/contracts`）を実行する |
+| スクリプトが落ちる（`TOKEN` など） | 環境変数未設定 / `--network` 不一致 | `TOKEN`/`NFT_ADDRESS` 等の値と、`--network` を見直す |
+| Verifyが失敗する | APIキー/引数/コンパイラ設定不一致 | [`appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
+
+---
+
+## 7. まとめ
 - ERC‑20/721 の必須要素と、OpenZeppelin を使う理由（標準準拠・安全性）を押さえた。
 - ERC‑20 の `approve→transferFrom` フローを、テストまたはスクリプトで再現した。
 - NFT の `tokenURI` とメタデータ（IPFS/HTTP Gateway）の確認方法を整理した。
 
-## 7. 提出物
+## 8. 提出物
 - トークン・NFTのコントラクトアドレス、Verifyリンク。
 - `approve→transferFrom`の実行ログと`allowance`の値。
 - `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ。
 
-## 8. 実行例
+## 9. 実行例
 - 実行ログ例：[`reports/Day05.md`](../reports/Day05.md)
