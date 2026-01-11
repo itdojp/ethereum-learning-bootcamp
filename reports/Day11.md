@@ -4,18 +4,19 @@
 NFT の `tokenURI` が `.../<id>.json` になることを、ローカルで確認した。
 
 ```bash
-npx hardhat node
+./node_modules/.bin/hardhat node
 ```
 
 別ターミナルで：
 ```bash
 npx hardhat run scripts/deploy-nft.ts --network localhost
-NFT_ADDRESS=0x5FC8d32690cc91D4c39d9d3abcBD16989F875707 \
-  npx hardhat run scripts/mint-nft.ts --network localhost
+# → MyNFT: <NFT_ADDRESS>
+
+NFT_ADDRESS=<NFT_ADDRESS> npx hardhat run scripts/mint-nft.ts --network localhost
 ```
 
 ### 結果（抜粋）
-- `MyNFT: 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707`
+- `MyNFT: 0x5FbDB2315678afecb367f032d93F642f64180aa3`
 - `tokenURI: ipfs://example/1.json`
 
 ## IPFS 表示確認（未実施）

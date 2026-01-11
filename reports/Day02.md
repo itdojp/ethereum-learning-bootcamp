@@ -1,21 +1,22 @@
-# Day02 実行ログ
+# Day02 実行ログ（2026-01 更新）
 
 ## 環境
-- RPC: `http://127.0.0.1:8545`（Day01 と同じ Hardhat node を継続使用）
+- RPC: `http://127.0.0.1:8545`（ローカル Hardhat node）
 - サンプルコントラクト: `contracts/GasTest.sol`
 - ドライバースクリプト: `scripts/day02_gas.ts`
 
 ## 実行手順
-1. `npx hardhat compile`
-2. `npx hardhat run scripts/day02_gas.ts --network localhost`
-3. `curl -X POST ... eth_getTransactionReceipt` で `store` Tx を解析
+1. `./node_modules/.bin/hardhat node`
+2. `npx hardhat compile`
+3. `npx hardhat run scripts/day02_gas.ts --network localhost`
+4. `curl -X POST ... eth_getTransactionReceipt` で `store` Tx を解析
 
 ## Gas 計測結果
 | 呼び出し | Tx Hash | Gas Used | Effective Gas Price (wei) | 手数料 (ETH) |
 |----------|---------|---------|---------------------------|--------------|
-| `store(123)` | `0xb2538ac1...` | 43,516 | 1,393,966,933 | 6.07e-05 |
-| `add(10,20)` | `0x78015d00...` | 21,860 | 1,346,601,148 | 2.94e-05 |
-| `testRewrite(123)` | `0x09c46ca8...` | 23,638 | 1,303,944,076 | 3.08e-05 |
+| `store(123)` | `0xba728419...` | 43,516 | 970,068,939 | 4.221e-05 |
+| `add(10,20)` | `0xcd44a299...` | 21,860 | 849,162,102 | 1.856e-05 |
+| `testRewrite(123)` | `0x5306f1d4...` | 23,638 | 743,171,529 | 1.757e-05 |
 
 - `add()` は pure 関数のため、そのまま呼ぶと `call` になってしまう。`encodeFunctionData` で calldata を生成し、`sendTransaction` で Tx を作成してGasを取得。
 - `testRewrite()` は同じ値を再書込みした結果、`store()` よりガスが少なくなり、Refund を確認できた。
@@ -27,11 +28,11 @@ curl -s -X POST http://127.0.0.1:8545 \
   --data '{
     "jsonrpc":"2.0",
     "method":"eth_getTransactionReceipt",
-    "params":["0xb2538ac1859d90aed435e627a4b234f3072076bddc4f23095025474976c7665c"],
+    "params":["0xba7284193ee601b6787921d03a78bf8ce1e1fe35359447754cbe1872750970be"],
     "id":10
   }' | jq '.result | {blockNumber, gasUsed, effectiveGasPrice, status}'
 ```
-→ `gasUsed`: `0xa9fc`, `effectiveGasPrice`: `0x53163f55`, `status`: `0x1`
+→ `gasUsed`: `0xa9fc`, `effectiveGasPrice`: `0x39d213cb`, `status`: `0x1`
 
 ## 学び
 1. `pure/view` 関数であっても raw Tx を組めばガス計測が可能。

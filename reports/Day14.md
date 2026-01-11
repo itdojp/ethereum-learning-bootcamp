@@ -7,7 +7,7 @@
 
 ## 実行
 ```bash
-npx hardhat node
+./node_modules/.bin/hardhat node
 ```
 
 別ターミナルで：
@@ -18,35 +18,45 @@ npx hardhat run scripts/deploy-event-token.ts --network localhost
 npx hardhat run scripts/deploy-nft.ts --network localhost
 
 # Use
-TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
-  npx hardhat run scripts/token-transfer.ts --network localhost
+TOKEN=<TOKEN> npx hardhat run scripts/token-transfer.ts --network localhost
 
-EVT=0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0 \
-  npx hardhat run scripts/use-event-token.ts --network localhost
+EVT=<EVT> npx hardhat run scripts/use-event-token.ts --network localhost
 
-NFT_ADDRESS=0x5FC8d32690cc91D4c39d9d3abcBD16989F875707 \
-  npx hardhat run scripts/mint-nft.ts --network localhost
+NFT_ADDRESS=<NFT_ADDRESS> npx hardhat run scripts/mint-nft.ts --network localhost
 
 # Measure
 npx hardhat run scripts/measure-fee.ts --network localhost
-TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
-  npx hardhat run scripts/measure-contract.ts --network localhost
+TOKEN=<TOKEN> npx hardhat run scripts/measure-contract.ts --network localhost
 ```
 
 ## 結果（抜粋）
 - `MyToken: 0x5FbDB2315678afecb367f032d93F642f64180aa3`
-- `EventToken: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0`
-- `MyNFT: 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707`
+- `EventToken: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512`
+- `MyNFT: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0`
 
 `measure-fee.ts`：
 ```json
-{"network":"localhost","chainId":31337,"txHash":"0x11672f...","gasUsed":"21000","feeEth":"0.0"}
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "txHash": "0x11672f988af75c5527c63a6dd9fbb1dd4015ff7ba39b5f8b45dd7262d12ac9d8",
+  "gasUsed": "21000",
+  "effGasPriceWei": "444855188",
+  "feeEth": "0.000009341958948"
+}
 ```
 `measure-contract.ts`：
 ```json
-{"network":"localhost","chainId":31337,"txHash":"0x8ea292...","gasUsed":"34508","feeEth":"0.0"}
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "txHash": "0x8ea292b948fda640138368509dfdb2895e15b1f35213fd511cff600f581733e1",
+  "gasUsed": "34508",
+  "effGasPriceWei": "389326139",
+  "feeEth": "0.000013434866404612"
+}
 ```
-> ローカルHardhat node は `gasPrice=0` のため `feeEth` は `0.0` になる。実ネットワークでは実費が出る。
+> `feeEth` は `gasUsed * effectiveGasPrice` で計算している。実ネットワーク（Sepolia/Optimism等）では価格が変動するため、比較したい場合は同じ条件で複数回計測する。
 
 ## DApp / Verify / CI / The Graph（入口）
 - DApp：`cd dapp && npm ci && npm run build` が成功（UI動作はMetaMask等が必要）。

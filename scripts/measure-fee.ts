@@ -1,5 +1,21 @@
 import { ethers } from 'hardhat';
 
+type RpcTxReceipt = {
+  gasUsed?: string;
+  effectiveGasPrice?: string;
+  gasPrice?: string;
+};
+
+async function getGasPriceFromRpc(txHash: string): Promise<bigint> {
+  const receipt = (await ethers.provider.send('eth_getTransactionReceipt', [
+    txHash
+  ])) as RpcTxReceipt | null;
+  if (!receipt) throw new Error('rpc receipt missing');
+  const priceHex = receipt.effectiveGasPrice ?? receipt.gasPrice;
+  if (!priceHex) throw new Error('gas price missing in receipt');
+  return BigInt(priceHex);
+}
+
 async function main() {
   const network = await ethers.provider.getNetwork();
   const signers = await ethers.getSigners();
@@ -13,7 +29,7 @@ async function main() {
   if (!receipt) throw new Error('receipt missing');
   const end = Date.now();
   const gasUsed = receipt.gasUsed ?? 0n;
-  const effectivePrice = receipt.effectiveGasPrice ?? 0n;
+  const effectivePrice = await getGasPriceFromRpc(tx.hash);
   const feeWei = gasUsed * effectivePrice;
   console.log(
     JSON.stringify(

@@ -1,8 +1,8 @@
-# Day03 実行ログ
+# Day03 実行ログ（2026-01 更新）
 
 ## 環境確認
 - Node.js: `v22.19.0`
-- npm: `11.6.2`
+- npm: `11.7.0`
 - Hardhat: `2.27.0` (`npx hardhat --version`)
 - Foundry: `forge/cast/anvil/chisel 1.4.4-stable`（`~/.foundry/bin/foundryup`で導入）
 - RPC: ローカル Hardhat node (`http://127.0.0.1:8545`)
@@ -11,11 +11,11 @@
 - 既存ブートキャンプリポジトリをそのまま使用。
 - 主要コマンド：
   - `npx hardhat compile` → 変更なし、既存契約を再コンパイル。
-  - `npx hardhat test` → Hello / GasBench のサンプルテストがすべて成功（4 passing）。
+  - `npx hardhat test` → 既存テストがすべて成功（16 passing）。
 - `.env.example` に外部RPC項目は揃っているが、今回の検証ではローカルRPCのみ利用。
 
 ## Foundry 連携
-- `~/.foundry/bin/cast block-number --rpc-url http://127.0.0.1:8545` → `9`
+- `~/.foundry/bin/cast block-number --rpc-url http://127.0.0.1:8545` → `0`
 - `cast` コマンドがローカルRPCへ接続できることを確認。
 
 ## 未実施項目 / 注意

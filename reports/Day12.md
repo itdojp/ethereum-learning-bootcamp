@@ -1,4 +1,4 @@
-# Day12 実行ログ
+# Day12 実行ログ（2026-01 更新）
 
 ## 実装
 - 脆弱/安全コントラクト：`contracts/VulnBank.sol`, `SafeBank.sol`, `Attacker.sol` を追加。VulnBankはCEI違反（`bal`更新が送金後）で再入攻撃可能、SafeBankは `ReentrancyGuard` + CEI 順守。
@@ -6,16 +6,16 @@
 - テスト：`test/reentrancy.ts` を実装し、VulnBankが攻撃で枯渇する一方、SafeBankは攻撃Txがrevertすることを確認。
 
 ## コマンド
-```
+```bash
 # 依存を復元（OZ v5）
 npm ci
 
 # 再入テストのみ
 npx hardhat test test/reentrancy.ts
 # 全体テスト
-npx hardhat test
+npm test
 ```
-結果：全11ケース成功（MyToken, EventToken, GasBench, Hello, FixedPriceMarket, MyNFT, Reentrancy x2, WalletBox）。
+結果：`test/reentrancy.ts` は `2 passing`、全体は `16 passing`。
 
 ## 観測
 - `VulnBank` へ10 ETH預けた状態で `Attacker.attack()` を実行すると、`bal[msg.sender]` が未更新の間に再入され、残高が9 ETH未満まで減少。

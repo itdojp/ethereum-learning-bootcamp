@@ -1,4 +1,4 @@
-# Day06 実行ログ
+# Day06 実行ログ（2026-01 更新）
 
 ## 対象
 - `contracts/GasBench.sol`：`benchSumMemory/benchSumCalldata` を持つベンチ用コントラクト。
@@ -6,8 +6,12 @@
 - `curriculum/Day06_Local_Testing.md` は既に bench 方針を説明済み。
 
 ## コマンド
-```
-npx hardhat test
+```bash
+# GasBench のみ（gas reporter の表が出る）
+npx hardhat test test/gasbench.ts
+
+# 参考：Hello のみ（gas reporter の表が出る）
+npx hardhat test test/hello.ts
 ```
 > Gas reporter を有効化しているため、テスト完了時に関数単位のgas表が出力される。
 
@@ -28,7 +32,7 @@ memory vs calldata の差分（123,548 vs 91,860）を gasReporter 上で確認�
 - `emitMany(n)` の n=5 でイベントガスコストを比較可能。
 
 ## 追加検証
-- `npm ci` → `npx hardhat test` を CI 相当の流れで実行し、全テスト（GasBench/Hello/MyToken/MyNFT/WalletBox）の合計 9 ケースが成功していることも再確認。
+- `npm ci` → `npm test` を CI 相当の流れで実行し、全テスト `16 passing` を再確認。
 
 ## まとめ
 1. bench関数経由で memory / calldata / event cost を数値化できる状態を構築済み。

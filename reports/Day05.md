@@ -6,26 +6,26 @@
 
 ## 実行（localhost）
 ```bash
-npx hardhat node
+./node_modules/.bin/hardhat node
 ```
 
 別ターミナルで：
 ```bash
 # ERC-20 deploy
 npx hardhat run scripts/deploy-token.ts --network localhost
+# → MTK: <TOKEN>
 
 # transfer
-TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
-  npx hardhat run scripts/token-transfer.ts --network localhost
+TOKEN=<TOKEN> npx hardhat run scripts/token-transfer.ts --network localhost
 
 # approve -> transferFrom（複数署名者を使う）
-TOKEN=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
-  npx hardhat run scripts/token-approve.ts --network localhost
+TOKEN=<TOKEN> npx hardhat run scripts/token-approve.ts --network localhost
 
 # ERC-721 deploy & mint
 npx hardhat run scripts/deploy-nft.ts --network localhost
-NFT_ADDRESS=0x5FC8d32690cc91D4c39d9d3abcBD16989F875707 \
-  npx hardhat run scripts/mint-nft.ts --network localhost
+# → MyNFT: <NFT_ADDRESS>
+
+NFT_ADDRESS=<NFT_ADDRESS> npx hardhat run scripts/mint-nft.ts --network localhost
 ```
 
 ### 結果（抜粋）
@@ -37,7 +37,9 @@ NFT_ADDRESS=0x5FC8d32690cc91D4c39d9d3abcBD16989F875707 \
 - `token-approve.ts`：
   - `allowance: 1000000000000000000`
   - `transferFrom complete`
-- `MyNFT: 0x5FC8d32690cc91D4c39d9d3abcBD16989F875707`
+- `MyNFT: 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9`
+- `mint-nft.ts`：
+  - `minted: { to: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', tokenId: '1' }`
 - `tokenURI: ipfs://example/1.json`
 
 ## 未実施（外部依存）
