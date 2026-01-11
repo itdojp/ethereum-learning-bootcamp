@@ -87,7 +87,7 @@ npx hardhat run scripts/deploy-token.ts --network localhost
 
 ---
 
-## 4. よくあるつまずき
+## 4. つまずきポイント
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `No injected provider detected` | MetaMask等が入っていない | 拡張機能を入れて再読み込みする |
@@ -105,10 +105,15 @@ npx hardhat run scripts/deploy-token.ts --network localhost
 
 ---
 
-## 6. 提出物
+## 6. まとめ
+- `dapp/` を起動し、ウォレット接続→chainId確認→残高取得までの流れを動かした。
+- `dapp/.env.local` の chainId とコントラクトアドレスが、動作の成否を決める前提を押さえた。
+- 典型的なエラー（provider未検出、チェーン不一致、アドレス不一致）の切り分け観点を整理した。
+
+## 7. 提出物
 - 稼働中スクリーンショット（接続、chainId、残高表示、送金ログ）。
 - 使用した `VITE_CHAIN_ID` とネットワーク名（鍵は伏せる）。
 - 実行した送金TxHash（Explorerリンクがあるとよい）。
 
-## 7. 実行例
+## 8. 実行例
 - 実行ログ例：[`reports/Day09.md`](../reports/Day09.md)

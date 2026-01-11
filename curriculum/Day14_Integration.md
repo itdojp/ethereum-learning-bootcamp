@@ -142,11 +142,16 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ---
 
-## 8. 提出物
+## 8. まとめ
+- デプロイ記録（`DEPLOYMENTS.md`）→DApp接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
+- `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
+- チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
+
+## 9. 提出物
 - `DEPLOYMENTS.md` の追記（鍵は伏せる）
 - DApp の動作スクリーンショット
 - TxHash（送金・イベント発火の実績）
 - （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
 
-## 9. 実行例
+## 10. 実行例
 - 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)

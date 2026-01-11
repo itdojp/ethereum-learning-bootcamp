@@ -137,21 +137,26 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 ---
 
-## 7. トラブルシュート
+## 7. つまずきポイント
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `insufficient funds` | 手数料不足 | 少額ETHを補充。maxFee確認 |
 | `nonce too low` | ノンス衝突 | `--network`とアカウントの送信履歴を確認 |
-| Verify失敗 | コンパイラ設定不一致/引数違い | `hardhat.config.ts`の`solidity`と引数を合わせる |
-| 承認が出ない | Environment reviewers未設定 | Settings > Environments を再確認 |
+| Verify失敗 | コンパイラ設定不一致/引数違い | `hardhat.config.ts`の設定と引数を合わせる。詰まったら [`appendix/verify.md`](../appendix/verify.md) |
+| 承認が出ない | Environment reviewers未設定 | Settings > Environments を再確認。詰まったら [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) |
 
 ---
 
-## 8. 提出物
+## 8. まとめ
+- デプロイをスクリプト化し、対象コントラクトと引数を環境変数で切り替えられる形にした。
+- Verify と `DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
+- GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
+
+## 9. 提出物
 - デプロイログ一式（ネットワーク、アドレス、TxHash）。
 - Etherscan/BlockscoutのVerifyリンク。
 - [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分。
 - GitHub Actions実行ページのスクリーンショット（承認→完了）。
 
-## 9. 実行例
+## 10. 実行例
 - 実行ログ例：[`reports/Day07.md`](../reports/Day07.md)

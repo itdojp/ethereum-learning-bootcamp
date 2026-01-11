@@ -101,17 +101,22 @@ graph build
 
 ---
 
-## 5. トラブルシュート（入口）
+## 5. つまずきポイント
 - startBlock が分からない / 遅すぎる：[`appendix/the-graph.md`](../appendix/the-graph.md)
 - build が落ちる（ABI/スキーマ不一致）：[`appendix/the-graph.md`](../appendix/the-graph.md)
 - ブラウザ購読が発火しない：チェーンID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---
 
-## 6. 提出物
+## 6. まとめ
+- `indexed` を含むイベント設計と、購読が「履歴取得・UI更新」の土台になることを押さえた。
+- EventToken のイベント発火 → dapp での購読表示、までの一連の流れを確認した。
+- The Graph は更新頻度が高いため、生成場所・`startBlock` といった“詰まりどころ”を付録に寄せる構成にした。
+
+## 7. 提出物
 - EventTokenアドレスと、イベント発火スクリプトの実行ログ。
 - dapp でリアルタイムログが表示されているスクリーンショット。
 - （任意）サブグラフの `graph build` ログと GraphQL クエリ結果。
 
-## 7. 実行例
+## 8. 実行例
 - 実行ログ例：[`reports/Day10.md`](../reports/Day10.md)
