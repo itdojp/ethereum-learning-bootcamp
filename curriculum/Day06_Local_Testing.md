@@ -11,8 +11,15 @@
 
 ---
 
+## 0. 前提
+- ルートで `npm ci` 済み（依存が入っている）
+- 以降の手順は、このリポジトリ直下で実行する
+
+---
+
 ## 1. 事前準備
-プロジェクト直下で以下を実行。
+このリポジトリでは `solidity-coverage` と `hardhat-gas-reporter` は導入済みだ（`npm ci` で入る）。  
+ゼロから追加する場合は、プロジェクト直下で以下を実行する。
 ```bash
 npm i -D solidity-coverage hardhat-gas-reporter
 ```
@@ -183,3 +190,6 @@ jobs:
 - `npx hardhat test` と `coverage` の出力（スクリーンショット可）。
 - memory vs calldata、イベント数の差分を表に整理。
 - ガス最適化の所感を3行で記述。
+
+## 10. 実行例
+- 実行ログ例：[`reports/Day06.md`](../reports/Day06.md)
