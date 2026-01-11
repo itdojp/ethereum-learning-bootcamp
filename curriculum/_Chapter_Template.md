@@ -6,7 +6,7 @@
 
 # DayXX：タイトルを書く
 
-[← 目次](./TOC.md)
+[← 目次](./TOC.md) | [前: DayYY](./DayYY_Example.md) | [次: DayZZ](./DayZZ_Example.md)
 
 ## 学習目的
 - 例：〜を説明できるようになる。
@@ -14,15 +14,21 @@
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
-## 前提
+---
+
+## 0. 前提
 - OS：Linux/macOS/WSL2（例）
 - 必要コマンド：`node` / `npm` / `git`（例）
-- 先に読む付録：`appendix/verify.md`（例）
+- 先に読む付録：`appendix/glossary.md` / `appendix/verify.md`（例）
+
+---
 
 ## 1. 理論解説（教科書）
 ### 1.1 ここで覚えること
 - 用語の定義（初出で説明）
 - 図が必要なら Mermaid を使う（GitHubで表示可能）
+
+---
 
 ## 2. ハンズオン
 ### 2.1 手順（コマンド）
@@ -37,19 +43,25 @@ npm ci
 16 passing
 ```
 
+---
+
 ## 3. つまずきポイント
 | 症状 | 原因 | 対策 |
 |---|---|---|
 | 例：`insufficient funds` | 例：手数料不足 | 例：テスト用ETHを用意 |
 
+---
+
 ## 4. まとめ
 - 3行で要約する。
 
-## 提出物（任意）
-- 例：`reports/DayXX.md` に実行ログ
+## 5. 提出物
+- 例：コマンドログ（再現できる最小限）
 - 例：デプロイアドレス（秘密情報は載せない）
+
+## 6. 実行例
+- 実行ログ例：[`reports/DayXX.md`](../reports/DayXX.md)
 
 ---
 
 [← 目次](./TOC.md)
-
