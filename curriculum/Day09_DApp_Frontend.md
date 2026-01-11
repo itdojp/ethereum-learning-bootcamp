@@ -109,3 +109,6 @@ npx hardhat run scripts/deploy-token.ts --network localhost
 - 稼働中スクリーンショット（接続、chainId、残高表示、送金ログ）。
 - 使用した `VITE_CHAIN_ID` とネットワーク名（鍵は伏せる）。
 - 実行した送金TxHash（Explorerリンクがあるとよい）。
+
+## 7. 実行例
+- 実行ログ例：[`reports/Day09.md`](../reports/Day09.md)
