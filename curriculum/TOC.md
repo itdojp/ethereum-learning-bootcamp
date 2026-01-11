@@ -7,7 +7,7 @@
 ---
 
 ## Part 0：導入・環境
-- はじめに：[`../README.md`](../README.md)
+- はじめに：[`../index.md`](../index.md)
 - 共通の前提：[`./README.md`](./README.md)
 - Day01：[`./Day01_Ethereum_Intro.md`](./Day01_Ethereum_Intro.md)
 - Day02：[`./Day02_Transaction_Gas.md`](./Day02_Transaction_Gas.md)

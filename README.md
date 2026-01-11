@@ -3,6 +3,10 @@
 14日間でEthereum開発の基礎から応用まで学ぶ完全教材。
 Node.js 20 以上（npm 10+）を前提としています。
 
+## 読み方（GitHub Pages）
+- 書籍（GitHub Pages）：https://itdojp.github.io/ethereum-learning-bootcamp/
+- シリーズ（IT Engineer Knowledge Architecture）：https://itdojp.github.io/it-engineer-knowledge-architecture/
+
 ## Quick Start
 ```bash
 npm ci

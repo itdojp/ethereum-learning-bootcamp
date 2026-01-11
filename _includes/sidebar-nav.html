@@ -28,15 +28,33 @@
     {% if nav.chapters %}
     <div class="toc-section">
       <h3 class="toc-section-title">📖 Day01〜Day14</h3>
-      <ul class="toc-list">
-        {% for item in nav.chapters %}
-        <li class="toc-item toc-chapter">
-          <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
-            {{ item.title }}
-          </a>
-        </li>
+      {% assign first_chapter = nav.chapters | first %}
+      {% if first_chapter.items %}
+        {% for part in nav.chapters %}
+        <div class="toc-part">
+          <div class="toc-part-title">{{ part.part }}</div>
+          <ul class="toc-sections">
+            {% for item in part.items %}
+            <li class="toc-item toc-chapter">
+              <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+                {{ item.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
         {% endfor %}
-      </ul>
+      {% else %}
+        <ul class="toc-list">
+          {% for item in nav.chapters %}
+          <li class="toc-item toc-chapter">
+            <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
     {% endif %}
 
@@ -87,4 +105,3 @@
     </div>
   </div>
 </div>
-

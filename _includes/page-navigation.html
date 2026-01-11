@@ -10,6 +10,28 @@ Order resolution strategy (first match wins):
 {% assign navigation = site.data.navigation %}
 
 {%- comment -%}
+Normalize chapter navigation. `site.data.navigation.chapters` supports:
+- flat list: [{title, path}, ...]
+- parts list: [{part, items:[{title, path}, ...]}, ...]
+We flatten to `chapters_flat` for prev/next ordering.
+{%- endcomment -%}
+{%- assign chapters_flat = nil -%}
+{%- if navigation and navigation.chapters -%}
+  {%- assign chapters = navigation.chapters -%}
+  {%- assign first_chapter = chapters | first -%}
+  {%- if first_chapter.items -%}
+    {%- assign chapters_flat = "" | split: "|" -%}
+    {%- for part in chapters -%}
+      {%- if part.items -%}
+        {%- assign chapters_flat = chapters_flat | concat: part.items -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign chapters_flat = chapters -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%}
 Detect if current page is the top page (root). For project Pages, the
 root is "/<repo>/"; we normalize by stripping site.baseurl. If root,
 we suppress rendering of bottom navigation to unify top-page behavior.
@@ -33,8 +55,8 @@ display ToC titles even when order falls back to site.pages.
   {%- if navigation.introduction -%}
     {%- assign data_items = data_items | concat: navigation.introduction -%}
   {%- endif -%}
-  {%- if navigation.chapters -%}
-    {%- assign data_items = data_items | concat: navigation.chapters -%}
+  {%- if chapters_flat and chapters_flat.size > 0 -%}
+    {%- assign data_items = data_items | concat: chapters_flat -%}
   {%- endif -%}
   {%- if navigation.additional -%}
     {%- assign data_items = data_items | concat: navigation.additional -%}
@@ -55,8 +77,8 @@ display ToC titles even when order falls back to site.pages.
   {%- if navigation.introduction -%}
     {%- assign seq = seq | concat: navigation.introduction -%}
   {%- endif -%}
-  {%- if navigation.chapters -%}
-    {%- assign seq = seq | concat: navigation.chapters -%}
+  {%- if chapters_flat and chapters_flat.size > 0 -%}
+    {%- assign seq = seq | concat: chapters_flat -%}
   {%- endif -%}
   {%- if navigation.additional -%}
     {%- assign seq = seq | concat: navigation.additional -%}

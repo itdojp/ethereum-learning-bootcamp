@@ -228,6 +228,17 @@ a:hover {
     margin: 1.5rem 0 0.5rem 0;
 }
 
+.toc-part-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 1rem 0 0.25rem 0;
+}
+
+.toc-part:first-child .toc-part-title {
+    margin-top: 0.5rem;
+}
+
 .toc-list {
     list-style: none;
     padding: 0;
