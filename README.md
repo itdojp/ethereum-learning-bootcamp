@@ -6,6 +6,7 @@ Node.js 20 以上（npm 10+）を前提としています。
 ## 読み方（GitHub Pages）
 - 書籍（GitHub Pages）：https://itdojp.github.io/ethereum-learning-bootcamp/
 - シリーズ（IT Engineer Knowledge Architecture）：https://itdojp.github.io/it-engineer-knowledge-architecture/
+- 読み方ガイド：https://itdojp.github.io/ethereum-learning-bootcamp/curriculum/Guide/
 
 ## Quick Start
 ```bash

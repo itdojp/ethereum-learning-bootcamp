@@ -4,6 +4,7 @@
 ゼロからプロジェクトを作る場合は Day3 を参考にする。
 
 読む順序は `curriculum/TOC.md` を参照する。
+目的別の進め方（学習ルート）は `curriculum/Guide.md` を参照する。
 
 ## 1. 作業ディレクトリ
 - ルートの `package.json` がある場所（このリポジトリ直下）で作業する。
@@ -36,3 +37,7 @@
 - ソース検証（Verify）：[`appendix/verify.md`](../appendix/verify.md)
 - GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
 - The Graph（Subgraph Studio）：[`appendix/the-graph.md`](../appendix/the-graph.md)
+
+## 6. 実行ログ（期待される出力例）
+本文は環境差分で出力が変わり得る。迷ったら `reports/` の実行ログと突き合わせる。
+- 実行ログ一覧：[`reports/index.md`](../reports/index.md)
