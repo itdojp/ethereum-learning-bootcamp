@@ -112,11 +112,11 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ---
 
 ## 5. デプロイ前後のドキュメント化
-[`DEPLOYMENTS.md`](../DEPLOYMENTS.md)（新規作成）
+[`DEPLOYMENTS.md`](../DEPLOYMENTS.md)（同梱。追記して使う）
 ```
 # Deployments
 
-## 2025-11-02 mainnet MyToken v1.0.0
+## 例：2025-11-02 mainnet MyToken v1.0.0
 - contract: MyToken
 - network: mainnet
 - address: 0x....

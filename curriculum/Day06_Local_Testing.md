@@ -161,21 +161,29 @@ Mochaの前に NYC 等のJSカバレッジではなく、Solidity行網羅率を
 ---
 
 ## 7. CIへの組み込み（雛形）
-`.github/workflows/test.yml`
+本リポジトリでは `.github/workflows/test.yml` を同梱している（PRで自動実行）。
+
+`.github/workflows/test.yml`（現状の例）
 ```yaml
 name: test
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches: [main]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
+          cache: npm
       - run: npm ci
-      - run: npx hardhat test
-      - run: npx hardhat coverage
+      - run: npm test
+      - run: npm run check:links
 ```
+> カバレッジ（`npm run coverage`）は時間がかかりやすい。必要なら別workflow（手動実行や夜間）に分けると運用しやすい。
 
 ---
 
