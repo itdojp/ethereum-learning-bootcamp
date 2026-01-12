@@ -3,6 +3,8 @@ introduction:
     path: "/"
   - title: "📚 目次（読む順序）"
     path: "/curriculum/TOC/"
+  - title: "🧭 読み方ガイド（学習ルート）"
+    path: "/curriculum/Guide/"
   - title: "🧰 共通の前提"
     path: "/curriculum/README/"
 

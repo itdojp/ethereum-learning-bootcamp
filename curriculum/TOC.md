@@ -4,6 +4,8 @@
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
+> 読み方（学習ルート）の補足：[`./Guide.md`](./Guide.md)
+
 ---
 
 ## Part 0：導入・環境

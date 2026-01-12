@@ -24,6 +24,7 @@ permalink: /
 
 ## 進め方（最短ルート）
 1. 共通の前提を読む：[`curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
+1. 読み方ガイド：[`curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
 2. 用語に迷ったら：[`appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
 3. 目次どおりに進める：[`curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
@@ -42,4 +43,3 @@ npm test
 - Verify：[`appendix/verify.md`]({{ '/appendix/verify/' | relative_url }})
 - GitHub Actions / CI：[`appendix/ci-github-actions.md`]({{ '/appendix/ci-github-actions/' | relative_url }})
 - The Graph：[`appendix/the-graph.md`]({{ '/appendix/the-graph/' | relative_url }})
-
