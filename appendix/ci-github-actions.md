@@ -7,6 +7,10 @@
 
 このリポジトリでは `.github/workflows/test.yml` を使う。
 
+### このリポジトリの実行内容（要点）
+- ルート：`npm ci` → `npm test` → `npm run check:links`
+- `dapp/`：`npm ci` → `npm run build`（フロントのビルド確認）
+
 ### よくある失敗
 - Node.js のバージョン違い：ローカルとCIで `node -v` が違うと落ちやすい。
 - `npm install` ではなく `npm ci`：CIは `npm ci` 前提のほうが再現性が高い。
