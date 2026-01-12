@@ -7,6 +7,7 @@ Node.js 20 以上（npm 10+）を前提としています。
 - 書籍（GitHub Pages）：https://itdojp.github.io/ethereum-learning-bootcamp/
 - シリーズ（IT Engineer Knowledge Architecture）：https://itdojp.github.io/it-engineer-knowledge-architecture/
 - 読み方ガイド：https://itdojp.github.io/ethereum-learning-bootcamp/curriculum/Guide/
+- 更新履歴：https://itdojp.github.io/ethereum-learning-bootcamp/CHANGELOG/
 
 ## Quick Start
 ```bash
@@ -14,6 +15,7 @@ npm ci
 cp .env.example .env && edit .env
 npm test
 ```
+（まとめて確認する場合：`npm run check:all`）
 
 ## 参考リンク
 - Optimism Etherscan: https://optimistic.etherscan.io/
