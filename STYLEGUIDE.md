@@ -38,3 +38,9 @@
 - 可能な限り **相対パス**で貼る（GitHub 上でそのまま辿れる）
 - 読む順序（目次）は `curriculum/TOC.md` を正とする
 - CIで `npm run check:links` を実行し、教材内の相対リンク切れを検出する
+
+## 更新（version / changelog）
+- 公開ページの「現行バージョン」は `_config.yml` の `version` を更新して管理する
+- 変更の要点は `CHANGELOG.md` に追記する（読者が追従しやすくなる）
+- PR作成前に `npm run check:all` を実行し、教材の基本動作をまとめて確認する
+  - `check:all` は `npm test` / `npm run check:links` / `dapp` の build を実行する

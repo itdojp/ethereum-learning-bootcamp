@@ -8,6 +8,8 @@
     "test": "hardhat test",
     "coverage": "hardhat coverage",
     "check:links": "node tools/check-links.mjs",
+    "check:all": "npm test && npm run check:links && npm --prefix dapp ci && npm --prefix dapp run build",
+    "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia"
   },
