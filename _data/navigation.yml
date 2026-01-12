@@ -67,6 +67,8 @@ appendices:
     path: "/appendix/Appendix_Resources/"
 
 resources:
+  - title: "🆕 更新履歴（Changelog）"
+    path: "/CHANGELOG/"
   - title: "🗒️ デプロイ記録（Deployments）"
     path: "/DEPLOYMENTS/"
   - title: "実行ログ（一覧）"

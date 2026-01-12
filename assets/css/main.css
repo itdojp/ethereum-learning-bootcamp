@@ -209,6 +209,12 @@ a:hover {
     margin: 0;
 }
 
+.book-version {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0 0 0;
+}
+
 /* Table of Contents */
 .toc-title {
     font-size: 0.875rem;

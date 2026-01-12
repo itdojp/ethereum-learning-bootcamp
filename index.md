@@ -43,3 +43,7 @@ npm test
 - Verify：[`appendix/verify.md`]({{ '/appendix/verify/' | relative_url }})
 - GitHub Actions / CI：[`appendix/ci-github-actions.md`]({{ '/appendix/ci-github-actions/' | relative_url }})
 - The Graph：[`appendix/the-graph.md`]({{ '/appendix/the-graph/' | relative_url }})
+
+## 更新履歴
+- 現行バージョン：v{{ site.version }}
+- 更新履歴：[`CHANGELOG.md`]({{ '/CHANGELOG/' | relative_url }})
