@@ -212,9 +212,9 @@ jobs:
 - CI で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
 
 ## 11. 提出物
-- `npx hardhat test` と `coverage` の出力（スクリーンショット可）。
-- memory vs calldata、イベント数の差分を表に整理。
-- ガス最適化の所感を3行で記述。
+- [ ] `npx hardhat test` と `coverage` の出力（スクリーンショット可）
+- [ ] memory vs calldata、イベント数の差分を表に整理
+- [ ] ガス最適化の所感を3行で記述
 
 ## 12. 実行例
 - 実行ログ例：[`reports/Day06.md`](../reports/Day06.md)

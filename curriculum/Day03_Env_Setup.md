@@ -243,10 +243,10 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 - `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
 
 ## 6. 提出物
-- Hardhatプロジェクト構成のスクリーンショット。
-- デプロイ時のログとコントラクトアドレス。
-- `cast block-number` の出力。
-- `.env` 設定（APIキーなどは伏せる）。
+- [ ] Hardhatプロジェクト構成のスクリーンショット
+- [ ] デプロイ時のログとコントラクトアドレス
+- [ ] `cast block-number` の出力
+- [ ] `.env` 設定（APIキーなどは伏せる）
 
 ## 7. 実行例
 - 実行ログ例：[`reports/Day03.md`](../reports/Day03.md)

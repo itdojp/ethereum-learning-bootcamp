@@ -201,9 +201,9 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 - NFT の `tokenURI` とメタデータ（IPFS/HTTP Gateway）の確認方法を整理した。
 
 ## 8. 提出物
-- トークン・NFTのコントラクトアドレス、Verifyリンク。
-- `approve→transferFrom`の実行ログと`allowance`の値。
-- `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ。
+- [ ] トークン・NFTのコントラクトアドレス、Verifyリンク
+- [ ] `approve→transferFrom`の実行ログと`allowance`の値
+- [ ] `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ
 
 ## 9. 実行例
 - 実行ログ例：[`reports/Day05.md`](../reports/Day05.md)

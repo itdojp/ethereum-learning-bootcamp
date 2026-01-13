@@ -170,10 +170,10 @@ function clear() external { count = 0; }
 - EIP‑1559により手数料が自動調整され、ユーザー体験が改善された。
 
 ## 5. 提出物
-- `REPORT.md` に以下を記載：
-  - `store()`（Tx）のGas Used と、2.6 の3パターンのGas差（表形式）
-  - Etherscanで確認したTx詳細（スクリーンショットまたは値）
-  - 2.6の追加実験の結果（3パターンの比較）
+- [ ] `REPORT.md` を作成し、次を記載する：
+  - [ ] `store()`（Tx）のGas Used と、2.6 の3パターンのGas差（表形式）
+  - [ ] Etherscanで確認したTx詳細（スクリーンショットまたは値）
+  - [ ] 2.6の追加実験の結果（3パターンの比較）
 
 ## 6. 実行例
 - 実行ログ例：[`reports/Day02.md`](../reports/Day02.md)

@@ -247,10 +247,10 @@ forge test --match-contract Invariant -vvvv
 - チェックリストを使い、レビュー時に見るべき観点を言語化できる状態にした。
 
 ## 10. 提出物
-- `VulnBank`攻撃ログ、`SafeBank`防御ログ。
-- Slitherレポート（主要警告の抜粋）と対応方針。
-- Invariantテストの結果スクリーンショット。
-- 監査チェックリストの自己評価（5項目以上）。
+- [ ] `VulnBank`攻撃ログ、`SafeBank`防御ログ
+- [ ] Slitherレポート（主要警告の抜粋）と対応方針
+- [ ] Invariantテストの結果スクリーンショット
+- [ ] 監査チェックリストの自己評価（5項目以上）
 
 ## 11. 実行例
 - 実行ログ例：[`reports/Day12.md`](../reports/Day12.md)

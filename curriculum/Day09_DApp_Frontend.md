@@ -114,9 +114,9 @@ npx hardhat run scripts/deploy-token.ts --network localhost
 - 典型的なエラー（provider未検出、チェーン不一致、アドレス不一致）の切り分け観点を整理した。
 
 ## 7. 提出物
-- 稼働中スクリーンショット（接続、chainId、残高表示、送金ログ）。
-- 使用した `VITE_CHAIN_ID` とネットワーク名（鍵は伏せる）。
-- 実行した送金TxHash（Explorerリンクがあるとよい）。
+- [ ] 稼働中スクリーンショット（接続、chainId、残高表示、送金ログ）
+- [ ] 使用した `VITE_CHAIN_ID` とネットワーク名（鍵は伏せる）
+- [ ] 実行した送金TxHash（Explorerリンクがあるとよい）
 
 ## 8. 実行例
 - 実行ログ例：[`reports/Day09.md`](../reports/Day09.md)

@@ -157,10 +157,10 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
 ## 10. 提出物
-- `DEPLOYMENTS.md` の追記（鍵は伏せる）
-- DApp の動作スクリーンショット
-- TxHash（送金・イベント発火の実績）
-- （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
+- [ ] `DEPLOYMENTS.md` の追記（鍵は伏せる）
+- [ ] DApp の動作スクリーンショット
+- [ ] TxHash（送金・イベント発火の実績）
+- [ ] （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
 
 ## 11. 実行例
 - 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)

@@ -117,9 +117,9 @@ graph build
 - The Graph は更新頻度が高いため、生成場所・`startBlock` といった“詰まりどころ”を付録に寄せる構成にした。
 
 ## 7. 提出物
-- EventTokenアドレスと、イベント発火スクリプトの実行ログ。
-- dapp でリアルタイムログが表示されているスクリーンショット。
-- （任意）サブグラフの `graph build` ログと GraphQL クエリ結果。
+- [ ] EventTokenアドレスと、イベント発火スクリプトの実行ログ
+- [ ] dapp でリアルタイムログが表示されているスクリーンショット
+- [ ] （任意）サブグラフの `graph build` ログと GraphQL クエリ結果
 
 ## 8. 実行例
 - 実行ログ例：[`reports/Day10.md`](../reports/Day10.md)
