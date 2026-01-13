@@ -16,8 +16,11 @@
 - GraphQL: The Graph などで使われるクエリ言語。必要な項目だけを問い合わせられる。
 - Meta-Transaction（EIP‑2771）: 代理実行でユーザーのガス負担を軽減する仕組み。
 - Permit（EIP‑2612）: 署名承認によるトークン許可方式。
+- RPC（JSON-RPC endpoint）: Ethereumノードと通信するためのエンドポイント。`eth_blockNumber` などのメソッドをHTTP/WSで呼び出す。
 - Sequencer: L2でトランザクション順序を決める役割。
 - Subgraph: The Graph の「インデックス定義」。どのコントラクトのどのイベントを、どの形で保存するかを宣言する。
+- The Graph: コントラクトのイベント等をインデックス化し、GraphQLで検索・取得できるようにする仕組み/サービス。
+- Tx（Transaction）: トランザクションの略。送金やコントラクト呼び出しなど、状態を変える操作の実行単位。
 - UserOperation（ERC‑4337）: 4337系AAでユーザーが署名する「実行依頼」データ。BundlerがTxにまとめる。
 - Validity Proof: ZKで正当性を示す暗号学的証明。
 - Verify（ソース検証）: エクスプローラ上で、ソースコードとデプロイ済みバイトコードを対応付ける作業。

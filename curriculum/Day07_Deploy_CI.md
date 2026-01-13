@@ -4,7 +4,7 @@
 
 ## 学習目的
 - 少額でMainnetまたはL2に安全にデプロイする流れを、手順として実行できるようになる。
-- ソース検証（Verify）と成果の可観測性を確保し、Explorerで確認できるようになる。
+- ソース検証（[Verify](../appendix/glossary.md)）と成果の可観測性を確保し、Explorerで確認できるようになる。
 - GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
@@ -74,7 +74,7 @@ npx hardhat verify --network mainnet <DEPLOYED_ADDR> 3600
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
 ```
-> L2ごとにAPIキーが異なる。Blockscout系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する。
+> L2ごとにAPIキーが異なる。[Blockscout](../appendix/glossary.md)系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
@@ -83,7 +83,7 @@ npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
 - [ ] `onlyOwner`や役割権限（`AccessControl`）を**最小権限**で発行。
 - [ ] 緊急停止（`Pausable`）や**引当金上限**などの**セーフティガード**を有効化。
 - [ ] **マルチシグ**（Safe等）で管理鍵を保管。単独鍵は避ける。
-- [ ] **ソース検証(Verify)** を実施し、アドレス・ABI・TxHashをREADMEに残す。
+- [ ] **ソース検証（[Verify](../appendix/glossary.md)）** を実施し、アドレス・ABI・TxHashをREADMEに残す。
 - [ ] すべての機能に**単体テストとカバレッジ**（Day6）を要求。
 
 ---

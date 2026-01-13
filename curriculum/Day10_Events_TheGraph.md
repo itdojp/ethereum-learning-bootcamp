@@ -5,7 +5,7 @@
 ## 学習目的
 - Solidityイベントの `indexed` 設計と購読方法を理解し、簡単に説明できるようになる。
 - ブラウザからリアルタイム購読（ethers）を動かして表示を確認できるようになる。
-- The Graphで履歴データをインデックス化し、GraphQLで取得できるようになる。
+- [The Graph](../appendix/glossary.md)で履歴データをインデックス化し、[GraphQL](../appendix/glossary.md)で取得できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
