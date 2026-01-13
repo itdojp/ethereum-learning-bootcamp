@@ -191,9 +191,9 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 - テストネットにデプロイし、TxHash/イベントをエクスプローラで追跡できる状態にした。
 
 ## 6. 提出物
-- テスト出力スクリーンショット（`3 passed` など）。
-- デプロイアドレス、Txハッシュ、イベントのキャプチャ。
-- `custom errors` vs `require` の計測結果（簡潔な表）。
+- [ ] テスト出力スクリーンショット（`3 passed` など）
+- [ ] デプロイアドレス、Txハッシュ、イベントのキャプチャ
+- [ ] `custom errors` vs `require` の計測結果（簡潔な表）
 
 ## 7. 実行例
 - 実行ログ例：[`reports/Day04.md`](../reports/Day04.md)

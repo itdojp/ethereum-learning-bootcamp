@@ -153,10 +153,10 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
 
 ## 9. 提出物
-- デプロイログ一式（ネットワーク、アドレス、TxHash）。
-- Etherscan/BlockscoutのVerifyリンク。
-- [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分。
-- GitHub Actions実行ページのスクリーンショット（承認→完了）。
+- [ ] デプロイログ一式（ネットワーク、アドレス、TxHash）
+- [ ] Etherscan/BlockscoutのVerifyリンク
+- [ ] [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分
+- [ ] GitHub Actions実行ページのスクリーンショット（承認→完了）
 
 ## 10. 実行例
 - 実行ログ例：[`reports/Day07.md`](../reports/Day07.md)

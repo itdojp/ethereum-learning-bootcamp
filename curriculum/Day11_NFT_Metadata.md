@@ -245,9 +245,9 @@ describe('MyNFT', () => {
 - 固定価格マーケットの最小例を通して、実運用で必要な防御（再入対策等）を明確化した。
 
 ## 10. 提出物
-- `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク。
-- `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット。
-- IPFSのCID、`1.json` の最終版。
+- [ ] `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク
+- [ ] `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット
+- [ ] IPFSのCID、`1.json` の最終版
 
 ## 11. 実行例
 - 実行ログ例：[`reports/Day11.md`](../reports/Day11.md)

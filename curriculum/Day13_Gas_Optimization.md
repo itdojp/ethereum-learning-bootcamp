@@ -227,9 +227,9 @@ PRで差分をレビューできる。
 - 数値（`metrics/gas_day13.md`）と判断理由をセットで残すのが重要だ。
 
 ## 11. 提出物
-- `metrics/gas_day13.md`（表を埋める）。
-- `hardhat test` 出力ログ（差分をコメント）。
-- 最適化の設計判断を3行で要約。
+- [ ] `metrics/gas_day13.md`（表を埋める）
+- [ ] `hardhat test` 出力ログ（差分をコメント）
+- [ ] 最適化の設計判断を3行で要約
 
 ## 12. 実行例
 - 実行ログ例：[`reports/Day13.md`](../reports/Day13.md)

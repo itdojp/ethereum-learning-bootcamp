@@ -170,9 +170,9 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 - 計測結果は `metrics.csv` や `DEPLOYMENTS.md` に残し、後から比較できる形にするのが重要だ。
 
 ## 8. 提出物
-- `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`。
-- Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク。
-- ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）。
+- [ ] `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`
+- [ ] Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク
+- [ ] ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）
 
 ## 9. 実行例
 - 実行ログ例：[`reports/Day08.md`](../reports/Day08.md)
