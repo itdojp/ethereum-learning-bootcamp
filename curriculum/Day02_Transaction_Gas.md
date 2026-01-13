@@ -170,6 +170,18 @@ function clear() external { count = 0; }
 - `add()` のような `pure` 関数は安価。
 - EIP‑1559により手数料が自動調整され、ユーザー体験が改善された。
 
+### 確認コマンド（最小）
+```bash
+# Day1 で設定した RPC を使う
+echo $RPC
+
+# Etherscan/Remix で控えた Tx hash を入れる
+TX=0x...
+curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_getTransactionReceipt","params":["'"$TX"'"],"id":1}' \
+  | jq '{blockNumber, gasUsed, effectiveGasPrice, status}'
+```
+
 ## 5. 提出物
 - [ ] `REPORT.md` を作成し、次を記載する：
   - [ ] `store()`（Tx）のGas Used と、2.6 の3パターンのGas差（表形式）

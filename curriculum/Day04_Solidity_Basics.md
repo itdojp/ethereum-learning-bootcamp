@@ -191,6 +191,14 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 - Hardhatテストで「revertする条件」「イベント」「ETHの入出金」を検証する流れを確認した。
 - テストネットにデプロイし、TxHash/イベントをエクスプローラで追跡できる状態にした。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/walletbox.ts
+
+# 任意（テストネット：要 .env）
+npx hardhat run scripts/deploy-walletbox.ts --network sepolia
+```
+
 ## 6. 提出物
 - [ ] テスト出力スクリーンショット（`3 passed` など）
 - [ ] デプロイアドレス、Txハッシュ、イベントのキャプチャ

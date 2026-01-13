@@ -153,6 +153,15 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - Verify と `DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
 - GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
 
+### 確認コマンド（最小）
+```bash
+# 要 .env（RPC/PRIVATE_KEY）。少額で。
+CONTRACT=Lock ARGS=3600 npx hardhat run scripts/deploy-generic.ts --network sepolia
+
+# 任意（Verify：要 ETHERSCAN_API_KEY とデプロイ済みアドレス）
+npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
+```
+
 ## 9. 提出物
 - [ ] デプロイログ一式（ネットワーク、アドレス、TxHash）
 - [ ] Etherscan/BlockscoutのVerifyリンク

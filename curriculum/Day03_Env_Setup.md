@@ -252,6 +252,14 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 - `.env` に `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、秘密情報をコミットしない運用を押さえた。
 - `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
 
+### 確認コマンド（最小）
+```bash
+npm test
+
+# 任意（テストネットにデプロイする場合：要 .env の SEPOLIA_RPC_URL / PRIVATE_KEY）
+npx hardhat run scripts/deploy-token.ts --network sepolia
+```
+
 ## 6. 提出物
 - [ ] Hardhatプロジェクト構成のスクリーンショット
 - [ ] デプロイ時のログとコントラクトアドレス

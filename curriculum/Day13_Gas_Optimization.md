@@ -227,6 +227,12 @@ PRで差分をレビューできる。
 - 同一機能の実装差は「測って比較する」ことで初めて評価できることを確認した。
 - 数値（`metrics/gas_day13.md`）と判断理由をセットで残すのが重要だ。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/gas-pack.ts
+npx hardhat test test/gas-args.ts
+```
+
 ## 11. 提出物
 - [ ] `metrics/gas_day13.md`（表を埋める）
 - [ ] `hardhat test` 出力ログ（差分をコメント）

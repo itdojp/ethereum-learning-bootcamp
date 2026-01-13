@@ -247,6 +247,14 @@ forge test --match-contract Invariant -vvvv
 - 静的解析やプロパティテストの入口として、まずは“自動で検査する”習慣を作るのが重要だと分かった。
 - チェックリストを使い、レビュー時に見るべき観点を言語化できる状態にした。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/reentrancy.ts
+
+# 任意（Slither が入っている場合）
+slither .
+```
+
 ## 10. 提出物
 - [ ] `VulnBank`攻撃ログ、`SafeBank`防御ログ
 - [ ] Slitherレポート（主要警告の抜粋）と対応方針
