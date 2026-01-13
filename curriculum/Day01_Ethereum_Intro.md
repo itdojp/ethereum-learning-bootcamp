@@ -36,28 +36,28 @@
   - すべてのアカウントとコントラクトの状態を保持。
   - 状態はMerkle-Patricia Trie（MPT）で管理される。
 - **アカウントの種類**：
-  - EOA（Externally Owned Account）：人間が秘密鍵で操作。
-    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **delegation indicator（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は [`appendix/account-abstraction.md`](../appendix/account-abstraction.md)）。
+  - [EOA](../appendix/glossary.md)（Externally Owned Account）：人間が秘密鍵で操作。
+    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **[delegation indicator](../appendix/glossary.md)（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は [`appendix/account-abstraction.md`](../appendix/account-abstraction.md)）。
   - コントラクトアカウント：コードを持ち、EVM上で実行される。
 
 ### 1.3 Proof of Stake (PoS) の仕組み
 - Ethereumは2022年の「Merge」以降、PoSを採用。
 - **バリデータ**がステークしたETHを担保にブロック提案・検証。
-- 最終性（Finality）は**Gasper（Casper FFG + LMD-GHOST）**により達成。
+- 最終性（[Finality](../appendix/glossary.md)）は**Gasper（Casper FFG + LMD-GHOST）**により達成。
 
 ### 1.4 L1とL2の関係
 - L1（Ethereum Mainnet）は安全性・データ可用性を重視。
 - L2（Optimism、Arbitrumなど）はスケーラビリティを重視。
   - トランザクション実行をL2で行い、結果をL1に保存。
-  - 近年は **rollup-centric（L2中心）** のスケーリングが前提で、L2手数料は「L1へ投稿するデータ可用性（DA）コスト」の影響が大きくなりやすい（詳細はDay8）。
-    - **Dencun（EIP‑4844）** で blob-carrying transactions（Blob）が導入され、L2のDAコストが下がりやすくなった。
+  - 近年は **rollup-centric（L2中心）** のスケーリングが前提で、L2手数料は「L1へ投稿するデータ可用性（[DA](../appendix/glossary.md)）コスト」の影響が大きくなりやすい（詳細はDay8）。
+    - **Dencun（EIP‑4844）** で blob-carrying transactions（[Blob](../appendix/glossary.md)）が導入され、L2のDAコストが下がりやすくなった。
     - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられている。
 
 ---
 
 ## 2. ハンズオン演習
 
-> 用語メモ：以降、トランザクションを **Tx**、ブロックチェーンノードとの通信エンドポイントを **RPC** と書く。16進数は `0x` から始まる表記。
+> 用語メモ：以降、トランザクションを **[Tx](../appendix/glossary.md)**、ブロックチェーンノードとの通信エンドポイントを **[RPC](../appendix/glossary.md)** と書く。16進数は `0x` から始まる表記。
 
 ### 2.1 事前準備
 環境：Linux/macOS/WSL2。`curl`と`jq`コマンドを使用。

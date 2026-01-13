@@ -5,7 +5,7 @@
 ## 学習目的
 - 任意ネットワーク（ローカル/テストネット/L2）へコントラクトをデプロイし、成果物として記録できるようになる。
 - DApp（`dapp/`）から残高確認・送金・イベント購読までを一連で動かせるようになる。
-- （任意）Verify/CI/The Graph の導線を整えて、チーム開発で破綻しない形にできるようになる。
+- （任意）[Verify](../appendix/glossary.md)/[CI](../appendix/glossary.md)/[The Graph](../appendix/glossary.md) の導線を整えて、チーム開発で破綻しない形にできるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
@@ -190,7 +190,7 @@ npm --prefix dapp run dev
 - [ ] `DEPLOYMENTS.md` の追記（鍵は伏せる）
 - [ ] DApp の動作スクリーンショット
 - [ ] TxHash（送金・イベント発火の実績）
-- [ ] （任意）Verifyリンク / CI実行ログ / Subgraph buildログ
+- [ ] （任意）Verifyリンク / CI実行ログ / [Subgraph](../appendix/glossary.md) buildログ
 
 ## 11. 実行例
 - 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)

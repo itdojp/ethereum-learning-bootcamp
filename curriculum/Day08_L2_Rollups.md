@@ -4,7 +4,7 @@
 
 ## 学習目的
 - Optimistic Rollup と ZK Rollup の仕組み差（証明、引出し、最終性）を理解し、簡単に説明できるようになる。
-- Dencun（EIP‑4844 Blob）の要点を押さえ、L2手数料を実測して記録できるようになる。
+- Dencun（EIP‑4844 / [Blob](../appendix/glossary.md)）の要点を押さえ、L2手数料を実測して記録できるようになる。
 - 既存コントラクトをL2（Optimism、任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
@@ -24,16 +24,16 @@
 ## 1. 理論解説（教科書）
 
 ### 1.1 ロールアップの基本
-- **Optimistic Rollup**：L2は“正しい”と**楽観**し、一定のチャレンジ期間で不正を指摘可能（fraud proof）。引出しに数分〜数日かかる設計が一般的。
-- **ZK Rollup**：L2のバッチに**有効性証明（validity proof）**を添付。L1検証が通れば即時確定に近い。実装は高難度。
+- **Optimistic Rollup**：L2は“正しい”と**楽観**し、一定のチャレンジ期間で不正を指摘可能（[Fraud Proof](../appendix/glossary.md)）。引出しに数分〜数日かかる設計が一般的。
+- **ZK Rollup**：L2のバッチに**有効性証明（[Validity Proof](../appendix/glossary.md)）**を添付。L1検証が通れば即時確定に近い。実装は高難度。
 
-### 1.2 データ可用性（DA）と手数料
+### 1.2 データ可用性（[DA](../appendix/glossary.md)）と手数料
 - L2のトランザクションデータは**L1に投稿**される（calldataやblob等）。
 - L1の**データ可用性コスト**がL2手数料のボトルネックになりやすい。
   - rollup-centric の前提では、この「L1へ投稿するデータ（DA）」が **L2コスト構造の中心**になりやすい（＝EIP‑4844/Blobが重要）。
 
 ### 1.3 Dencun（EIP‑4844：Proto‑Danksharding / Blob）
-- L2データを**Blob**として一時的にL1へ格納。calldataより安価。
+- L2データを **[Blob](../appendix/glossary.md)** として一時的にL1へ格納。calldataより安価。
 - Blobは数週間で**非可用化**されるが、DA要件は満たす。結果としてL2手数料が大幅に低減。
   - EIP‑4844 は **blob-carrying transactions** を導入し、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっている。
 
