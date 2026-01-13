@@ -16,6 +16,7 @@
 - `EventToken` を任意ネットワークへデプロイできる（ローカル/テストネット/L2のどれでもよい）。
 - The Graph で詰まりやすい点は [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 - 先に読む付録：[`appendix/the-graph.md`](../appendix/the-graph.md) / [`appendix/glossary.md`](../appendix/glossary.md)
+- 触るファイル（主なもの）：`contracts/EventToken.sol` / `scripts/deploy-event-token.ts` / `scripts/use-event-token.ts` / `dapp/src/hooks/useEvents.ts`
 - 今回触らないこと：本番運用のインデックス設計（まずは“作って動かす”）
 - 最短手順（迷ったらここ）：2章でイベント発火 → 3章でdapp購読表示 →（任意）4章でThe Graphのひな形生成
 

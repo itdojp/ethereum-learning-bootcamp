@@ -20,6 +20,7 @@
 - OS：Linux/macOS/WSL2（例）
 - 必要コマンド：`node` / `npm` / `git`（例）
 - 先に読む付録：`appendix/glossary.md` / `appendix/verify.md`（例）
+- 触るファイル（主なもの）：`contracts/...` / `scripts/...` / `test/...`（例）
 - 今回触らないこと：例）本番運用の最適解、巨大な設計論（まずは最小を動かす）
 - 最短手順（迷ったらここ）：例）2章を順に実行 → `npm test` で確認 → 章末の提出物を埋める
 

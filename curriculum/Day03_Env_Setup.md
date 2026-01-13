@@ -15,6 +15,7 @@
 - テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテストETHを入れておく
   - メイン資産の鍵は使わない（流出時の被害が大きい）
 - 先に読む付録：[`appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
+- 触るファイル（主なもの）：`.env` / `hardhat.config.ts` / `scripts/deploy-token.ts`（例）
 - 今回触らないこと：いきなりMainnetへデプロイ（Day7で“安全な流れ”として扱う）
 - 最短手順（迷ったらここ）：2.0 の手順で `npm ci` → `.env` 作成 → `npm test`（デプロイは任意）
 

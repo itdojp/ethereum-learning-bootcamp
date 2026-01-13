@@ -15,6 +15,7 @@
 - Day6で `hardhat-gas-reporter` を導入済み。
 - 任意でFoundryの `gas-snapshot` を併用可。
 - 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 触るファイル（主なもの）：`contracts/GasPack.sol` / `test/gas-pack.ts` / `contracts/GasArgs.sol` / `test/gas-args.ts` / `metrics/gas_day13.md`
 - 今回触らないこと：最小可読性を捨てる極限最適化（まずは“効くポイント”を実測で掴む）
 - 最短手順（迷ったらここ）：2章/3章のテストを個別に実行してガス差を確認 → 表にまとめる（例：`npx hardhat test test/gas-pack.ts`）
 
