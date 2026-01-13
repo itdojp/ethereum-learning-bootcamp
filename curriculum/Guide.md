@@ -44,6 +44,25 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 
 > 環境変数とネットワーク指定（`--network sepolia` など）が一致しているか、最初に確認する。
 
+### 3.1 設定差分（早見表）
+#### Hardhat（テスト/スクリプト/デプロイ/Verify）
+| 環境 | Hardhat network | chainId | `.env` のRPC | Verify APIキー | Explorer |
+|---|---|---:|---|---|---|
+| ローカル（Hardhat node） | `localhost` | 31337 | （不要） | （不要） | （なし） |
+| テストネット（Sepolia） | `sepolia` | 11155111 | `SEPOLIA_RPC_URL` | `ETHERSCAN_API_KEY` | https://sepolia.etherscan.io/ |
+| L2（Optimism） | `optimism` | 10 | `OPTIMISM_RPC_URL` | `OPTIMISTIC_ETHERSCAN_API_KEY` | https://optimistic.etherscan.io/ |
+| Mainnet（注意） | `mainnet` | 1 | `MAINNET_RPC_URL` | `ETHERSCAN_API_KEY` | https://etherscan.io/ |
+
+> “Explorerは合っているのに表示が出ない”場合は、そもそもチェーンが違う（別ネットワークのTxHash/アドレスを見ている）ことが多い。
+
+#### DApp（Vite / MetaMask）
+| 環境 | chainId | `dapp/.env.local` の主な変数 |
+|---|---:|---|
+| ローカル / Sepolia / Optimism | 31337 / 11155111 / 10 | `VITE_CHAIN_ID`, `VITE_TOKEN_ADDRESS`, `VITE_EVENT_TOKEN` |
+
+- `VITE_CHAIN_ID` と、MetaMask側で接続中のチェーンが一致していないと動かない（Day9参照）。
+- アドレス（`VITE_TOKEN_ADDRESS` 等）は **同じチェーン上でデプロイしたもの**を入れる。
+
 ---
 
 ## 4. つまずいたら（参照先の固定）
@@ -54,4 +73,3 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 - The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md)
 
 各Dayの末尾にも「つまずきポイント」「実行例（`reports/`）」へのリンクがあるため、まずはそこから辿る。
-
