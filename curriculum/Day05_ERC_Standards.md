@@ -16,6 +16,10 @@
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
 - Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
 - 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md) / [`appendix/verify.md`](../appendix/verify.md)（任意）
+- 触るファイル（主なもの）：
+  - ERC‑20：`contracts/MyToken.sol` / `scripts/deploy-token.ts` / `test/erc20.ts`
+  - ERC‑721：`contracts/MyNFT.sol` / `scripts/deploy-nft.ts` / `scripts/mint-nft.ts` / `test/mynft.ts`
+  - （任意）`scripts/token-transfer.ts` / `scripts/token-approve.ts`
 - 今回触らないこと：すべてのERC派生規格の網羅（まずはERC‑20/721の最小フローに集中）
 - 最短手順（迷ったらここ）：ERC‑20（2章）→ ERC‑721（3章）→ `npm test` で動作確認（Verifyは4章で任意）
 

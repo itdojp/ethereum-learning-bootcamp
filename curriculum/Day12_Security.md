@@ -15,6 +15,7 @@
 - Hardhat環境（Day3）。
 - 任意でFoundry（`foundryup` 済）。
 - 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 触るファイル（主なもの）：`contracts/VulnBank.sol` / `contracts/SafeBank.sol` / `contracts/Attacker.sol` / `test/reentrancy.ts` / `contracts/AdminBox.sol`
 - 今回触らないこと：すべての脆弱性の網羅（まずは頻出の再入と権限の基本から）
 - 最短手順（迷ったらここ）：1章のコントラクト/テストを動かして“攻撃できる/防げる”を体験 → `npx hardhat test test/reentrancy.ts` で確認
 
