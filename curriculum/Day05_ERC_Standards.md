@@ -15,6 +15,9 @@
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
 - Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
+- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md) / [`appendix/verify.md`](../appendix/verify.md)（任意）
+- 今回触らないこと：すべてのERC派生規格の網羅（まずはERC‑20/721の最小フローに集中）
+- 最短手順（迷ったらここ）：ERC‑20（2章）→ ERC‑721（3章）→ `npm test` で動作確認（Verifyは4章で任意）
 
 ---
 

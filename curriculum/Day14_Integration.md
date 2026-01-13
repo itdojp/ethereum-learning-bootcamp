@@ -12,10 +12,9 @@
 ---
 
 ## 0. 前提
-- つまずきやすい点は補足を参照する：
-  - Verify：[`appendix/verify.md`](../appendix/verify.md)
-  - GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-  - The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md) / [`subgraph/README.md`](../subgraph/README.md)
+- 先に読む付録：[`appendix/verify.md`](../appendix/verify.md) / [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) / [`appendix/the-graph.md`](../appendix/the-graph.md)
+- 今回触らないこと：最初から全部を完璧に通すこと（任意項目は“必要になったら”でよい）
+- 最短手順（迷ったらここ）：2.1 で `.env` → 2.2 でデプロイ → 3.1 で `dapp/.env.local` → 3.2 で起動・接続
 
 ---
 

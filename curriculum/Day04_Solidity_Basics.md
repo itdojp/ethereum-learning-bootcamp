@@ -13,6 +13,9 @@
 ## 0. 前提
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
+- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 今回触らないこと：複雑な権限設計（AccessControl）やアップグレード（Proxy）
+- 最短手順（迷ったらここ）：2.1 の `WalletBox.sol` を追加 → 2.2 のテストを追加 → `npm test` で確認
 
 ---
 
