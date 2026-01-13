@@ -41,11 +41,19 @@
 ```bash
 npx hardhat run scripts/deploy-event-token.ts --network sepolia
 ```
+期待される出力（最小例）：
+```text
+EventToken: 0x...
+```
 出力されたアドレスを控える（`0x...`）。
 
 ### 2.2 イベント発火
 ```bash
 EVT=0x... npx hardhat run scripts/use-event-token.ts --network sepolia
+```
+期待される出力（最小例）：
+```text
+transfer complete { to: '0x...' }
 ```
 `TransferLogged` が複数回 `emit` される。
 

@@ -70,10 +70,19 @@ cp .env.example .env
 ```bash
 npm test
 ```
+期待される出力（最小例）：
+```text
+16 passing
+```
+> 数字は追加テストで増減する。最後に `passing` が出ていればOK。
 
 4) Sepolia にデプロイする（例：MyToken）：
 ```bash
 npx hardhat run scripts/deploy-token.ts --network sepolia
+```
+期待される出力（最小例）：
+```text
+MTK: 0x...
 ```
 
 > Verifyで詰まったら [`appendix/verify.md`](../appendix/verify.md) を参照する。
