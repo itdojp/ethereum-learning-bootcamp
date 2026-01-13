@@ -15,6 +15,9 @@
 - フロントエンドは `dapp/` に同梱してある（新規作成不要）。
 - Day5 で `MyToken` をデプロイして、アドレスを控えている。
 - ブラウザにMetaMask等のウォレット拡張が入っている。
+- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 今回触らないこと：UI/UXの作り込み（接続と切り分けが主題）
+- 最短手順（迷ったらここ）：1章で `dapp/` を起動 → `.env.local` に chainId/アドレス設定 → 画面で Connect/Switch/Send を確認
 
 ### 0.1 どのチェーンで動かすか
 - ローカル（推奨）：Hardhat node（chainId=31337）

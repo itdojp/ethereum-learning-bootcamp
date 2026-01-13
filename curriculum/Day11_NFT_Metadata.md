@@ -14,6 +14,9 @@
 ## 0. 前提
 - PinataまたはInfura IPFS（Project ID/Secret）を用意。
 - 画像ファイル（例：`assets/1.png`）。
+- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 今回触らないこと：NFTマーケットの本格実装（まずはtokenURI/IPFSの流れを固める）
+- 最短手順（迷ったらここ）：2章でIPFSに配置 → 3章の `MyNFT` をデプロイ → 4章でミント → `tokenURI`/Gatewayで表示確認
 
 `.env.example`（項目は同梱してあるので、`.env` に値を入れる）：
 ```

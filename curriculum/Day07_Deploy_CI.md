@@ -14,9 +14,9 @@
 ## 0. 前提
 - Hardhat構成はDay3までに完了。
 - `.env`に鍵とRPCを設定し、**秘密情報はGitにコミットしない**。
-- つまずきやすい点は補足を参照する：
-  - Verify：[`appendix/verify.md`](../appendix/verify.md)
-  - GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- 先に読む付録：[`appendix/verify.md`](../appendix/verify.md) / [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- 今回触らないこと：いきなり多額で本番デプロイ（まずは少額・段階的に進める）
+- 最短手順（迷ったらここ）：1章の `deploy-generic.ts` で少額デプロイ → 2章でVerify（任意）→ 4章で手動承認付きCIの要点を確認
 
 `.env.example`
 ```
