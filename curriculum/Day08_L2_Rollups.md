@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day7](./Day07_Deploy_CI.md) | [次: Day9](./Day09_DApp_Frontend.md)
 
 ## 学習目的
-- Optimistic Rollup と ZK Rollup の仕組み差（証明、引出し、最終性）を理解する。
-- Dencun（EIP‑4844 Blob）の要点を押さえ、L2手数料の実測を行う。
-- 既存コントラクトをL2（Optimism, 任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較する。
+- Optimistic Rollup と ZK Rollup の仕組み差（証明、引出し、最終性）を理解し、簡単に説明できるようになる。
+- Dencun（EIP‑4844 Blob）の要点を押さえ、L2手数料を実測して記録できるようになる。
+- 既存コントラクトをL2（Optimism、任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

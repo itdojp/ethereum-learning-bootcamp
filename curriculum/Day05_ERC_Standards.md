@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day4](./Day04_Solidity_Basics.md) | [次: Day6](./Day06_Local_Testing.md)
 
 ## 学習目的
-- ERC‑20/721 の最小実装を安全に組み立てる。
-- `approve/allowance/transferFrom` のフローを実取引で確認。
-- NFTの`tokenURI`とメタデータの基礎を理解。
+- ERC‑20/721 の最小実装を、OpenZeppelinを用いて安全に組み立てられるようになる。
+- `approve/allowance/transferFrom` のフローを、実際の取引で確認できるようになる。
+- NFTの `tokenURI` とメタデータの基礎を理解し、簡単に説明できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day10](./Day10_Events_TheGraph.md) | [次: Day12](./Day12_Security.md)
 
 ## 学習目的
-- ERC‑721の`tokenURI`設計とIPFSメタデータのベストプラクティスを理解。
-- 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認まで一気通貫。
-- EIP‑2981（ロイヤリティ）導入と固定価格販売の最小例を実装。
+- ERC‑721の `tokenURI` 設計とIPFSメタデータのベストプラクティスを理解し、簡単に説明できるようになる。
+- 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認までを一連で実行できるようになる。
+- EIP‑2981（ロイヤリティ）と固定価格販売の最小例を実装し、動作確認できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

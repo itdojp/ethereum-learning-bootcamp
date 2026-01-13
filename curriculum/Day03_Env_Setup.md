@@ -3,8 +3,8 @@
 [← 目次](./TOC.md) | [前: Day2](./Day02_Transaction_Gas.md) | [次: Day4](./Day04_Solidity_Basics.md)
 
 ## 学習目的
-- HardhatおよびFoundryを導入し、開発・テスト・デプロイの基礎環境を構築する。
-- Sepoliaテストネットに接続し、コントラクトをデプロイして動作を確認する。
+- HardhatおよびFoundryを導入し、開発・テスト・デプロイを実行できる最小環境を用意できるようになる。
+- Sepoliaテストネットに接続し、コントラクトをデプロイして動作を確認できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

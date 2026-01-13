@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day5](./Day05_ERC_Standards.md) | [次: Day7](./Day07_Deploy_CI.md)
 
 ## 学習目的
-- ローカルノード（Hardhat Network）で素早く再現可能なテストを書く。
-- `solidity-coverage` と `hardhat-gas-reporter` を導入し、品質とコストを数値で把握する。
-- `storage`/`memory`/`calldata` とイベント量の違いを実測する。
+- ローカルノード（Hardhat Network）で、再現可能なテストを書いて実行できるようになる。
+- `solidity-coverage` と `hardhat-gas-reporter` を使い、品質とコストを数値で把握できるようになる。
+- `storage`/`memory`/`calldata` とイベント量の違いを実測し、差分を説明できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

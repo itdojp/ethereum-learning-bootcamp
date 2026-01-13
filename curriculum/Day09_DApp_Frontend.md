@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day8](./Day08_L2_Rollups.md) | [次: Day10](./Day10_Events_TheGraph.md)
 
 ## 学習目的
-- ブラウザからMetaMask等に接続し、アカウント・ネットワークを取得する。
-- ネットワーク切替（Local/Sepolia/Optimism）とエラー処理の考え方を把握する。
-- ETH残高、ERC‑20残高の表示と送金UIを動かす。
+- ブラウザからMetaMask等に接続し、アカウント・ネットワークを取得できるようになる。
+- ネットワーク切替（Local/Sepolia/Optimism）とエラー処理の考え方を理解し、典型的な失敗を切り分けできるようになる。
+- ETH残高、ERC‑20残高の表示と送金UIを動かして確認できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
