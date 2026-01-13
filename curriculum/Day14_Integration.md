@@ -49,6 +49,11 @@ cp .env.example .env
 npx hardhat run scripts/deploy-token.ts --network sepolia
 npx hardhat run scripts/deploy-event-token.ts --network sepolia
 ```
+期待される出力（最小例）：
+```text
+MTK: 0x...
+EventToken: 0x...
+```
 
 例：Optimism（任意）
 ```bash
@@ -89,12 +94,20 @@ cd dapp
 npm ci
 npm run dev
 ```
+期待される出力（最小例）：
+```text
+Local:   http://localhost:5173/
+```
 
 ブラウザで `http://localhost:5173` を開き、Connect Wallet → Switch to Chain → Refresh Balances を確認する。
 
 EventToken を操作してイベントを流したい場合：
 ```bash
 EVT=0x... npx hardhat run scripts/use-event-token.ts --network sepolia
+```
+期待される出力（最小例）：
+```text
+transfer complete { to: '0x...' }
 ```
 
 ---

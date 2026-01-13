@@ -131,11 +131,14 @@ npx hardhat test
 
 # カバレッジ
 npx hardhat coverage --temp artifacts-coverage --network hardhat
-
-# 参考：出力例（概念）
-# GasBench: setS  ~42,000 gas
-# GasBench: emitMany(5)  ~50,000+ gas（イベント数に比例）
 ```
+
+期待される出力（最小例）：
+```text
+16 passing
+Toolchain: hardhat
+```
+> `passing` の件数は追加テストで増減する。gasReporter を有効化しているため、テスト完了時に関数単位のgas表（`Contracts / Methods`）が出力される。
 
 ---
 

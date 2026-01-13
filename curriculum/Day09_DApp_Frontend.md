@@ -45,6 +45,11 @@ VITE_EVENT_TOKEN=          # 任意：Day10で使う
 ```bash
 npm run dev
 ```
+期待される出力（最小例）：
+```text
+Local:   http://localhost:5173/
+```
+> ポートが埋まっている場合は別ポートになる（表示されたURLを開く）。
 
 ブラウザで `http://localhost:5173` を開き、次の順で操作する：
 1) Connect Wallet  
@@ -58,6 +63,10 @@ npm run dev
 ### 2.1 Hardhat node を起動する
 ```bash
 npx hardhat node
+```
+期待される出力（最小例）：
+```text
+Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 ```
 
 ### 2.2 MetaMask にローカルチェーンを追加する
@@ -78,6 +87,10 @@ cp .env.example .env
 デプロイ：
 ```bash
 npx hardhat run scripts/deploy-token.ts --network localhost
+```
+期待される出力（最小例）：
+```text
+MTK: 0x...
 ```
 
 出力された `MyToken` のアドレスを `dapp/.env.local` の `VITE_TOKEN_ADDRESS` に入れる。
