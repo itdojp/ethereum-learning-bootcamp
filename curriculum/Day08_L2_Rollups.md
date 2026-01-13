@@ -170,6 +170,18 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 - L1/L2へデプロイし、手数料（fee）と確定までの体感（latency）を同じ物差しで測る方法を整理した。
 - 計測結果は `metrics.csv` や `DEPLOYMENTS.md` に残し、後から比較できる形にするのが重要だ。
 
+### 確認コマンド（最小）
+```bash
+# 要 .env（OPTIMISM_RPC_URL / PRIVATE_KEY）と、Optimism 側の手数料分ETH
+CONTRACT=Lock ARGS=3600 npx hardhat run scripts/deploy-generic.ts --network optimism
+
+# ETH転送の手数料を実測（feeEth / latencyMs が出る）
+npx hardhat run scripts/measure-fee.ts --network optimism
+
+# 任意（ERC-20 transfer の手数料を実測：TOKEN にデプロイ済みアドレス）
+TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimism
+```
+
 ## 8. 提出物
 - [ ] `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics.csv`
 - [ ] Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク

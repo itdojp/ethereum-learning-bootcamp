@@ -204,6 +204,16 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 - ERC‑20 の `approve→transferFrom` フローを、テストまたはスクリプトで再現した。
 - NFT の `tokenURI` とメタデータ（IPFS/HTTP Gateway）の確認方法を整理した。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/erc20.ts
+npx hardhat test test/mynft.ts
+
+# 任意（テストネット：要 .env）
+npx hardhat run scripts/deploy-token.ts --network sepolia
+npx hardhat run scripts/deploy-nft.ts --network sepolia
+```
+
 ## 8. 提出物
 - [ ] トークン・NFTのコントラクトアドレス、Verifyリンク
 - [ ] `approve→transferFrom`の実行ログと`allowance`の値

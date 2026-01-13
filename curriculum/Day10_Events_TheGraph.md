@@ -125,6 +125,18 @@ graph build
 - EventToken のイベント発火 → dapp での購読表示、までの一連の流れを確認した。
 - The Graph は更新頻度が高いため、生成場所・`startBlock` といった“詰まりどころ”を付録に寄せる構成にした。
 
+### 確認コマンド（最小）
+```bash
+# EventToken をデプロイ（例：Sepolia。要 .env）
+npx hardhat run scripts/deploy-event-token.ts --network sepolia
+
+# EVT にデプロイアドレスを入れてイベントを発火
+EVT=0x... npx hardhat run scripts/use-event-token.ts --network sepolia
+
+# dapp を起動（事前に dapp/.env.local の VITE_EVENT_TOKEN を設定）
+npm --prefix dapp run dev
+```
+
 ## 7. 提出物
 - [ ] EventTokenアドレスと、イベント発火スクリプトの実行ログ
 - [ ] dapp でリアルタイムログが表示されているスクリーンショット

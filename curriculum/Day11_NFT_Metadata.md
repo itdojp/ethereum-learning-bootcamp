@@ -245,6 +245,16 @@ describe('MyNFT', () => {
 - デプロイ→ミント→Gatewayで表示確認までをつなぎ、`tokenURI` とファイル名の一致が重要だと分かった。
 - 固定価格マーケットの最小例を通して、実運用で必要な防御（再入対策等）を明確化した。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/mynft.ts
+npx hardhat test test/market.ts
+
+# 任意（テストネット：要 .env / IPFS）
+npx hardhat run scripts/deploy-nft.ts --network sepolia
+NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
+```
+
 ## 10. 提出物
 - [ ] `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク
 - [ ] `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット

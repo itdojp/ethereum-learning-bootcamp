@@ -159,6 +159,17 @@ done
 - L1は安全性、L2はスケーラビリティを担う。
 - `gasUsed/gasLimit`比はネットワークの混雑度を示す指標。
 
+### 確認コマンド（最小）
+```bash
+# RPC が設定されていること
+echo $RPC
+
+# 最新ブロック番号が取得できること
+curl -s -X POST "$RPC" \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result
+```
+
 ## 5. 提出物
 - [ ] `REPORT.md` を作成し、次を記載する：
   - [ ] 実行したコマンドと出力例

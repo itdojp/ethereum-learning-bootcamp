@@ -170,6 +170,22 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
+### 確認コマンド（最小）
+```bash
+# ルートで一括チェック（テスト + リンクチェック + dapp build）
+npm run check:all
+
+# 任意（ローカルで dapp を動かす）
+# Terminal A:
+npx hardhat node
+
+# Terminal B:
+npx hardhat run scripts/deploy-token.ts --network localhost
+
+# Terminal C（事前に dapp/.env.local を編集）:
+npm --prefix dapp run dev
+```
+
 ## 10. 提出物
 - [ ] `DEPLOYMENTS.md` の追記（鍵は伏せる）
 - [ ] DApp の動作スクリーンショット

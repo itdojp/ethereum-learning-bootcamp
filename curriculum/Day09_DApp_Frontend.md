@@ -127,6 +127,20 @@ MTK: 0x...
 - `dapp/.env.local` の chainId とコントラクトアドレスが、動作の成否を決める前提を押さえた。
 - 典型的なエラー（provider未検出、チェーン不一致、アドレス不一致）の切り分け観点を整理した。
 
+### 確認コマンド（最小）
+```bash
+# Terminal A（ローカルチェーン）
+npx hardhat node
+
+# Terminal B（MyToken をローカルへデプロイ）
+npx hardhat run scripts/deploy-token.ts --network localhost
+
+# Terminal C（dapp を起動：事前に dapp/.env.local を編集）
+npm --prefix dapp ci
+test -f dapp/.env.local || cp dapp/.env.example dapp/.env.local
+npm --prefix dapp run dev
+```
+
 ## 7. 提出物
 - [ ] 稼働中スクリーンショット（接続、chainId、残高表示、送金ログ）
 - [ ] 使用した `VITE_CHAIN_ID` とネットワーク名（鍵は伏せる）

@@ -215,6 +215,14 @@ jobs:
 - `pure/view` は call 扱いになりやすいため、計測したい処理は「Tx化」して測る方針を押さえた。
 - CI で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
 
+### 確認コマンド（最小）
+```bash
+npx hardhat test test/gasbench.ts
+
+# 任意（カバレッジ）
+npm run coverage
+```
+
 ## 11. 提出物
 - [ ] `npx hardhat test` と `coverage` の出力（スクリーンショット可）
 - [ ] memory vs calldata、イベント数の差分を表に整理
