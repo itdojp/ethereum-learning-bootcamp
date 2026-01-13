@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day11](./Day11_NFT_Metadata.md) | [次: Day13](./Day13_Gas_Optimization.md)
 
 ## 学習目的
-- 代表的脆弱性（Reentrancy, tx.origin誤用, delegatecall乱用, Proxyのストレージ衝突）を理解。
-- 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装。
-- Slither（静的解析）とFoundry/Echidna（プロパティテスト）で自動検出を体験。
+- 代表的脆弱性（Reentrancy, tx.origin誤用, delegatecall乱用, Proxyのストレージ衝突）を理解し、簡単に説明できるようになる。
+- 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装し、テストで検証できるようになる。
+- Slither（静的解析）とFoundry/Echidna（プロパティテスト）を実行し、自動検出を体験できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

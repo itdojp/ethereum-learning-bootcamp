@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day12](./Day12_Security.md) | [次: Day14](./Day14_Integration.md)
 
 ## 学習目的
-- ガスコストの主要要因（ストレージ、calldata、イベント、ループ）を理解。
-- 設計で削減できるポイント（packing、immutable/constant、custom errors、関数属性）を実践。
-- Hardhat/Foundryで**同一機能の実装差**を測定し、表にまとめる。
+- ガスコストの主要要因（ストレージ、calldata、イベント、ループ）を理解し、簡単に説明できるようになる。
+- 設計で削減できるポイント（packing、immutable/constant、custom errors、関数属性）を実践できるようになる。
+- Hardhat/Foundryで**同一機能の実装差**を測定し、表にまとめられるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

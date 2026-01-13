@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day6](./Day06_Local_Testing.md) | [次: Day8](./Day08_L2_Rollups.md)
 
 ## 学習目的
-- 少額でMainnetまたはL2に安全にデプロイする流れを体得。
-- ソース検証（Verify）と成果の可観測性を確保。
-- GitHub Actionsに“人間の手動承認”ゲートを設け、誤デプロイを防ぐ。
+- 少額でMainnetまたはL2に安全にデプロイする流れを、手順として実行できるようになる。
+- ソース検証（Verify）と成果の可観測性を確保し、Explorerで確認できるようになる。
+- GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 

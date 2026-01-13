@@ -3,9 +3,9 @@
 [← 目次](./TOC.md) | [前: Day9](./Day09_DApp_Frontend.md) | [次: Day11](./Day11_NFT_Metadata.md)
 
 ## 学習目的
-- Solidityイベントの`indexed`設計と購読方法を理解する。
-- ブラウザからリアルタイム購読（ethers）を動かす。
-- The Graphで履歴データをインデックス化し、GraphQLで取得する。
+- Solidityイベントの `indexed` 設計と購読方法を理解し、簡単に説明できるようになる。
+- ブラウザからリアルタイム購読（ethers）を動かして表示を確認できるようになる。
+- The Graphで履歴データをインデックス化し、GraphQLで取得できるようになる。
 
 > まず `curriculum/README.md` の「共通の前提」を確認してから進める。
 
