@@ -11,6 +11,8 @@ introduction:
 chapters:
   - part: "Part 0：導入・環境"
     items:
+      - title: "Part 0：導入・環境（概要と進め方）"
+        path: "/curriculum/Part0/"
       - title: "Day1：ブロックチェーン原理とEthereum全体像"
         path: "/curriculum/Day01_Ethereum_Intro/"
       - title: "Day2：トランザクションとGas、EIP‑1559"
@@ -19,18 +21,24 @@ chapters:
         path: "/curriculum/Day03_Env_Setup/"
   - part: "Part 1：Solidityと標準規格"
     items:
+      - title: "Part 1：Solidityと標準規格（概要と進め方）"
+        path: "/curriculum/Part1/"
       - title: "Day4：Solidity基礎（型・可視性・イベント・エラー・支払い）"
         path: "/curriculum/Day04_Solidity_Basics/"
       - title: "Day5：ERC標準（ERC‑20 / ERC‑721）とOpenZeppelin実装"
         path: "/curriculum/Day05_ERC_Standards/"
   - part: "Part 2：テスト・デプロイ・運用"
     items:
+      - title: "Part 2：テスト・デプロイ・運用（概要と進め方）"
+        path: "/curriculum/Part2/"
       - title: "Day6：ローカル検証・カバレッジ・ガス計測（Hardhat中心）"
         path: "/curriculum/Day06_Local_Testing/"
       - title: "Day7：本番・L2デプロイ／Etherscan検証／手動承認付きCI"
         path: "/curriculum/Day07_Deploy_CI/"
   - part: "Part 3：L2 / DApp / Indexing"
     items:
+      - title: "Part 3：L2 / DApp / Indexing（概要と進め方）"
+        path: "/curriculum/Part3/"
       - title: "Day8：L2ロールアップ（Optimistic vs ZK）とDencun/Blob実測"
         path: "/curriculum/Day08_L2_Rollups/"
       - title: "Day9：DAppフロント（React + ethers）"
@@ -39,6 +47,8 @@ chapters:
         path: "/curriculum/Day10_Events_TheGraph/"
   - part: "Part 4：NFT / Security / Gas"
     items:
+      - title: "Part 4：NFT / Security / Gas（概要と進め方）"
+        path: "/curriculum/Part4/"
       - title: "Day11：NFT実装（IPFS・メタデータ）と表示確認"
         path: "/curriculum/Day11_NFT_Metadata/"
       - title: "Day12：セキュリティ入門（再入・権限・静的解析・ファジング）"
@@ -47,6 +57,8 @@ chapters:
         path: "/curriculum/Day13_Gas_Optimization/"
   - part: "Part 5：統合"
     items:
+      - title: "Part 5：統合（概要と進め方）"
+        path: "/curriculum/Part5/"
       - title: "Day14：総合演習 — デプロイ＋DApp＋（任意）Verify/CI/The Graph"
         path: "/curriculum/Day14_Integration/"
 
