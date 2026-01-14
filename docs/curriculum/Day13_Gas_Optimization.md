@@ -44,7 +44,13 @@
 
 ## 2. 実装A：Naive vs Packed 構造体
 
-`contracts/GasPack.sol`
+### 2.1 概念（何を比べるか）
+同じ「注文を保存する」処理でも、構造体の設計次第で **使うストレージslot数** が変わり、ガスに差が出る。
+
+- Naive：`uint256` が多く、1件あたりのslot消費が大きい
+- Packed：ビット幅の小さい型を寄せてslotを圧縮し、書き込みコスト（SSTORE）を減らす
+
+### 2.2 最小コード（`contracts/GasPack.sol`）
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
@@ -69,7 +75,7 @@ contract GasPacked {
 }
 ```
 
-テスト：`test/gas-pack.ts`
+### 2.3 テスト（`test/gas-pack.ts`）
 ```ts
 import { ethers } from "hardhat";
 import { expect } from "chai";
@@ -91,11 +97,24 @@ describe("GasPack", ()=>{
 npx hardhat test test/gas-pack.ts
 ```
 
+### 2.4 結果の見方（どの数字を見るか）
+- `console.log("naive ... packed ...")` の `gasUsed` を比較し、`packed` のほうが小さければOK。
+- 計測値は `metrics/gas_day13.md` の表に転記する（比較対象と一緒に残す）。
+
+### 2.5 よくある失敗
+- Packed側で型を小さくしすぎて値が入らない（例：`uint96` に大きすぎる数を入れる）。
+- 「計測対象が同じ」になっていない（同じ回数、同じ入力で比較する）。
+
 ---
 
 ## 3. 実装B：calldata vs memory、custom errors
 
-`contracts/GasArgs.sol`
+### 3.1 概念（何を比べるか）
+- `calldata`：外部入力をコピーせず読み取れる（引数が大きいほど効きやすい）
+- `memory`：引数の受領時にコピーが発生し、コストが上がりやすい
+- `custom errors`：`revert("message")` より安く revert できる（失敗ケースのコスト削減）
+
+### 3.2 最小コード（`contracts/GasArgs.sol`）
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
@@ -119,7 +138,7 @@ contract GasArgs {
 }
 ```
 
-テスト：`test/gas-args.ts`
+### 3.3 テスト（`test/gas-args.ts`）
 ```ts
 import { ethers } from "hardhat";
 
@@ -132,6 +151,19 @@ describe("GasArgs", ()=>{
   });
 });
 ```
+
+実行：
+```bash
+npx hardhat test test/gas-args.ts
+```
+
+### 3.4 結果の見方（どの数字を見るか）
+- Day6 と同様に、Txとして実行する関数（`*Tx`）を用意しているため、gasReporter に載りやすい。
+- `sumCalldataTx(1k)` と `sumMemoryTx(1k)` の差を `metrics/gas_day13.md` に転記する。
+
+### 3.5 よくある失敗
+- 配列が小さすぎて差が見えない（入力サイズを揃えて比較する）。
+- `TooLong` が発生する（`a.length > 10_000`）。まずは 1,000 要素程度で試す。
 
 ---
 

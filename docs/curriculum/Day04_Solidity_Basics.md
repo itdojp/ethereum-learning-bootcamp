@@ -46,7 +46,16 @@
 ## 2. ハンズオン（即実行）
 
 ### 2.1 コントラクト実装
-`contracts/WalletBox.sol`
+この章の `WalletBox` は「状態を持つ」「イベントを出す」「ETHを受け取る」「権限付きで引き出す」を最小でまとめた練習用コントラクトだ。
+
+#### 2.1.1 概念（何を作るか）
+- `owner`：デプロイ時に固定する（`immutable`）。引き出し権限の判定に使う。
+- `note`：文字列メモ。空文字はエラーにする（`EmptyMessage`）。
+- イベント：状態変更や入出金をログとして残す（`NoteChanged` / `Deposited` / `Withdrawn`）。
+- `receive()`：ETHを受け取ったときにイベントを出す。
+- `withdraw()`：オーナーだけが引き出せる。送金は `call` で行い、失敗時は revert する。
+
+#### 2.1.2 最小コード（`contracts/WalletBox.sol`）
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
@@ -96,8 +105,24 @@ contract WalletBox {
 }
 ```
 
+#### 2.1.3 結果の見方（ここが確認できればOK）
+- `note()` を呼ぶとデプロイ時の文字列が返る。
+- `setNote("ok")` で `NoteChanged` イベントが出る（空文字は `EmptyMessage` で revert）。
+- コントラクトにETHを送ると `Deposited` イベントが出る。
+- `withdraw()` はオーナー以外だと `NotOwner` で revert する。
+
+#### 2.1.4 よくある失敗
+- 送金額が残高より大きく、`insufficient` で revert する。
+- オーナー以外で `withdraw()` して `NotOwner` になる（意図通り）。
+- 0 ETH を送って「何も起きない」と感じる（`Deposited` の `amount` は 0 になる）。
+
 ### 2.2 テスト（Hardhat / TypeScript）
-`test/walletbox.ts`
+#### 2.2.1 何をテストするか
+- デプロイ直後の状態（`owner` / `note`）が正しいこと
+- `setNote` の revert 条件とイベント
+- ETHの入金と、オーナーのみ引き出せること
+
+#### 2.2.2 最小コード（`test/walletbox.ts`）
 ```ts
 import { expect } from "chai";
 import { ethers } from "hardhat";
@@ -138,10 +163,12 @@ describe("WalletBox", () => {
   });
 });
 ```
-実行：
+
+#### 2.2.3 実行
 ```bash
 npx hardhat test
 ```
+成功の判定：`WalletBox` のテストが `3 passing` になっていればOK。
 
 ### 2.3 デプロイ（Sepolia）
 `scripts/deploy-walletbox.ts`
