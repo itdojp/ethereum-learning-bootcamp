@@ -26,7 +26,7 @@ permalink: /
 1. 共通の前提を読む：[`curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
 2. 通しで作るもの（ミニプロジェクト）：[`curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
 3. 読み方ガイド：[`curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
-4. 用語に迷ったら：[`appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
+4. 用語に迷ったら：[`docs/appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
 5. 目次どおりに進める：[`curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
 ## Quick Start（ローカル検証）
@@ -42,9 +42,9 @@ npm test
 - 全体の目次：[`curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
 ## つまずきポイント（先に読む）
-- Verify：[`appendix/verify.md`]({{ '/appendix/verify/' | relative_url }})
-- GitHub Actions / CI：[`appendix/ci-github-actions.md`]({{ '/appendix/ci-github-actions/' | relative_url }})
-- The Graph：[`appendix/the-graph.md`]({{ '/appendix/the-graph/' | relative_url }})
+- Verify：[`docs/appendix/verify.md`]({{ '/appendix/verify/' | relative_url }})
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`]({{ '/appendix/ci-github-actions/' | relative_url }})
+- The Graph：[`docs/appendix/the-graph.md`]({{ '/appendix/the-graph/' | relative_url }})
 
 ## 更新履歴
 - 現行バージョン：v{{ site.version }}

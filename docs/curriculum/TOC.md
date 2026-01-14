@@ -47,12 +47,12 @@
 ---
 
 ## 付録（つまずきやすい所）
-- 用語集：[`../appendix/glossary.md`](../appendix/glossary.md)
-- Verify：[`../appendix/verify.md`](../appendix/verify.md)
-- GitHub Actions / CI：[`../appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- The Graph：[`../appendix/the-graph.md`](../appendix/the-graph.md)
-- Account Abstraction（ERC‑4337 / EIP‑7702）：[`../appendix/account-abstraction.md`](../appendix/account-abstraction.md)
-- リソース集：[`../appendix/Appendix_Resources.md`](../appendix/Appendix_Resources.md)
+- 用語集：[`docs/appendix/glossary.md`](../appendix/glossary.md)
+- Verify：[`docs/appendix/verify.md`](../appendix/verify.md)
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
+- Account Abstraction（ERC‑4337 / EIP‑7702）：[`docs/appendix/account-abstraction.md`](../appendix/account-abstraction.md)
+- リソース集：[`docs/appendix/Appendix_Resources.md`](../appendix/Appendix_Resources.md)
 
 ## 実行ログ（再現用）
 各Dayの「期待される出力例」として、`reports/` に実行ログを置いている。

@@ -18,8 +18,8 @@
 2) Day7：デプロイ/Verify/CI：[`Day07_Deploy_CI.md`](./Day07_Deploy_CI.md)
 
 ## 先に読む付録（詰まったらここ）
-- Verify：[`appendix/verify.md`](../appendix/verify.md)
-- GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- Verify：[`docs/appendix/verify.md`](../appendix/verify.md)
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
 
 ## チェックリスト（ここまでできれば次へ進める）
 - [ ] `npm test` が通る（ローカル）
@@ -29,4 +29,3 @@
 ---
 
 [← 目次](./TOC.md)
-

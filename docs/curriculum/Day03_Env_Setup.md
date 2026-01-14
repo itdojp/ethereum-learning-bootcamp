@@ -219,7 +219,7 @@ Lock deployed to: 0xF1234...7890
 1. [Sepolia Etherscan](https://sepolia.etherscan.io/) にアクセス。
 2. 上記のアドレスを検索し、デプロイTxの確認。
 3. `Contract`タブでソースコードVerifyを実施（後日自動化）。
-> Hardhat Verify を使う場合は [`appendix/verify.md`](../appendix/verify.md) を参照する。
+> Hardhat Verify を使う場合は [`docs/appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 

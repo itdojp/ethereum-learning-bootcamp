@@ -15,7 +15,7 @@
 - 必要コマンド：`curl`, `jq`
 - 必要なもの：Sepolia などの RPC エンドポイント（Alchemy/Infura 等）
 - この章は **Tx を送らない**。テストETHは不要だ。
-- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：（任意）`REPORT.md`
 - 今回触らないこと：秘密鍵で署名してTxを送る／コントラクトのデプロイ（Day3以降で扱う）
 - 最短手順（迷ったらここ）：RPCを `RPC` に設定 → 2.3 でブロック番号 → 2.4 でブロック詳細 → 2.5 で3ブロック比較
@@ -37,7 +37,7 @@
   - 状態はMerkle-Patricia Trie（MPT）で管理される。
 - **アカウントの種類**：
   - [EOA](../appendix/glossary.md)（Externally Owned Account）：人間が秘密鍵で操作。
-    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **[delegation indicator](../appendix/glossary.md)（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は [`appendix/account-abstraction.md`](../appendix/account-abstraction.md)）。
+    - 補足：従来は「EOAはコードを持たない」と説明されることが多いが、**EIP‑7702** によりEOAが **[delegation indicator](../appendix/glossary.md)（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。初心者は「EOA＝常に code empty」と固定観念にしないこと（概要は [`docs/appendix/account-abstraction.md`](../appendix/account-abstraction.md)）。
   - コントラクトアカウント：コードを持ち、EVM上で実行される。
 
 ### 1.3 Proof of Stake (PoS) の仕組み

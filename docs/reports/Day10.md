@@ -26,4 +26,4 @@ EVT=<EVT> npx hardhat run scripts/use-event-token.ts --network localhost
 - ただし `dapp/` は injected provider（MetaMask等）前提のため、この環境ではUI表示まで未確認。
 
 ## The Graph（未実施）
-- 生成物は同梱しない運用。`subgraph/README.md` と `appendix/the-graph.md` を参照。
+- 生成物は同梱しない運用。`docs/subgraph/README.md` と `docs/appendix/the-graph.md` を参照。
