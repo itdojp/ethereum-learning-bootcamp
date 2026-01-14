@@ -20,14 +20,14 @@
 5. つまずきポイント（原因→対策の順）
 6. まとめ（3行で要約）
 7. 提出物/チェックリスト（何を保存すれば再現できるか）
-8. 実行例（`reports/DayXX.md` へのリンク）
+8. 実行例（`docs/reports/DayXX.md` へのリンク）
 
 ## 用語・記号
 - 初出では日本語で説明し、必要なら英語/略語を併記する（例：トランザクション（Tx））
 - 同じ概念に複数表現を使わない（例：「コントラクト」「スマコン」を混在させない）
 - 参照先を固定する：
-  - 用語：`appendix/glossary.md`
-  - つまずき：`appendix/verify.md` / `appendix/ci-github-actions.md` / `appendix/the-graph.md`
+  - 用語：`docs/appendix/glossary.md`
+  - つまずき：`docs/appendix/verify.md` / `docs/appendix/ci-github-actions.md` / `docs/appendix/the-graph.md`
 
 ## コード/コマンド
 - コマンドは `bash` ブロックで、コピペ可能にする（省略がある場合は「要置換」を明記）
@@ -36,11 +36,11 @@
 
 ## リンク
 - 可能な限り **相対パス**で貼る（GitHub 上でそのまま辿れる）
-- 読む順序（目次）は `curriculum/TOC.md` を正とする
+- 読む順序（目次）は `docs/curriculum/TOC.md` を正とする
 - CIで `npm run check:links` を実行し、教材内の相対リンク切れを検出する
 
 ## 更新（version / changelog）
-- 公開ページの「現行バージョン」は `_config.yml` の `version` を更新して管理する
-- 変更の要点は `CHANGELOG.md` に追記する（読者が追従しやすくなる）
+- 公開ページの「現行バージョン」は `docs/_config.yml` の `version` を更新して管理する
+- 変更の要点は `docs/CHANGELOG.md` に追記する（読者が追従しやすくなる）
 - PR作成前に `npm run check:all` を実行し、教材の基本動作をまとめて確認する
   - `check:all` は `npm test` / `npm run check:links` / `dapp` の build を実行する

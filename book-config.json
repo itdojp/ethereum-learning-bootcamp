@@ -160,7 +160,7 @@
     ]
   },
   "build": {
-    "outputDirectory": ".",
+    "outputDirectory": "docs",
     "framework": "jekyll",
     "enableNavigation": true,
     "enableSyntaxHighlighting": true,
