@@ -206,7 +206,7 @@ jobs:
 |---|---|---|
 | gasReporter に出ない / 差が見えない | `pure/view` が call 扱いになり、Txとして計測されていない | 章中の `bench*` のように Tx 化して測る |
 | `hardhat coverage` が落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | まず `npm ci` で揃え、Node.js 20 で再実行する |
-| CIでだけ落ちる | ローカルとCIの差分 | 付録 [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「最短デバッグ手順」を参照する |
+| CIでだけ落ちる | ローカルとCIの差分 | 付録 [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「失敗時の切り分け（最短）」を参照する |
 
 ---
 

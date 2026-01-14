@@ -12,7 +12,7 @@
 ---
 
 ## 0. 前提
-- 先に読む付録：[`appendix/verify.md`](../appendix/verify.md) / [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) / [`appendix/the-graph.md`](../appendix/the-graph.md)
+- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md) / [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) / [`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 - 触るファイル（主なもの）：`.env` / `scripts/deploy-token.ts` / `scripts/deploy-event-token.ts` / `dapp/.env.local` / `docs/DEPLOYMENTS.md`
 - 今回触らないこと：最初から全部を完璧に通すこと（任意項目は“必要になったら”でよい）
 - 最短手順（迷ったらここ）：2.1 で `.env` → 2.2 でデプロイ → 3.1 で `dapp/.env.local` → 3.2 で起動・接続
@@ -128,7 +128,7 @@ npx hardhat verify --network sepolia <TOKEN_ADDR> 1000000000000000000000000
 npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 ```
 
-> つまずきやすいのは「引数不一致」「コンパイラ設定不一致」「反映待ち」。[`appendix/verify.md`](../appendix/verify.md) を参照する。
+> つまずきやすいのは「引数不一致」「コンパイラ設定不一致」「反映待ち」。[`docs/appendix/verify.md`](../appendix/verify.md) の「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
 
 ---
 
@@ -136,12 +136,12 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - テストCI：`.github/workflows/test.yml`（`npm test` を自動実行）
 - 手動承認付きデプロイ：`.github/workflows/deploy.yml`（workflow_dispatch + Environment）
 
-運用・つまずきは [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と Day7 を参照する。
+運用・つまずきは [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と Day7 を参照する。
 
 ---
 
 ## 6. フェーズ5：The Graph（任意）
-サブグラフの生成・運用は [`docs/subgraph/README.md`](../subgraph/README.md) と [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
+サブグラフの生成・運用は [`docs/subgraph/README.md`](../subgraph/README.md) と [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 最小は Day10 と同様に「EventToken を対象」にするのが分かりやすい。
 
@@ -162,9 +162,9 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | DApp が動かない / 残高が出ない | chainId とアドレスが不一致 | `dapp/.env.local` と MetaMask のチェーンを揃え、アドレスを再確認する |
-| Verifyが通らない | APIキー/引数/設定不一致、反映待ち | [`appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
-| 手動デプロイの承認が出ない | Environment設定・Secretsの場所違い | [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
-| サブグラフが同期しない | `startBlock`/アドレス不一致 | [`appendix/the-graph.md`](../appendix/the-graph.md) を参照して確認する |
+| Verifyが通らない | APIキー/引数/設定不一致、反映待ち | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
+| 手動デプロイの承認が出ない | Environment設定・Secretsの場所違い | [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
+| サブグラフが同期しない | `startBlock`/アドレス不一致 | [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照して確認する |
 
 ---
 

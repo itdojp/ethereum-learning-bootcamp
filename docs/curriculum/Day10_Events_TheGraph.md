@@ -14,8 +14,8 @@
 ## 0. 前提
 - Day9 の `dapp/` を起動できる。
 - `EventToken` を任意ネットワークへデプロイできる（ローカル/テストネット/L2のどれでもよい）。
-- The Graph で詰まりやすい点は [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
-- 先に読む付録：[`appendix/the-graph.md`](../appendix/the-graph.md) / [`appendix/glossary.md`](../appendix/glossary.md)
+- The Graph で詰まりやすい点は [`docs/appendix/the-graph.md`](../appendix/the-graph.md) の「最短成功ルート」→「失敗時の切り分け」→「よくあるエラー表」を参照する。
+- 先に読む付録：[`docs/appendix/the-graph.md`](../appendix/the-graph.md) / [`appendix/glossary.md`](../appendix/glossary.md)
 - 触るファイル（主なもの）：`contracts/EventToken.sol` / `scripts/deploy-event-token.ts` / `scripts/use-event-token.ts` / `dapp/src/hooks/useEvents.ts`
 - 今回触らないこと：本番運用のインデックス設計（まずは“作って動かす”）
 - 最短手順（迷ったらここ）：2章でイベント発火 → 3章でdapp購読表示 →（任意）4章でThe Graphのひな形生成
@@ -99,7 +99,7 @@ graph init \
 ### 4.2 startBlock を入れる
 `startBlock` は「このブロック以降だけを見る」という範囲指定。**デプロイTxのブロック番号** を入れるのが基本。
 
-取得例やつまずきは [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
+取得例やつまずきは [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 ### 4.3 codegen / build
 ```bash
@@ -114,8 +114,8 @@ graph build
 ---
 
 ## 5. つまずきポイント
-- startBlock が分からない / 遅すぎる：[`appendix/the-graph.md`](../appendix/the-graph.md)
-- build が落ちる（ABI/スキーマ不一致）：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- startBlock が分からない / 遅すぎる：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
+- build が落ちる（ABI/スキーマ不一致）：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 - ブラウザ購読が発火しない：チェーンID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---
