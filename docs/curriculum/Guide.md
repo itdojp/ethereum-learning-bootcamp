@@ -15,7 +15,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ## 1. まず読むページ（最短）
 1) 共通の前提：[`docs/curriculum/README.md`](./README.md)  
 2) 目次（読む順序）：[`docs/curriculum/TOC.md`](./TOC.md)  
-3) 用語に迷ったら：[`appendix/glossary.md`](../appendix/glossary.md)  
+3) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)  
 
 ---
 
@@ -32,6 +32,19 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ### 2.3 L2や運用中心（実務寄り）
 - Day07/Day08 を重点的に読む（運用・観測・記録が主題になる）。
 - Day14 のチェックリストを “Done” にするのがゴールになる。
+
+### 2.4 1つの小さなプロダクトとして進める（完走ルート）
+この教材は章ごとに題材が変わるが、「最後に全部つなぐ（Day14）」を小さなプロダクト完成のゴールにすると迷いにくい。
+
+- ゴール：Day14 で「デプロイ→DApp接続」まで通し、`docs/DEPLOYMENTS.md` と `docs/reports/` に記録を残す
+- 中心にする題材：`MyToken` / `EventToken`（DAppとイベント購読で使う）。NFTやThe Graphは任意で足す
+
+進め方（最小）：
+1) Day01〜Day03：環境を整え、ローカルで `npm test` を通す  
+2) Day04〜Day06：コントラクト実装とテスト・計測の流れを掴む  
+3) Day07：テストネット/L2へデプロイし、必要ならVerifyする（詰まったら付録へ）  
+4) Day09〜Day10：DAppから接続し、イベントを読める状態にする（必要ならThe Graphへ）  
+5) Day14：統合チェックリストをできる範囲でDoneにする（ここが“完成”）
 
 ---
 
@@ -68,8 +81,8 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ## 4. つまずいたら（参照先の固定）
 つまずきやすい所は付録に集約している。
 
-- Verify：[`appendix/verify.md`](../appendix/verify.md)
-- GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- Verify：[`docs/appendix/verify.md`](../appendix/verify.md)（最短成功ルート→切り分け→エラー表）
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)（最短成功ルート→切り分け→エラー表）
+- The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)（最短成功ルート→切り分け→エラー表）
 
 各Dayの末尾にも「つまずきポイント」「実行例（`reports/`）」へのリンクがあるため、まずはそこから辿る。
