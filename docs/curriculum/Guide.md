@@ -15,8 +15,9 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ## 1. まず読むページ（最短）
 1) 共通の前提：[`docs/curriculum/README.md`](./README.md)  
 2) 目次（読む順序）：[`docs/curriculum/TOC.md`](./TOC.md)  
-3) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)  
-4) 通しで作るもの：[`docs/curriculum/Project.md`](./Project.md)  
+3) 進捗チェック：[`docs/curriculum/Progress.md`](./Progress.md)  
+4) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)  
+5) 通しで作るもの：[`docs/curriculum/Project.md`](./Project.md)  
 
 ---
 
