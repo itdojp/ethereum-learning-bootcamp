@@ -65,7 +65,14 @@ Web UIで`ipfs/`フォルダをアップロード→取得したルートCIDを`
 ---
 
 ## 3. コントラクト実装
-`contracts/MyNFT.sol`
+この章の `MyNFT` は、まず「`tokenURI` が IPFS 上のメタデータを指す」状態を**最小で**作る。
+
+### 3.1 概念（何を実装するか）
+- `baseURI` を `ipfs://<CID>/` に固定し、`tokenURI(id)` は `baseURI + id + .json` を返す。
+- ミントは `onlyOwner` にして、まずは手順の再現性を優先する（権限制御の深掘りは Day12 で扱う）。
+- ロイヤリティは EIP‑2981 の `royaltyInfo` で「受取人 + 割合（BPS）」を返す。
+
+### 3.2 最小コード（`contracts/MyNFT.sol`）
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
@@ -116,6 +123,16 @@ contract MyNFT is ERC721, Ownable, IERC2981 {
 }
 ```
 
+### 3.3 結果の見方（ここが確認できればOK）
+- デプロイ後に `tokenURI(1)` が `ipfs://<CID>/1.json` の形で返る。
+- `NFT_BASE` の末尾に `/` があってもなくても、`tokenURI` の戻り値が壊れない（末尾スラッシュを吸収する）。
+- `supportsInterface` が `IERC2981` を返す（ロイヤリティ対応の最小確認）。
+
+### 3.4 よくある失敗
+- `tokenURI` と、IPFS 上の**パス/ファイル名**（`1.json` / `1.png`）が一致していない。
+- `NFT_BASE` を `ipfs://<CID>/` にしていない（末尾スラッシュなし・CID違い）。
+- `royaltyBps` の値が意図と違う（BPSは 10000=100% の前提で設定する）。
+
 ---
 
 ## 4. デプロイ・ミント
@@ -148,7 +165,7 @@ Verify：
 ```bash
 npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $NFT_ROYALTY_BPS
 ```
-> Verifyで詰まったら [`appendix/verify.md`](../appendix/verify.md) を参照する（引数不一致が典型）。
+> Verifyで詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) の「失敗時の切り分けルート」→「よくあるエラー表」を参照する（引数不一致が典型）。
 
 ---
 
@@ -235,7 +252,7 @@ describe('MyNFT', () => {
 |---|---|---|
 | Gatewayで開けない | Gateway側の障害/レート制限、またはURIのパス不一致 | 別Gatewayで再確認。`tokenURI` とファイル名（`1.json` 等）が一致しているか確認 |
 | 画像が表示されない | `image`がHTTP/HTTPSや拡張子誤り | `ipfs://CID/...png` を再確認 |
-| Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・設定を確認。詰まったら [`appendix/verify.md`](../appendix/verify.md) |
+| Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・設定を確認。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
 | `safeTransferFrom`失敗 | `approve`不足 | `setApprovalForAll` または `approve(id)` 実行 |
 
 ---
