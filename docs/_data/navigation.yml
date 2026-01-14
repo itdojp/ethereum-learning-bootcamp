@@ -5,6 +5,8 @@ introduction:
     path: "/curriculum/TOC/"
   - title: "🧭 読み方ガイド（学習ルート）"
     path: "/curriculum/Guide/"
+  - title: "🧩 ミニプロジェクト（通しで作るもの）"
+    path: "/curriculum/Project/"
   - title: "🧰 共通の前提"
     path: "/curriculum/README/"
 
