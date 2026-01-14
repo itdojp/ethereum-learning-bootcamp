@@ -14,7 +14,7 @@
 - 推奨：Node.js 20（LTS）
 - テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテストETHを入れておく
   - メイン資産の鍵は使わない（流出時の被害が大きい）
-- 先に読む付録：[`appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
+- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
 - 触るファイル（主なもの）：`.env` / `hardhat.config.ts` / `scripts/deploy-token.ts`（例）
 - 今回触らないこと：いきなりMainnetへデプロイ（Day7で“安全な流れ”として扱う）
 - 最短手順（迷ったらここ）：2.0 の手順で `npm ci` → `.env` 作成 → `npm test`（デプロイは任意）
@@ -85,9 +85,21 @@ npx hardhat run scripts/deploy-token.ts --network sepolia
 MTK: 0x...
 ```
 
-> Verifyで詰まったら [`appendix/verify.md`](../appendix/verify.md) を参照する。
+> Verifyで詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) の「最短成功ルート」→「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
 
 ### 2.1 環境構築（参考：ゼロから作る場合）
+この節は「本リポジトリを使わず、ゼロから Hardhat プロジェクトを作る」場合の参考だ。迷ったら 2.0 を優先する。
+
+#### 2.1.0 この節のゴール（成功判定）
+- `node -v` が v20 系になっている
+- `npx hardhat` で TypeScript プロジェクトを作成できる
+- `.env` を作成し、少なくとも `SEPOLIA_RPC_URL` / `PRIVATE_KEY` を設定できる
+
+#### 2.1.1 よくある失敗（最短の切り分け）
+- `node -v` が古い：`apt` で入る Node が古い場合がある。`nvm` を使う（手順はこの節の A）。
+- `nvm` を入れたのに `nvm` が使えない：いったんシェルを再起動する（または `NVM_DIR` を export して `nvm.sh` を読む）。
+- `.env` を設定したのにネットワーク接続で落ちる：`SEPOLIA_RPC_URL` が空、または `PRIVATE_KEY` が空でないかを確認する（鍵はコミットしない）。
+
 #### (1) Node.jsと依存パッケージ
 > 推奨：**Node.js 20（LTS）**。Ubuntu の `apt` で入る Node が古い場合があるため、初心者は `nvm` を使うと躓きにくい。
 

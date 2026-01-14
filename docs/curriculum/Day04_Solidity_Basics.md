@@ -168,7 +168,7 @@ describe("WalletBox", () => {
 ```bash
 npx hardhat test
 ```
-成功の判定：`WalletBox` のテストが `3 passing` になっていればOK。
+成功の判定：`WalletBox` のテストが `passing` になっていればOK（数字は追加テストで増減する）。
 
 ### 2.3 デプロイ（Sepolia）
 `scripts/deploy-walletbox.ts`
