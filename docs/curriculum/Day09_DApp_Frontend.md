@@ -148,4 +148,4 @@ npm --prefix dapp run dev
 - [ ] 実行した送金TxHash（Explorerリンクがあるとよい）
 
 ## 8. 実行例
-- 実行ログ例：[`reports/Day09.md`](../reports/Day09.md)
+- 実行ログ例：[`docs/reports/Day09.md`](../reports/Day09.md)

@@ -232,4 +232,4 @@ npx hardhat run scripts/deploy-walletbox.ts --network sepolia
 - [ ] `custom errors` vs `require` の計測結果（簡潔な表）
 
 ## 7. 実行例
-- 実行ログ例：[`reports/Day04.md`](../reports/Day04.md)
+- 実行ログ例：[`docs/reports/Day04.md`](../reports/Day04.md)

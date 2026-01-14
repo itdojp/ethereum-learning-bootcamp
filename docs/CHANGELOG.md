@@ -7,5 +7,4 @@
 - Day01〜Day14 の章末に「つまずきポイント / まとめ / 提出物 / 実行例」を追加し、学習の区切りを明確化
 - 付録を強化（Verify / CI / The Graph / Account Abstraction など）
 - CI に Markdown 相対リンクチェックと DApp build を追加
-- 実行ログ（`reports/`）を整備し、再現手順の確認に使えるようにした
-
+- 実行ログ（`docs/reports/`）を整備し、再現手順の確認に使えるようにした

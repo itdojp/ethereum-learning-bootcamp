@@ -177,4 +177,4 @@ curl -s -X POST "$RPC" \
   - [ ] 学んだ内容を3行で要約
 
 ## 6. 実行例
-- 実行ログ例：[`reports/Day01.md`](../reports/Day01.md)
+- 実行ログ例：[`docs/reports/Day01.md`](../reports/Day01.md)

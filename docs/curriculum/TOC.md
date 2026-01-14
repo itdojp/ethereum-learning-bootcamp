@@ -55,5 +55,5 @@
 - リソース集：[`docs/appendix/Appendix_Resources.md`](../appendix/Appendix_Resources.md)
 
 ## 実行ログ（再現用）
-各Dayの「期待される出力例」として、`reports/` に実行ログを置いている。
-- [`../reports/Day01.md`](../reports/Day01.md) 〜 [`../reports/Day14.md`](../reports/Day14.md)
+各Dayの「期待される出力例」として、`docs/reports/` に実行ログを置いている。
+- [`docs/reports/Day01.md`](../reports/Day01.md) 〜 [`docs/reports/Day14.md`](../reports/Day14.md)

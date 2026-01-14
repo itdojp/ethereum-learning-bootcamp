@@ -196,4 +196,4 @@ npm --prefix dapp run dev
 - [ ] （任意）Verifyリンク / CI実行ログ / [Subgraph](../appendix/glossary.md) buildログ
 
 ## 11. 実行例
-- 実行ログ例：[`reports/Day14.md`](../reports/Day14.md)
+- 実行ログ例：[`docs/reports/Day14.md`](../reports/Day14.md)

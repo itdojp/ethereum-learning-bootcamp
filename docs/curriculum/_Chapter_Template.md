@@ -69,7 +69,7 @@ npm test
 - [ ] 例：デプロイアドレス（秘密情報は載せない）
 
 ## 6. 実行例
-- 実行ログ例：[`reports/DayXX.md`](../reports/DayXX.md)
+- 実行ログ例：[`docs/reports/DayXX.md`](../reports/DayXX.md)
 
 ---
 

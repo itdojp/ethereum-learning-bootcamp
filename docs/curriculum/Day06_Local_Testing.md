@@ -229,4 +229,4 @@ npm run coverage
 - [ ] ガス最適化の所感を3行で記述
 
 ## 12. 実行例
-- 実行ログ例：[`reports/Day06.md`](../reports/Day06.md)
+- 実行ログ例：[`docs/reports/Day06.md`](../reports/Day06.md)
