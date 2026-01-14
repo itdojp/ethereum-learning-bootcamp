@@ -26,8 +26,9 @@ permalink: /
 1. 共通の前提を読む：[`docs/curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
 2. 通しで作るもの（ミニプロジェクト）：[`docs/curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
 3. 読み方ガイド：[`docs/curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
-4. 用語に迷ったら：[`docs/appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
-5. 目次どおりに進める：[`docs/curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
+4. 進捗チェック：[`docs/curriculum/Progress.md`]({{ '/curriculum/Progress/' | relative_url }})
+5. 用語に迷ったら：[`docs/appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
+6. 目次どおりに進める：[`docs/curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
 ## Quick Start（ローカル検証）
 ```bash

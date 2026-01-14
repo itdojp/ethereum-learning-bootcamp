@@ -8,6 +8,8 @@
 
 > 通しで作るもの（ミニプロジェクト）：[`./Project.md`](./Project.md)
 
+> 進捗チェック（完走チェックリスト）：[`./Progress.md`](./Progress.md)
+
 ---
 
 ## Part 0：導入・環境
