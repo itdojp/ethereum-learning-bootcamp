@@ -144,4 +144,4 @@ npm --prefix dapp run dev
 - [ ] （任意）サブグラフの `graph build` ログと GraphQL クエリ結果
 
 ## 8. 実行例
-- 実行ログ例：[`reports/Day10.md`](../reports/Day10.md)
+- 実行ログ例：[`docs/reports/Day10.md`](../reports/Day10.md)

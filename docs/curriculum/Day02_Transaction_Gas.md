@@ -189,4 +189,4 @@ curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   - [ ] 2.6の追加実験の結果（3パターンの比較）
 
 ## 6. 実行例
-- 実行ログ例：[`reports/Day02.md`](../reports/Day02.md)
+- 実行ログ例：[`docs/reports/Day02.md`](../reports/Day02.md)

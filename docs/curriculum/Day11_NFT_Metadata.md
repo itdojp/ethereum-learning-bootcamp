@@ -278,4 +278,4 @@ NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
 - [ ] IPFSのCID、`1.json` の最終版
 
 ## 11. 実行例
-- 実行ログ例：[`reports/Day11.md`](../reports/Day11.md)
+- 実行ログ例：[`docs/reports/Day11.md`](../reports/Day11.md)

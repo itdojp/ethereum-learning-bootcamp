@@ -221,4 +221,4 @@ npx hardhat run scripts/deploy-nft.ts --network sepolia
 - [ ] `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ
 
 ## 9. 実行例
-- 実行ログ例：[`reports/Day05.md`](../reports/Day05.md)
+- 実行ログ例：[`docs/reports/Day05.md`](../reports/Day05.md)

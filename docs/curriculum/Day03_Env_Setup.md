@@ -279,4 +279,4 @@ npx hardhat run scripts/deploy-token.ts --network sepolia
 - [ ] `.env` 設定（APIキーなどは伏せる）
 
 ## 7. 実行例
-- 実行ログ例：[`reports/Day03.md`](../reports/Day03.md)
+- 実行ログ例：[`docs/reports/Day03.md`](../reports/Day03.md)

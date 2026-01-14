@@ -262,4 +262,4 @@ slither .
 - [ ] 監査チェックリストの自己評価（5項目以上）
 
 ## 11. 実行例
-- 実行ログ例：[`reports/Day12.md`](../reports/Day12.md)
+- 実行ログ例：[`docs/reports/Day12.md`](../reports/Day12.md)

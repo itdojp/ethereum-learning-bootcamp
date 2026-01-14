@@ -271,4 +271,4 @@ npx hardhat test test/gas-args.ts
 - [ ] 最適化の設計判断を3行で要約
 
 ## 12. 実行例
-- 実行ログ例：[`reports/Day13.md`](../reports/Day13.md)
+- 実行ログ例：[`docs/reports/Day13.md`](../reports/Day13.md)

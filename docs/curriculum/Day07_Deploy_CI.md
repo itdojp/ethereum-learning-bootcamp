@@ -169,4 +169,4 @@ npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
 - [ ] GitHub Actions実行ページのスクリーンショット（承認→完了）
 
 ## 10. 実行例
-- 実行ログ例：[`reports/Day07.md`](../reports/Day07.md)
+- 実行ログ例：[`docs/reports/Day07.md`](../reports/Day07.md)

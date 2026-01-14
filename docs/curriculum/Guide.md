@@ -86,4 +86,4 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 - GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)（最短成功ルート→切り分け→エラー表）
 - The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)（最短成功ルート→切り分け→エラー表）
 
-各Dayの末尾にも「つまずきポイント」「実行例（`reports/`）」へのリンクがあるため、まずはそこから辿る。
+各Dayの末尾にも「つまずきポイント」「実行例（`docs/reports/`）」へのリンクがあるため、まずはそこから辿る。

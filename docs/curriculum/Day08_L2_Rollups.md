@@ -188,4 +188,4 @@ TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimism
 - [ ] ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）
 
 ## 9. 実行例
-- 実行ログ例：[`reports/Day08.md`](../reports/Day08.md)
+- 実行ログ例：[`docs/reports/Day08.md`](../reports/Day08.md)

@@ -49,4 +49,4 @@
 
 ## 6. 実行ログ（期待される出力例）
 本文は環境差分で出力が変わり得る。迷ったら `docs/reports/` の実行ログと突き合わせる。
-- 実行ログ一覧：[`reports/index.md`](../reports/index.md)
+- 実行ログ一覧：[`docs/reports/index.md`](../reports/index.md)
