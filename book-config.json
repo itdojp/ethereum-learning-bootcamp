@@ -1,0 +1,169 @@
+{
+  "title": "Ethereum Learning Bootcamp",
+  "description": "14日間でEthereum開発の基礎から応用まで学ぶ完全教材",
+  "author": "ITDO Inc.",
+  "version": "2026.01",
+  "language": "ja",
+  "license": "CC BY-NC-SA 4.0",
+  "repository": {
+    "url": "https://github.com/itdojp/ethereum-learning-bootcamp.git",
+    "branch": "main"
+  },
+  "structure": {
+    "chapters": [
+      {
+        "id": "introduction",
+        "title": "はじめに",
+        "description": "教材のゴール・進め方・前提を把握する"
+      },
+      {
+        "id": "toc",
+        "title": "目次（読む順序）",
+        "description": "Day01〜Day14の読む順序と導線"
+      },
+      {
+        "id": "guide",
+        "title": "読み方ガイド（学習ルート）",
+        "description": "目的別の学習ルートを選べるようにする"
+      },
+      {
+        "id": "common-prerequisites",
+        "title": "共通の前提",
+        "description": "全Dayで共通となる前提・共通操作を整理する"
+      },
+      {
+        "id": "part0",
+        "title": "Part 0：導入・環境（概要と進め方）",
+        "description": "導入と環境準備の全体像"
+      },
+      {
+        "id": "day01",
+        "title": "Day1：ブロックチェーン原理とEthereum全体像",
+        "description": "Ethereumの基本概念と全体像を掴む"
+      },
+      {
+        "id": "day02",
+        "title": "Day2：トランザクションとGas、EIP-1559",
+        "description": "トランザクション実行とガスモデルを理解する"
+      },
+      {
+        "id": "day03",
+        "title": "Day3：開発環境構築（Hardhat / Foundry）とテストネット接続",
+        "description": "開発環境の構築と接続を確立する"
+      },
+      {
+        "id": "part1",
+        "title": "Part 1：Solidityと標準規格（概要と進め方）",
+        "description": "Solidityと標準規格を学ぶための導入"
+      },
+      {
+        "id": "day04",
+        "title": "Day4：Solidity基礎（型・可視性・イベント・エラー・支払い）",
+        "description": "Solidityの基礎文法と設計の基礎"
+      },
+      {
+        "id": "day05",
+        "title": "Day5：ERC標準（ERC-20 / ERC-721）とOpenZeppelin実装",
+        "description": "標準規格と実装の扱い方を理解する"
+      },
+      {
+        "id": "part2",
+        "title": "Part 2：テスト・デプロイ・運用（概要と進め方）",
+        "description": "テストとデプロイ、運用の全体像"
+      },
+      {
+        "id": "day06",
+        "title": "Day6：ローカル検証・カバレッジ・ガス計測（Hardhat中心）",
+        "description": "テストと計測を通じて品質を担保する"
+      },
+      {
+        "id": "day07",
+        "title": "Day7：本番・L2デプロイ／Etherscan検証／手動承認付きCI",
+        "description": "デプロイと検証、CI導入の基本を押さえる"
+      },
+      {
+        "id": "part3",
+        "title": "Part 3：L2 / DApp / Indexing（概要と進め方）",
+        "description": "L2とDApp、インデクシングの全体像"
+      },
+      {
+        "id": "day08",
+        "title": "Day8：L2ロールアップ（Optimistic vs ZK）とDencun/Blob実測",
+        "description": "L2の考え方と性能特性を把握する"
+      },
+      {
+        "id": "day09",
+        "title": "Day9：DAppフロント（React + ethers）",
+        "description": "フロントエンドからの連携を体験する"
+      },
+      {
+        "id": "day10",
+        "title": "Day10：イベント購読とThe Graph（サブグラフ）",
+        "description": "イベントとインデクシングを扱う"
+      },
+      {
+        "id": "part4",
+        "title": "Part 4：NFT / Security / Gas（概要と進め方）",
+        "description": "NFT・セキュリティ・ガス最適化の全体像"
+      },
+      {
+        "id": "day11",
+        "title": "Day11：NFT実装（IPFS・メタデータ）と表示確認",
+        "description": "NFTの実装と周辺要素を理解する"
+      },
+      {
+        "id": "day12",
+        "title": "Day12：セキュリティ入門（再入・権限・静的解析・ファジング）",
+        "description": "代表的なリスクと防御の基礎を押さえる"
+      },
+      {
+        "id": "day13",
+        "title": "Day13：ガス最適化（設計原則・実測・比較）",
+        "description": "ガスコストを意識した設計と検証"
+      },
+      {
+        "id": "part5",
+        "title": "Part 5：統合（概要と進め方）",
+        "description": "総合演習の進め方"
+      },
+      {
+        "id": "day14",
+        "title": "Day14：総合演習 — デプロイ＋DApp＋（任意）Verify/CI/The Graph",
+        "description": "複数要素を統合して動かす"
+      }
+    ],
+    "appendices": [
+      {
+        "id": "appendix-glossary",
+        "title": "用語集（Glossary）"
+      },
+      {
+        "id": "appendix-verify",
+        "title": "Verify（Hardhat）"
+      },
+      {
+        "id": "appendix-ci",
+        "title": "GitHub Actions / CI"
+      },
+      {
+        "id": "appendix-the-graph",
+        "title": "The Graph"
+      },
+      {
+        "id": "appendix-account-abstraction",
+        "title": "Account Abstraction"
+      },
+      {
+        "id": "appendix-resources",
+        "title": "リソース集"
+      }
+    ]
+  },
+  "build": {
+    "outputDirectory": "docs",
+    "framework": "jekyll",
+    "enableNavigation": true,
+    "enableSyntaxHighlighting": true,
+    "enableMobileOptimization": true
+  }
+}

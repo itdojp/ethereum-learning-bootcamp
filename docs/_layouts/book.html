@@ -181,7 +181,13 @@
                 {% if site.repository and page.path %}
                 <div class="edit-page">
                     {% assign repository = site.repository | replace: "https://github.com/", "" %}
-                    <a href="https://github.com/{{ repository }}/edit/main/{{ page.path }}" 
+                    {%- assign edit_path = page.path -%}
+                    {%- if edit_path and edit_path != '' -%}
+                      {%- unless edit_path | slice: 0, 5 == 'docs/' -%}
+                        {%- assign edit_path = 'docs/' | append: edit_path -%}
+                      {%- endunless -%}
+                    {%- endif -%}
+                    <a href="https://github.com/{{ repository }}/edit/main/{{ edit_path }}" 
                        target="_blank" 
                        rel="noopener"
                        class="edit-link">

@@ -22,12 +22,13 @@ npm test
 - Hardhat Etherscan plugin docs: https://hardhat.org/hardhat-runner/docs/guides/verifying
 
 ## 構成
-- `curriculum/` : Day01〜Day14 各日の教科書＋ハンズオン
-- 読む順序（目次）：`curriculum/TOC.md`
-- `appendix/` : 補足資料（EIP, リソース集）
+- 公開用コンテンツ（GitHub Pages のソース想定）：`docs/`
+- `docs/curriculum/` : Day01〜Day14 各日の教科書＋ハンズオン
+- 読む順序（目次）：`docs/curriculum/TOC.md`
+- `docs/appendix/` : 補足資料（EIP, リソース集）
 - `contracts/`, `scripts/`, `test/`: 実践サンプル
 - `.github/workflows/`: CI/CD雛形
-- Quick reference: `appendix/glossary.md`（主要用語リスト）
+- Quick reference: `docs/appendix/glossary.md`（主要用語リスト）
 
 ## ライセンス / お問い合わせ
 **License**: CC BY-NC-SA 4.0 / Non-Commercial. Commercial use requires permission from ITDO Inc.  
