@@ -22,6 +22,7 @@
   - （任意）`scripts/token-transfer.ts` / `scripts/token-approve.ts`
 - 今回触らないこと：すべてのERC派生規格の網羅（まずはERC‑20/721の最小フローに集中）
 - 最短手順（迷ったらここ）：ERC‑20（2章）→ ERC‑721（3章）→ `npm test` で動作確認（Verifyは4章で任意）
+- ミニプロジェクト（通しで作るもの）：この章の `MyToken` は Day9/Day14 の DApp 接続で使う（全体像：[`docs/curriculum/Project.md`](./Project.md)）
 
 ---
 
