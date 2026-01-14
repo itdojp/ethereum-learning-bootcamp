@@ -15,6 +15,7 @@
 - フロントエンドは `dapp/` に同梱してある（新規作成不要）。
 - Day5 で `MyToken` をデプロイして、アドレスを控えている。
 - ブラウザにMetaMask等のウォレット拡張が入っている。
+- ミニプロジェクト（通しで作るもの）：Day14 を“完成”としてつなぐ（全体像：[`docs/curriculum/Project.md`](./Project.md)）
 - 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`dapp/.env.local` / `dapp/src/App.tsx` / `dapp/src/lib/web3.ts`
 - 今回触らないこと：UI/UXの作り込み（接続と切り分けが主題）
