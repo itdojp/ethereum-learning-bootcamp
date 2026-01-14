@@ -1,7 +1,8 @@
 # subgraph/ について
 
-このディレクトリは The Graph のサブグラフ（Subgraph Studio）用に使う。
-本リポジトリには生成物を同梱していないため、必要に応じて `graph init` で作成する。
+このページは、リポジトリルートに作る `subgraph/`（The Graph の生成物）について説明する。
+`docs/subgraph/` はGitHub Pages用の説明ページであり、生成物は本リポジトリには同梱していない。
+必要に応じて `graph init` で作成して進める。
 
 ## 推奨構成
 - `subgraph/event-token/`：Day10 の EventToken を対象にしたサブグラフ
@@ -16,5 +17,4 @@ graph init \
   subgraph/event-token
 ```
 
-> メモ：生成物の内容やコマンドのオプションは更新されることがある。公式ドキュメントと `appendix/the-graph.md` を参照する。
-
+> メモ：生成物の内容やコマンドのオプションは更新されることがある。公式ドキュメントと [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
