@@ -153,6 +153,16 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - Verify と `docs/DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
 - GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
 
+### 理解チェック（3問）
+- Q1. デプロイスクリプトを「汎用化」する狙いは何か？（手動操作との比較で）
+- Q2. `docs/DEPLOYMENTS.md` に残すべき情報を3つ挙げる（Verify/再現の観点で）。
+- Q3. GitHub Actions の手動承認ゲートは、どんな事故を防ぐための仕組みか？
+
+### 解答例（短く）
+- A1. 同じ手順を安全に繰り返せるようにし、引数や対象コントラクトの差し替えも明示できる。人手によるミス（ネットワーク違い、引数違い等）を減らす。
+- A2. 例：network/chainId、コントラクト名とアドレス、デプロイTxHash（加えてsolc/optimizer設定があるとさらに良い）。
+- A3. 誤ったブランチ/タイミングで本番やL2へデプロイしてしまう事故を減らす（人間の確認ポイントを作る）。
+
 ### 確認コマンド（最小）
 ```bash
 # 要 .env（RPC/PRIVATE_KEY）。少額で。

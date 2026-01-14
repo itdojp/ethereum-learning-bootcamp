@@ -173,6 +173,16 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
+### 理解チェック（3問）
+- Q1. “再現できる成果物”として、最低限どの2つのファイル/ディレクトリを更新するか？
+- Q2. DAppが動かないときの典型原因（chainId/アドレス不一致）を、どこで確認してどう直すか？
+- Q3. Verify/CI/The Graph は、いつ「任意」から「必要」に変わりやすいか？
+
+### 解答例（短く）
+- A1. `docs/DEPLOYMENTS.md`（デプロイ記録）と `docs/reports/`（実行ログ）を残す。
+- A2. `dapp/.env.local` の `VITE_CHAIN_ID` / `VITE_*_ADDRESS` と、MetaMask側の接続チェーンを確認し、同じチェーン上のアドレスを入れ直す。
+- A3. チームで共有/運用する段階（第三者がExplorerで確認したい、PRで自動テストしたい、履歴/集計を安定して取りたい）になると必要になりやすい。
+
 ### 確認コマンド（最小）
 ```bash
 # ルートで一括チェック（テスト + リンクチェック + dapp build）
