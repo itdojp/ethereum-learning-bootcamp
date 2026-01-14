@@ -8,13 +8,13 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 
 この教材は Day01〜Day14 を順番に進める構成だが、初心者が迷わないように「読む順序」「環境の使い分け」「つまずきポイントの参照先」をまとめる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
 ## 1. まず読むページ（最短）
-1) 共通の前提：[`curriculum/README.md`](./README.md)  
-2) 目次（読む順序）：[`curriculum/TOC.md`](./TOC.md)  
+1) 共通の前提：[`docs/curriculum/README.md`](./README.md)  
+2) 目次（読む順序）：[`docs/curriculum/TOC.md`](./TOC.md)  
 3) 用語に迷ったら：[`appendix/glossary.md`](../appendix/glossary.md)  
 
 ---

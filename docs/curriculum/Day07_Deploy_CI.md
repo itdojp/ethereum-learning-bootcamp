@@ -7,7 +7,7 @@
 - ソース検証（[Verify](../appendix/glossary.md)）と成果の可観測性を確保し、Explorerで確認できるようになる。
 - GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
@@ -15,7 +15,7 @@
 - Hardhat構成はDay3までに完了。
 - `.env`に鍵とRPCを設定し、**秘密情報はGitにコミットしない**。
 - 先に読む付録：[`appendix/verify.md`](../appendix/verify.md) / [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `.github/workflows/deploy.yml` / `DEPLOYMENTS.md` / `hardhat.config.ts`（任意）
+- 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `.github/workflows/deploy.yml` / `docs/DEPLOYMENTS.md` / `hardhat.config.ts`（任意）
 - 今回触らないこと：いきなり多額で本番デプロイ（まずは少額・段階的に進める）
 - 最短手順（迷ったらここ）：1章の `deploy-generic.ts` で少額デプロイ → 2章でVerify（任意）→ 4章で手動承認付きCIの要点を確認
 
@@ -113,7 +113,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ---
 
 ## 5. デプロイ前後のドキュメント化
-[`DEPLOYMENTS.md`](../DEPLOYMENTS.md)（同梱。追記して使う）
+[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md)（同梱。追記して使う）
 ```
 # Deployments
 
@@ -134,7 +134,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 1. **小額**でL2（例：Optimism）へ先行デプロイ。
 2. Etherscan/BlockscoutでVerify。
 3. DApp・サブグラフ・モニタを接続して動作確認（Day10以降）。
-4. Mainnetに本デプロイ。[`DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
+4. Mainnetに本デプロイ。[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
 
 ---
 
@@ -150,7 +150,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 ## 8. まとめ
 - デプロイをスクリプト化し、対象コントラクトと引数を環境変数で切り替えられる形にした。
-- Verify と `DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
+- Verify と `docs/DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
 - GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
 
 ### 確認コマンド（最小）
@@ -165,7 +165,7 @@ npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
 ## 9. 提出物
 - [ ] デプロイログ一式（ネットワーク、アドレス、TxHash）
 - [ ] Etherscan/BlockscoutのVerifyリンク
-- [ ] [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分
+- [ ] [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分
 - [ ] GitHub Actions実行ページのスクリーンショット（承認→完了）
 
 ## 10. 実行例

@@ -3,7 +3,7 @@
 ## 対象
 - `contracts/GasBench.sol`：`benchSumMemory/benchSumCalldata` を持つベンチ用コントラクト。
 - `test/gasbench.ts`：bench関数をTx実行して `hardhat-gas-reporter` に載せるテスト。
-- `curriculum/Day06_Local_Testing.md` は既に bench 方針を説明済み。
+- [`docs/curriculum/Day06_Local_Testing.md`](../curriculum/Day06_Local_Testing.md) は既に bench 方針を説明済み。
 
 ## コマンド
 ```bash

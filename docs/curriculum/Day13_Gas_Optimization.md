@@ -7,7 +7,7 @@
 - 設計で削減できるポイント（packing、immutable/constant、custom errors、関数属性）を実践できるようになる。
 - Hardhat/Foundryで**同一機能の実装差**を測定し、表にまとめられるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 

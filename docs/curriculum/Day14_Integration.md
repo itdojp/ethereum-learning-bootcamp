@@ -7,13 +7,13 @@
 - DApp（`dapp/`）から残高確認・送金・イベント購読までを一連で動かせるようになる。
 - （任意）[Verify](../appendix/glossary.md)/[CI](../appendix/glossary.md)/[The Graph](../appendix/glossary.md) の導線を整えて、チーム開発で破綻しない形にできるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
 ## 0. 前提
 - 先に読む付録：[`appendix/verify.md`](../appendix/verify.md) / [`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) / [`appendix/the-graph.md`](../appendix/the-graph.md)
-- 触るファイル（主なもの）：`.env` / `scripts/deploy-token.ts` / `scripts/deploy-event-token.ts` / `dapp/.env.local` / `DEPLOYMENTS.md`
+- 触るファイル（主なもの）：`.env` / `scripts/deploy-token.ts` / `scripts/deploy-event-token.ts` / `dapp/.env.local` / `docs/DEPLOYMENTS.md`
 - 今回触らないこと：最初から全部を完璧に通すこと（任意項目は“必要になったら”でよい）
 - 最短手順（迷ったらここ）：2.1 で `.env` → 2.2 でデプロイ → 3.1 で `dapp/.env.local` → 3.2 で起動・接続
 
@@ -26,10 +26,13 @@
 ├── scripts/          # デプロイ／操作スクリプト
 ├── test/             # テスト
 ├── dapp/             # フロント（Vite + React）
-├── curriculum/       # Day01〜Day14
-├── appendix/         # つまずき補足・用語
-├── subgraph/         # The Graph（生成物は必要に応じて作る）
-└── DEPLOYMENTS.md    # デプロイ記録（同梱）
+└── docs/             # GitHub Pages（公開用コンテンツ）
+    ├── curriculum/   # Day01〜Day14
+    ├── appendix/     # つまずき補足・用語
+    ├── subgraph/     # The Graph（生成物は必要に応じて作る）
+    ├── reports/      # 実行ログ
+    ├── CHANGELOG.md  # 更新履歴
+    └── DEPLOYMENTS.md  # デプロイ記録
 ```
 
 ---
@@ -63,7 +66,7 @@ npx hardhat run scripts/deploy-event-token.ts --network optimism
 
 出力されたアドレスを控える。
 
-### 2.3 [`DEPLOYMENTS.md`](../DEPLOYMENTS.md) に残す
+### 2.3 [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に残す
 最低限、次を残すと後で詰まりにくい：
 - network / chainId
 - コントラクト名とアドレス
@@ -138,14 +141,14 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 ---
 
 ## 6. フェーズ5：The Graph（任意）
-サブグラフの生成・運用は [`subgraph/README.md`](../subgraph/README.md) と [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
+サブグラフの生成・運用は [`docs/subgraph/README.md`](../subgraph/README.md) と [`appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
 最小は Day10 と同様に「EventToken を対象」にするのが分かりやすい。
 
 ---
 
 ## 7. チェックリスト
-- [ ] デプロイしたアドレスを `DEPLOYMENTS.md` に記録した
+- [ ] デプロイしたアドレスを `docs/DEPLOYMENTS.md` に記録した
 - [ ] DApp で chainId / ETH残高 / MyToken残高が表示できる
 - [ ] DApp から MyToken を送金できる（少額で）
 - [ ] EventToken のイベントを DApp で購読できる（任意）
@@ -166,7 +169,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 ---
 
 ## 9. まとめ
-- デプロイ記録（`DEPLOYMENTS.md`）→DApp接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
+- デプロイ記録（`docs/DEPLOYMENTS.md`）→DApp接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
 - `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
@@ -187,7 +190,7 @@ npm --prefix dapp run dev
 ```
 
 ## 10. 提出物
-- [ ] `DEPLOYMENTS.md` の追記（鍵は伏せる）
+- [ ] `docs/DEPLOYMENTS.md` の追記（鍵は伏せる）
 - [ ] DApp の動作スクリーンショット
 - [ ] TxHash（送金・イベント発火の実績）
 - [ ] （任意）Verifyリンク / CI実行ログ / [Subgraph](../appendix/glossary.md) buildログ
