@@ -19,7 +19,7 @@
 3) Day10：イベント/The Graph：[`Day10_Events_TheGraph.md`](./Day10_Events_TheGraph.md)
 
 ## 先に読む付録（詰まったらここ）
-- The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 
 ## チェックリスト（ここまでできれば次へ進める）
 - [ ] Day9の `dapp/` をビルドできる（`npm --prefix dapp ci` → `npm --prefix dapp run build`）
@@ -28,4 +28,3 @@
 ---
 
 [← 目次](./TOC.md)
-

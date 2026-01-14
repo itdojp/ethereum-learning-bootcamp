@@ -60,6 +60,6 @@ TOKEN=<TOKEN> npx hardhat run scripts/measure-contract.ts --network localhost
 
 ## DApp / Verify / CI / The Graph（入口）
 - DApp：`cd dapp && npm ci && npm run build` が成功（UI動作はMetaMask等が必要）。
-- Verify：`appendix/verify.md`
+- Verify：`docs/appendix/verify.md`
 - CI：`.github/workflows/test.yml`（PR/Pushで `npm test`）
-- The Graph：`appendix/the-graph.md` / `subgraph/README.md`
+- The Graph：`docs/appendix/the-graph.md` / `docs/subgraph/README.md`

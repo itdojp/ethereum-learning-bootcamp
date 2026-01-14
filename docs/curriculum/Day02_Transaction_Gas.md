@@ -13,7 +13,7 @@
 ## 0. 前提
 - Day1 で `RPC` を設定済み（2.5 の CLI パートで使う）
 - Remix IDE を使う場合はブラウザで操作する（ウォレット連携は環境により異なる）
-- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
+- 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：（任意）`REPORT.md`
 - 今回触らないこと：ガス最適化の細部（Day13）／ガス計測の実装（Day6）
 - 最短手順（迷ったらここ）：2.2 でコントラクト作成 → 2.3 で `store/add` の違い確認 → 2.4 でEtherscan解析（2.5は任意）

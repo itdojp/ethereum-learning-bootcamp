@@ -15,7 +15,7 @@
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
 - Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
-- 先に読む付録：[`appendix/glossary.md`](../appendix/glossary.md) / [`appendix/verify.md`](../appendix/verify.md)（任意）
+- 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md) / [`docs/appendix/verify.md`](../appendix/verify.md)（任意）
 - 触るファイル（主なもの）：
   - ERC‑20：`contracts/MyToken.sol` / `scripts/deploy-token.ts` / `test/erc20.ts`
   - ERC‑721：`contracts/MyNFT.sol` / `scripts/deploy-nft.ts` / `scripts/mint-nft.ts` / `test/mynft.ts`
@@ -180,7 +180,7 @@ npm i -D @nomicfoundation/hardhat-verify
 npx hardhat verify --network sepolia <TOKEN_ADDRESS> 1000000000000000000000000
 npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECEIVER_ADDR> 500
 ```
-> つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
+> つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
 
 ---
 
@@ -196,7 +196,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 |---|---|---|
 | `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm ci`（または `npm i @openzeppelin/contracts`）を実行する |
 | スクリプトが落ちる（`TOKEN` など） | 環境変数未設定 / `--network` 不一致 | `TOKEN`/`NFT_ADDRESS` 等の値と、`--network` を見直す |
-| Verifyが失敗する | APIキー/引数/コンパイラ設定不一致 | [`appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
+| Verifyが失敗する | APIキー/引数/コンパイラ設定不一致 | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
 
 ---
 

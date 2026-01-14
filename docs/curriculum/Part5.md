@@ -13,9 +13,9 @@
 1) Day14：統合：[`Day14_Integration.md`](./Day14_Integration.md)
 
 ## 先に読む付録（任意だが詰まりやすい）
-- Verify：[`appendix/verify.md`](../appendix/verify.md)
-- GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- The Graph：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- Verify：[`docs/appendix/verify.md`](../appendix/verify.md)
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 
 ## チェックリスト（ここまでできれば完走）
 - [ ] Day14のチェックリストを “Done” にできる（全部でなくてもよい）
@@ -24,4 +24,3 @@
 ---
 
 [← 目次](./TOC.md)
-

@@ -1,10 +1,10 @@
 # Ethereumカリキュラム補足資料集（Appendix）
 
 ## 0. 本リポジトリ内の補足
-- Verify（ソース検証）：`appendix/verify.md`
-- GitHub Actions / CI：`appendix/ci-github-actions.md`
-- The Graph（Subgraph Studio）：`appendix/the-graph.md`
-- AA（ERC‑4337 / EIP‑7702）：`appendix/account-abstraction.md`
+- Verify（ソース検証）：`docs/appendix/verify.md`
+- GitHub Actions / CI：`docs/appendix/ci-github-actions.md`
+- The Graph（Subgraph Studio）：`docs/appendix/the-graph.md`
+- AA（ERC‑4337 / EIP‑7702）：`docs/appendix/account-abstraction.md`
 
 ## A. 推奨学習リソース
 

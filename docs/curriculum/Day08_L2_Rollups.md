@@ -14,7 +14,7 @@
 ## 0. 前提
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
 - L2（例：Optimism）へ送る場合は、対象チェーン側に手数料分のETHが必要だ（ブリッジ等で用意する）
-- 先に読む付録：[`appendix/verify.md`](../appendix/verify.md)（任意：L2でVerifyする場合）
+- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（任意：L2でVerifyする場合）
 - 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `scripts/measure-fee.ts` / `scripts/measure-contract.ts` / `metrics/metrics.csv`
 - 今回触らないこと：各L2の運用最適解（まずは「Blob前提のコスト構造」を押さえる）
 - 最短手順（迷ったらここ）：2.2 でL2へ再デプロイ → 3.1 で `measure-fee.ts` を回してL1/L2の差分を記録（Verifyは任意）
@@ -101,7 +101,7 @@ CONTRACT=MyToken ARGS=1000000000000000000000 \
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000
 ```
-> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら [`appendix/verify.md`](../appendix/verify.md) を参照する。
+> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
@@ -160,7 +160,7 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 | 症状 | 原因 | 対策 |
 |---|---|---|
 | `insufficient funds` | L2で手数料不足 | L2のETHをブリッジまたは取引所から供給 |
-| Verify失敗 | コンパイラ設定差分 | `hardhat.config.ts` の設定を一致させる。詰まったら [`appendix/verify.md`](../appendix/verify.md) |
+| Verify失敗 | コンパイラ設定差分 | `hardhat.config.ts` の設定を一致させる。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
 | 異常な`latencyMs` | RPC遅延/混雑 | 別RPCで再測、再試行、バッチ間隔を変える |
 
 ---
