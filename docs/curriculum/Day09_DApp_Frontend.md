@@ -7,7 +7,7 @@
 - ネットワーク切替（Local/Sepolia/Optimism）とエラー処理の考え方を理解し、典型的な失敗を切り分けできるようになる。
 - ETH残高、ERC‑20残高の表示と送金UIを動かして確認できるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 

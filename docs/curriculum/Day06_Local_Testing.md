@@ -7,7 +7,7 @@
 - `solidity-coverage` と `hardhat-gas-reporter` を使い、品質とコストを数値で把握できるようになる。
 - `storage`/`memory`/`calldata` とイベント量の違いを実測し、差分を説明できるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
@@ -213,7 +213,7 @@ jobs:
 ## 10. まとめ
 - テスト・カバレッジ・ガス計測をローカルで一通り回し、品質とコストを数値で把握する入口を作った。
 - `pure/view` は call 扱いになりやすいため、計測したい処理は「Tx化」して測る方針を押さえた。
-- CI で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
+- [CI](../appendix/glossary.md) で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
 
 ### 確認コマンド（最小）
 ```bash

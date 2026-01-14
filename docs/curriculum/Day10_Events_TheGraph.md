@@ -7,7 +7,7 @@
 - ブラウザからリアルタイム購読（ethers）を動かして表示を確認できるようになる。
 - [The Graph](../appendix/glossary.md)で履歴データをインデックス化し、[GraphQL](../appendix/glossary.md)で取得できるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
@@ -83,10 +83,10 @@ npm run dev
 ---
 
 ## 4. ハンズオンC：The Graph（サブグラフ）
-The Graph の手順は更新されやすい。ここでは「作る場所」と「詰まりやすい点」だけ押さえ、詳細は補足へ寄せる。
+The Graph の手順は更新されやすい。ここでは [Subgraph](../appendix/glossary.md)（サブグラフ）について「作る場所」と「詰まりやすい点」だけ押さえ、詳細は補足へ寄せる。
 
 - 生成物はこのリポジトリでは同梱しない。
-- `subgraph/` 配下に生成する運用を推奨する（`subgraph/README.md`）。
+- `subgraph/` 配下に生成する運用を推奨する（参照：[`docs/subgraph/README.md`](../subgraph/README.md)）。
 
 ### 4.1 ひな形生成（例：Sepolia）
 ```bash

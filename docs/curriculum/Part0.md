@@ -14,7 +14,7 @@
 - いきなり複雑なDAppを作る（まずはコントラクトとテストの基礎を固める）。
 
 ## 最短ルート（迷ったらここだけ）
-1) 共通の前提を読む：[`curriculum/README.md`](./README.md)  
+1) 共通の前提を読む：[`docs/curriculum/README.md`](./README.md)  
 2) Day1：全体像とRPC体験：[`Day01_Ethereum_Intro.md`](./Day01_Ethereum_Intro.md)  
 3) Day2：GasとEIP‑1559：[`Day02_Transaction_Gas.md`](./Day02_Transaction_Gas.md)  
 4) Day3：環境構築：[`Day03_Env_Setup.md`](./Day03_Env_Setup.md)
@@ -27,4 +27,3 @@
 ---
 
 [← 目次](./TOC.md)
-

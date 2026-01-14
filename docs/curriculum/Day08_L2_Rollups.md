@@ -7,7 +7,7 @@
 - Dencun（EIP‑4844 / [Blob](../appendix/glossary.md)）の要点を押さえ、L2手数料を実測して記録できるようになる。
 - 既存コントラクトをL2（Optimism、任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較できるようになる。
 
-> まず `curriculum/README.md` の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
 ---
 
@@ -151,7 +151,7 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 
 ## 5. 評価観点とドキュメント
 - `metrics.csv` に **feeEth** と **latencyMs** を時刻つきで蓄積。
-- `DEPLOYMENTS.md` に L2デプロイ・Verify・ブリッジ手順の要約を追記。
+- [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に L2デプロイ・Verify・ブリッジ手順の要約を追記。
 - 差分が大きいときは、**RPCベンダ**や**Blob可用状況**を確認。
 
 ---
@@ -168,7 +168,7 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 ## 7. まとめ
 - rollup-centric 前提では、L2コスト構造の中心が「L1へ投稿するデータ（DA）」になりやすいことを押さえた。
 - L1/L2へデプロイし、手数料（fee）と確定までの体感（latency）を同じ物差しで測る方法を整理した。
-- 計測結果は `metrics.csv` や `DEPLOYMENTS.md` に残し、後から比較できる形にするのが重要だ。
+- 計測結果は `metrics.csv` や [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に残し、後から比較できる形にするのが重要だ。
 
 ### 確認コマンド（最小）
 ```bash
