@@ -23,11 +23,11 @@ permalink: /
 - L2（Blob前提のコスト構造）や、Verify/CI/The Graph の「つまずきポイント」を避けながら進められる
 
 ## 進め方（最短ルート）
-1. 共通の前提を読む：[`curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
-2. 通しで作るもの（ミニプロジェクト）：[`curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
-3. 読み方ガイド：[`curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
+1. 共通の前提を読む：[`docs/curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
+2. 通しで作るもの（ミニプロジェクト）：[`docs/curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
+3. 読み方ガイド：[`docs/curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
 4. 用語に迷ったら：[`docs/appendix/glossary.md`]({{ '/appendix/glossary/' | relative_url }})
-5. 目次どおりに進める：[`curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
+5. 目次どおりに進める：[`docs/curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
 ## Quick Start（ローカル検証）
 ```bash
@@ -37,9 +37,9 @@ npm test
 ```
 
 ## 目次（読む順序）
-- まずは Day1 から：[`curriculum/Day01_Ethereum_Intro.md`]({{ '/curriculum/Day01_Ethereum_Intro/' | relative_url }})
-- 通しで作るもの（ミニプロジェクト）：[`curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
-- 全体の目次：[`curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
+- まずは Day1 から：[`docs/curriculum/Day01_Ethereum_Intro.md`]({{ '/curriculum/Day01_Ethereum_Intro/' | relative_url }})
+- 通しで作るもの（ミニプロジェクト）：[`docs/curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
+- 全体の目次：[`docs/curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
 
 ## つまずきポイント（先に読む）
 - Verify：[`docs/appendix/verify.md`]({{ '/appendix/verify/' | relative_url }})
@@ -48,4 +48,4 @@ npm test
 
 ## 更新履歴
 - 現行バージョン：v{{ site.version }}
-- 更新履歴：[`CHANGELOG.md`]({{ '/CHANGELOG/' | relative_url }})
+- 更新履歴：[`docs/CHANGELOG.md`]({{ '/CHANGELOG/' | relative_url }})
