@@ -5,6 +5,7 @@
 
 読む順序は [`docs/curriculum/TOC.md`](./TOC.md) を参照する。
 目的別の進め方（学習ルート）は [`docs/curriculum/Guide.md`](./Guide.md) を参照する。
+通しで作るもの（ミニプロジェクト）は [`docs/curriculum/Project.md`](./Project.md) を参照する。
 
 ## 0. 表記ルール（この本の読み方）
 - `<...>` は **自分の値に置き換える**（例：`<YOUR_API_KEY>`, `<PRIVATE_KEY>`, `<CONTRACT_ADDRESS>`）。
@@ -42,9 +43,9 @@
   - `await contract.waitForDeployment()` / `await contract.getAddress()`
 
 ## 5. つまずきポイント（先に読む）
-- ソース検証（Verify）：[`appendix/verify.md`](../appendix/verify.md)
-- GitHub Actions / CI：[`appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- The Graph（Subgraph Studio）：[`appendix/the-graph.md`](../appendix/the-graph.md)
+- ソース検証（Verify）：[`docs/appendix/verify.md`](../appendix/verify.md)
+- GitHub Actions / CI：[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
+- The Graph（Subgraph Studio）：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 
 ## 6. 実行ログ（期待される出力例）
 本文は環境差分で出力が変わり得る。迷ったら `docs/reports/` の実行ログと突き合わせる。
