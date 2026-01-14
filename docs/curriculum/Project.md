@@ -33,7 +33,85 @@ description: "Day01〜Day14 を通して、MyToken / EventToken / DApp を“1�
 
 ---
 
-## 3. Dayごとの位置づけ（プロダクト視点）
+## 3. 最短で動かす（コマンド）
+ここでは「まず動くところまで」を最短で通す。迷ったらローカルで一度通してから、テストネットへ進む。
+
+### 3.1 ローカル（推奨：Hardhat node）
+#### 3.1.1 Hardhat node を起動する（Terminal A）
+```bash
+npx hardhat node
+```
+期待される出力（最小例）：
+```text
+Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
+```
+
+#### 3.1.2 `.env` を用意してデプロイする（Terminal B）
+```bash
+cp .env.example .env
+```
+`npx hardhat node` の出力にある「テスト用の秘密鍵」を `.env` の `PRIVATE_KEY` に入れる（学習用。鍵はコミットしない）。
+
+デプロイ：
+```bash
+npx hardhat run scripts/deploy-token.ts --network localhost
+npx hardhat run scripts/deploy-event-token.ts --network localhost
+```
+期待される出力（最小例）：
+```text
+MTK: 0x...
+EventToken: 0x...
+```
+
+#### 3.1.3 DApp を起動して接続する（Terminal C）
+```bash
+cp dapp/.env.example dapp/.env.local
+```
+`dapp/.env.local` を編集する（ローカルは `VITE_CHAIN_ID=31337`）：
+```
+VITE_CHAIN_ID=31337
+VITE_TOKEN_ADDRESS=0x...   # deploy-token.ts の出力（MTK）
+VITE_EVENT_TOKEN=0x...     # deploy-event-token.ts の出力（EventToken）
+```
+
+起動：
+```bash
+npm --prefix dapp ci
+npm --prefix dapp run dev
+```
+期待される出力（最小例）：
+```text
+Local:   http://localhost:5173/
+```
+
+#### 3.1.4 イベントを流して購読を確認する（任意）
+```bash
+EVT=0x... npx hardhat run scripts/use-event-token.ts --network localhost
+```
+
+成功判定（最低限）：
+- DApp で Connect → Switch → Refresh が通り、残高が表示される
+- `EVT=...` 実行後に、DApp 側のイベント表示が更新される（Day10 参照）
+
+### 3.2 テストネット（例：Sepolia）
+テストネットは「RPC/鍵/残高/Explorer/Verify」など外部依存が増える。まずローカルで動かしてから進めるとよい。
+
+1) `.env` に `SEPOLIA_RPC_URL` / `PRIVATE_KEY` を設定し、少額のテストETHを入れる  
+2) デプロイする：
+```bash
+npx hardhat run scripts/deploy-token.ts --network sepolia
+npx hardhat run scripts/deploy-event-token.ts --network sepolia
+```
+3) `dapp/.env.local` を編集する（Sepolia は `VITE_CHAIN_ID=11155111`）  
+4) DApp を起動して、MetaMask の接続チェーンも Sepolia に揃える（Day9 参照）  
+
+> （任意）Verify は [`docs/appendix/verify.md`](../appendix/verify.md) の「最短成功ルート」→「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
+
+> 記録（`docs/DEPLOYMENTS.md` と `docs/reports/`）の書き方は Day14 を正とする：[`Day14_Integration.md`](./Day14_Integration.md)
+
+---
+
+## 4. Dayごとの位置づけ（プロダクト視点）
 | Day | 章の主題 | プロダクトとしての増分（何が進むか） |
 |---|---|---|
 | Day01 | 全体像 / RPC | ネットワーク・用語・数値の読み方を揃える（迷子防止） |
@@ -53,11 +131,10 @@ description: "Day01〜Day14 を通して、MyToken / EventToken / DApp を“1�
 
 ---
 
-## 4. 成果物（最低限）
+## 5. 成果物（最低限）
 本当に役立つのは「あとで再現できる」成果物だ。最小でも次を残す。
 
 - `docs/DEPLOYMENTS.md`：ネットワーク、アドレス、TxHash、設定（solc/optimizer）  
 - `docs/reports/`：実行したコマンドと、成功判定に必要な最小ログ  
 
 > 例の書き方は Day14 を正とする：[`Day14_Integration.md`](./Day14_Integration.md)
-
