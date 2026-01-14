@@ -6,6 +6,7 @@
 読む順序は [`docs/curriculum/TOC.md`](./TOC.md) を参照する。
 目的別の進め方（学習ルート）は [`docs/curriculum/Guide.md`](./Guide.md) を参照する。
 通しで作るもの（ミニプロジェクト）は [`docs/curriculum/Project.md`](./Project.md) を参照する。
+進捗チェック（完走チェックリスト）は [`docs/curriculum/Progress.md`](./Progress.md) を参照する。
 
 ## 0. 表記ルール（この本の読み方）
 - `<...>` は **自分の値に置き換える**（例：`<YOUR_API_KEY>`, `<PRIVATE_KEY>`, `<CONTRACT_ADDRESS>`）。
