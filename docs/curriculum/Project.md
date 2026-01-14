@@ -11,6 +11,8 @@ description: "Day01〜Day14 を通して、MyToken / EventToken / DApp を“1�
 
 > まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
+> 進捗チェック（完走チェックリスト）：[`docs/curriculum/Progress.md`](./Progress.md)
+
 ---
 
 ## 1. 何を作るか（完成イメージ）
