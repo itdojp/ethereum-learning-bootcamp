@@ -205,6 +205,16 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 - ERC‑20 の `approve→transferFrom` フローを、テストまたはスクリプトで再現した。
 - NFT の `tokenURI` とメタデータ（IPFS/HTTP Gateway）の確認方法を整理した。
 
+### 理解チェック（3問）
+- Q1. ERC‑20 の `approve → transferFrom` で、「誰が」「誰に」「何の権限」を渡すか？
+- Q2. ERC‑721 の `tokenURI` を確認するとき、最低限どの2点をチェックすると安心か？
+- Q3. Verify が失敗するとき、まず一致を確認すべき情報を3つ挙げる。
+
+### 解答例（短く）
+- A1. 保有者（owner）が、第三者（spender）に「自分の残高から一定量を引き出してよい」権限（allowance）を渡す。
+- A2. `tokenURI` の戻り値（参照先）が意図どおりか、参照先のメタデータ/画像が取得できるか。
+- A3. 例：コンストラクタ引数、solc/optimizer設定、APIキーやネットワーク（Explorer）が正しいか。
+
 ### 確認コマンド（最小）
 ```bash
 npx hardhat test test/erc20.ts

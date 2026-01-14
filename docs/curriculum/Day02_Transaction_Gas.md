@@ -170,6 +170,16 @@ function clear() external { count = 0; }
 - `add()` のような `pure` 関数は安価。
 - EIP‑1559により手数料が自動調整され、ユーザー体験が改善された。
 
+### 理解チェック（3問）
+- Q1. `gasLimit` と `gasUsed` の違いは何か？
+- Q2. `effectiveGasPrice` は何を表すか？Tx手数料（ETH）はどう計算するか？
+- Q3. `pure/view` の関数は「Txとして」実行されないことがある。Txとして測りたいときの方針は何か？
+
+### 解答例（短く）
+- A1. `gasLimit` は「ここまでしか使わない」という上限で、`gasUsed` は実際に消費した量だ。
+- A2. 実際に支払った 1 gas あたりの価格だ。概ね `fee = gasUsed * effectiveGasPrice`（wei）で計算し、ETHへ換算する。
+- A3. call ではなくTxとして送る必要がある。例：計測用にTxを発生させる関数（状態更新/イベント）を用意し、それをスクリプトやテストから実行して計測する。
+
 ### 確認コマンド（最小）
 ```bash
 # Day1 で設定した RPC を使う

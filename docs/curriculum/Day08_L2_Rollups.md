@@ -170,6 +170,16 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 - L1/L2へデプロイし、手数料（fee）と確定までの体感（latency）を同じ物差しで測る方法を整理した。
 - 計測結果は `metrics.csv` や [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に残し、後から比較できる形にするのが重要だ。
 
+### 理解チェック（3問）
+- Q1. Optimistic Rollup と ZK Rollup の違いを、確定までの仕組み（チャレンジ/証明）で説明してみる。
+- Q2. EIP‑4844（Blob）と EIP‑7691（Blob throughput増）は、L2手数料にどう影響し得るか？
+- Q3. 手数料・確定時間を実測するとき、最低限どんな項目を記録するとよいか？
+
+### 解答例（短く）
+- A1. Optimistic は「正しい」と楽観し、一定期間で不正を指摘できる設計になりやすい。ZK は有効性証明を添付し、L1検証が通れば確定に近い。
+- A2. BlobはDAコストの前提を変え、rollupの投稿単価が下がり得る。throughput増は供給枠が増えることで、混雑時の単価上昇を抑え得る。
+- A3. 例：network/chainId、TxHash、gasUsed/effectiveGasPrice（または手数料ETH）、計測時刻とlatency、使用RPC。
+
 ### 確認コマンド（最小）
 ```bash
 # 要 .env（OPTIMISM_RPC_URL / PRIVATE_KEY）と、Optimism 側の手数料分ETH

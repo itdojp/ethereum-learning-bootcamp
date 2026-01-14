@@ -264,6 +264,16 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 - `.env` に `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、秘密情報をコミットしない運用を押さえた。
 - `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
 
+### 理解チェック（3問）
+- Q1. `.env` には何を入れるか？それをGitにコミットしない理由は何か？
+- Q2. `--network sepolia` を付けると、何が切り替わるか？
+- Q3. デプロイTxが失敗するとき、最初に確認するべきことを3つ挙げる。
+
+### 解答例（短く）
+- A1. RPCエンドポイントや秘密鍵など（例：`SEPOLIA_RPC_URL`, `PRIVATE_KEY`）。漏れると資産/権限を奪われ得るため、Gitに残さない。
+- A2. Hardhatのネットワーク設定（RPC、chainId、送信アカウントなど）が切り替わり、Txの送信先チェーンが変わる。
+- A3. 例：RPCが有効か、秘密鍵の形式（`0x` など）が正しいか、送信元アカウントに手数料分の残高があるか。
+
 ### 確認コマンド（最小）
 ```bash
 npm test
