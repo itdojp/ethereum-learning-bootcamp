@@ -10,7 +10,7 @@ introduction:
   - title: "🧩 ミニプロジェクト（通しで作るもの）"
     path: "/curriculum/Project/"
   - title: "🧰 共通の前提"
-    path: "/curriculum/README/"
+    path: "/curriculum/"
 
 chapters:
   - part: "Part 0：導入・環境"
