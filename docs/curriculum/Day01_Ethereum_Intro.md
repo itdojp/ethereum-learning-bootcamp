@@ -6,7 +6,7 @@
 - ブロックチェーンの構造とEthereumの基本概念を理解し、簡単に説明できるようになる。
 - 実際にRPCを叩いてネットワーク情報を取得し、結果を確認できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

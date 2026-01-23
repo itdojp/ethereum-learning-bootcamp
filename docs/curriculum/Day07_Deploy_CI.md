@@ -7,7 +7,7 @@
 - ソース検証（[Verify](../appendix/glossary.md)）と成果の可観測性を確保し、Explorerで確認できるようになる。
 - GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

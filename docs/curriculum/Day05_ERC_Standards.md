@@ -7,7 +7,7 @@
 - `approve/allowance/transferFrom` のフローを、実際の取引で確認できるようになる。
 - NFTの `tokenURI` とメタデータの基礎を理解し、簡単に説明できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

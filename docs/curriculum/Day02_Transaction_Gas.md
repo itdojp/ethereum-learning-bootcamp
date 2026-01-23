@@ -6,7 +6,7 @@
 - トランザクション構造、署名、Gas、EIP‑1559料金モデルを理解し、簡単に説明できるようになる。
 - コントラクトを用いてGas使用量を比較し、[Etherscan](../appendix/glossary.md)で手数料を確認・解析できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 
