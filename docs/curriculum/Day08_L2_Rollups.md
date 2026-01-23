@@ -7,7 +7,7 @@
 - Dencun（EIP‑4844 / [Blob](../appendix/glossary.md)）の要点を押さえ、L2手数料を実測して記録できるようになる。
 - 既存コントラクトをL2（Optimism、任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

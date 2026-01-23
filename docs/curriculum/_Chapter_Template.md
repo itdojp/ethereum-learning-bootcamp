@@ -12,7 +12,7 @@
 - 例：〜を説明できるようになる。
 - 例：〜を実装して動かせるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

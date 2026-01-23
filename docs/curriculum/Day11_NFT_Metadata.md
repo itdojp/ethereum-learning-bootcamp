@@ -7,7 +7,7 @@
 - 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認までを一連で実行できるようになる。
 - EIP‑2981（ロイヤリティ）と固定価格販売の最小例を実装し、動作確認できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

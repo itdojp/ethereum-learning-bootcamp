@@ -7,7 +7,7 @@
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装し、テストで検証できるようになる。
 - Slither（静的解析）とFoundry/Echidna（プロパティテスト）を実行し、自動検出を体験できるようになる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 ---
 

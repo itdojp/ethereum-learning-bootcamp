@@ -2,7 +2,7 @@
 
 この教材は「Day01〜Day14」を順番に進める構成だが、書籍として読みやすいように **読む順序** と **補足への導線** をまとめる。
 
-> まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
 
 > 読み方（学習ルート）の補足：[`./Guide.md`](./Guide.md)
 
@@ -15,7 +15,7 @@
 ## Part 0：導入・環境
 - Part 0（概要と進め方）：[`./Part0.md`](./Part0.md)
 - はじめに：[`../index.md`](../index.md)
-- 共通の前提：[`./README.md`](./README.md)
+- 共通の前提：[`./index.md`](./index.md)
 - Day01：[`./Day01_Ethereum_Intro.md`](./Day01_Ethereum_Intro.md)
 - Day02：[`./Day02_Transaction_Gas.md`](./Day02_Transaction_Gas.md)
 - Day03：[`./Day03_Env_Setup.md`](./Day03_Env_Setup.md)

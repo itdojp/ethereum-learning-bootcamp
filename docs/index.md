@@ -23,7 +23,7 @@ permalink: /
 - L2（Blob前提のコスト構造）や、Verify/CI/The Graph の「つまずきポイント」を避けながら進められる
 
 ## 進め方（最短ルート）
-1. 共通の前提を読む：[`docs/curriculum/README.md`]({{ '/curriculum/README/' | relative_url }})
+1. 共通の前提を読む：[`docs/curriculum/index.md`]({{ '/curriculum/' | relative_url }})
 2. 通しで作るもの（ミニプロジェクト）：[`docs/curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
 3. 読み方ガイド：[`docs/curriculum/Guide.md`]({{ '/curriculum/Guide/' | relative_url }})
 4. 進捗チェック：[`docs/curriculum/Progress.md`]({{ '/curriculum/Progress/' | relative_url }})
