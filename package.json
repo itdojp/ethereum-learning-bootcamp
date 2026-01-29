@@ -2,7 +2,7 @@
   "name": "ethereum-learning-bootcamp",
   "private": true,
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "CC-BY-NC-SA-4.0",
   "scripts": {
     "build": "hardhat compile",
     "test": "hardhat test",
