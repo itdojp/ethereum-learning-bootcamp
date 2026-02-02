@@ -36,7 +36,15 @@ display ToC titles even when order falls back to site.pages.
     {%- assign data_items = data_items | concat: navigation.introduction -%}
   {%- endif -%}
   {%- if navigation.chapters -%}
-    {%- assign data_items = data_items | concat: navigation.chapters -%}
+    {%- assign chapters_flat = '' | split: '|' -%}
+    {%- for part in navigation.chapters -%}
+      {%- if part.items -%}
+        {%- assign chapters_flat = chapters_flat | concat: part.items -%}
+      {%- else -%}
+        {%- assign chapters_flat = chapters_flat | concat: part | split: '|' -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign data_items = data_items | concat: chapters_flat -%}
   {%- endif -%}
   {%- if navigation.additional -%}
     {%- assign data_items = data_items | concat: navigation.additional -%}
@@ -58,7 +66,15 @@ display ToC titles even when order falls back to site.pages.
     {%- assign seq = seq | concat: navigation.introduction -%}
   {%- endif -%}
   {%- if navigation.chapters -%}
-    {%- assign seq = seq | concat: navigation.chapters -%}
+    {%- assign chapters_flat = '' | split: '|' -%}
+    {%- for part in navigation.chapters -%}
+      {%- if part.items -%}
+        {%- assign chapters_flat = chapters_flat | concat: part.items -%}
+      {%- else -%}
+        {%- assign chapters_flat = chapters_flat | concat: part | split: '|' -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign seq = seq | concat: chapters_flat -%}
   {%- endif -%}
   {%- if navigation.additional -%}
     {%- assign seq = seq | concat: navigation.additional -%}

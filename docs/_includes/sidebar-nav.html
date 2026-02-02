@@ -31,7 +31,7 @@
                 <ul class="toc-list">
                     {% for item in navigation.introduction %}
                     <li class="toc-item">
-                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path %}active{% endif %}">
+                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path %}active{% endif %}" {% if page.url == item.path %}aria-current="page"{% endif %}>
                             {{ item.title | escape }}
                         </a>
                     </li>
@@ -44,12 +44,23 @@
             <div class="toc-section">
                 <h4 class="toc-section-title">本編</h4>
                 <ul class="toc-list">
-                    {% for chapter in navigation.chapters %}
-                    <li class="toc-item toc-chapter">
-                        <a href="{{ chapter.path | relative_url }}" class="toc-link {% if page.url == chapter.path or page.url contains chapter.path %}active{% endif %}">
-                            {{ chapter.title | escape }}
-                        </a>
-                    </li>
+                    {% for part in navigation.chapters %}
+                        {% if part.items %}
+                            <li class="toc-item toc-section-title">{{ part.part | escape }}</li>
+                            {% for chapter in part.items %}
+                            <li class="toc-item toc-chapter">
+                                <a href="{{ chapter.path | relative_url }}" class="toc-link {% if page.url == chapter.path or page.url contains chapter.path %}active{% endif %}" {% if page.url == chapter.path or page.url contains chapter.path %}aria-current="page"{% endif %}>
+                                    {{ chapter.title | escape }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="toc-item toc-chapter">
+                                <a href="{{ part.path | relative_url }}" class="toc-link {% if page.url == part.path or page.url contains part.path %}active{% endif %}" {% if page.url == part.path or page.url contains part.path %}aria-current="page"{% endif %}>
+                                    {{ part.title | escape }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -61,7 +72,7 @@
                 <ul class="toc-list">
                     {% for item in navigation.additional %}
                     <li class="toc-item">
-                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}" {% if page.url == item.path or page.url contains item.path %}aria-current="page"{% endif %}>
                             {{ item.title | escape }}
                         </a>
                     </li>
@@ -76,7 +87,7 @@
                 <ul class="toc-list">
                     {% for item in navigation.resources %}
                     <li class="toc-item">
-                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}" {% if page.url == item.path or page.url contains item.path %}aria-current="page"{% endif %}>
                             {{ item.title | escape }}
                         </a>
                     </li>
@@ -91,7 +102,7 @@
                 <ul class="toc-list">
                     {% for item in navigation.appendices %}
                     <li class="toc-item">
-                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}" {% if page.url == item.path or page.url contains item.path %}aria-current="page"{% endif %}>
                             {{ item.title | escape }}
                         </a>
                     </li>
@@ -106,7 +117,7 @@
                 <ul class="toc-list">
                     {% for item in navigation.afterword %}
                     <li class="toc-item">
-                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}">
+                        <a href="{{ item.path | relative_url }}" class="toc-link {% if page.url == item.path or page.url contains item.path %}active{% endif %}" {% if page.url == item.path or page.url contains item.path %}aria-current="page"{% endif %}>
                             {{ item.title | escape }}
                         </a>
                     </li>
@@ -126,7 +137,7 @@
         {% endif %}
 
         <div class="external-links">
-            {% if repo_url %}
+            {% if repo_url and site.show_github_links != false %}
             <a href="{{ repo_url }}" target="_blank" rel="noopener" class="external-link">GitHub</a>
             {% endif %}
             {% if site.contact.email %}
@@ -135,4 +146,3 @@
         </div>
     </div>
 </div>
-
