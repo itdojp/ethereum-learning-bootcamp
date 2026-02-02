@@ -6,7 +6,7 @@
     'use strict';
     
     // Constants
-    const THEME_KEY = 'theme';
+    const THEME_KEY = 'book-theme';
     const THEME_LIGHT = 'light';
     const THEME_DARK = 'dark';
     
