@@ -14,14 +14,15 @@
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia"
   },
   "devDependencies": {
-    "@openzeppelin/contracts": "~5.0.2",
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "~5.0.2",
     "@types/chai": "^4.3.11",
     "@types/node": "^20.12.7",
     "chai": "^4.4.1",
     "dotenv": "^16.4.5",
     "hardhat": "^2.22.1",
     "hardhat-gas-reporter": "^2.3.0",
+    "solc": "^0.8.24",
     "solidity-coverage": "^0.8.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.0"
