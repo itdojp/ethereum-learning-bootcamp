@@ -1,9 +1,30 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { HardhatUserConfig } from 'hardhat/config';
+import { HardhatUserConfig, subtask } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
 import 'solidity-coverage';
 import 'hardhat-gas-reporter';
+import { TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD } from 'hardhat/builtin-tasks/task-names';
+import type { SolcBuild } from 'hardhat/types';
+
+subtask(TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD).setAction(
+  async ({ solcVersion }: { solcVersion: string }): Promise<SolcBuild> => {
+    const solc = require('solc');
+    const longVersion = solc.version();
+    if (!longVersion.startsWith(solcVersion)) {
+      throw new Error(
+        `Local solc version mismatch: ${longVersion} (expected ${solcVersion})`
+      );
+    }
+
+    return {
+      version: solcVersion,
+      longVersion,
+      compilerPath: require.resolve('solc/soljson.js'),
+      isSolcJs: true
+    };
+  }
+);
 
 const accounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
 
