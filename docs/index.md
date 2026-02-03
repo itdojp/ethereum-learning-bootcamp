@@ -12,11 +12,11 @@ permalink: /
 本書は **IT Engineer Knowledge Architecture** シリーズの 1 冊として公開することを想定している。  
 書籍一覧：<https://itdojp.github.io/it-engineer-knowledge-architecture/>
 
-## 対象読者
+## 想定読者
 - 初心者〜初級エンジニア（新卒〜実務経験2年未満）
 - Ethereum / Solidity は初学者を含む
 
-## この本でできるようになること
+## 学習成果
 - ブロックチェーン/Ethereumの基本概念（Tx、Gas、PoS、L1/L2）を説明できる
 - Hardhat を使ってコントラクトをテストし、スクリプトで操作できる
 - ERC‑20 / ERC‑721 の基本フロー（transfer/approve/mint/tokenURI）を動かして理解できる
@@ -37,7 +37,20 @@ cp .env.example .env && edit .env
 npm test
 ```
 
-## 目次（読む順序）
+## 前提知識
+（前提知識を記載してください）
+
+## 所要時間
+（所要時間の目安を記載してください）
+
+## 読み方ガイド
+- 本書の読み進め方を記載してください
+- 推奨学習順序やゴールを明示します
+
+## ライセンス
+本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。
+
+## 目次
 - まずは Day1 から：[`docs/curriculum/Day01_Ethereum_Intro.md`]({{ '/curriculum/Day01_Ethereum_Intro/' | relative_url }})
 - 通しで作るもの（ミニプロジェクト）：[`docs/curriculum/Project.md`]({{ '/curriculum/Project/' | relative_url }})
 - 全体の目次：[`docs/curriculum/TOC.md`]({{ '/curriculum/TOC/' | relative_url }})
