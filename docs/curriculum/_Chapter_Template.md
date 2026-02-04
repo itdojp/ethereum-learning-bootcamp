@@ -6,7 +6,7 @@
 
 # DayXX：タイトルを書く
 
-[← 目次](./TOC.md) | [前: DayYY](./DayYY_Example.md) | [次: DayZZ](./DayZZ_Example.md)
+[← 目次](./TOC.md) | 前: DayYY | 次: DayZZ
 
 ## 学習目的
 - 例：〜を説明できるようになる。
@@ -69,7 +69,7 @@ npm test
 - [ ] 例：デプロイアドレス（秘密情報は載せない）
 
 ## 6. 実行例
-- 実行ログ例：[`docs/reports/DayXX.md`](../reports/DayXX.md)
+- 実行ログ例：`docs/reports/DayXX.md`（存在する場合はリンク化する）
 
 ---
 
