@@ -109,7 +109,7 @@ BLOCK=$(curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
 
 curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK"'", true],"id":2}' \
-  | jq '{
+  | jq '.result | {
       number,
       hash,
       baseFeePerGas,
