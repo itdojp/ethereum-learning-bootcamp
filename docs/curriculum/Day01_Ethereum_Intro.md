@@ -108,7 +108,17 @@ BLOCK=$(curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq -r .result)
 
 curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
-  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK"'", true],"id":2}' | jq '{number, hash, baseFeePerGas, gasUsed, gasLimit, miner, timestamp, transactions:(.transactions|length)}'
+  --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["'"$BLOCK"'", true],"id":2}' \
+  | jq '{
+      number,
+      hash,
+      baseFeePerGas,
+      gasUsed,
+      gasLimit,
+      miner,
+      timestamp,
+      transactions:(.transactions|length)
+    }'
 ```
 
 出力例：
