@@ -25,7 +25,16 @@ curl -s -X POST $RPC \
 curl -s -X POST $RPC \
   -H 'Content-Type: application/json' \
   --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x0", true],"id":2}' \
-  | jq '{number: .result.number, hash: .result.hash, baseFeePerGas: .result.baseFeePerGas, gasUsed: .result.gasUsed, gasLimit: .result.gasLimit, miner: .result.miner, timestamp: .result.timestamp, transactions: (.result.transactions|length)}'
+  | jq '{
+      number: .result.number,
+      hash: .result.hash,
+      baseFeePerGas: .result.baseFeePerGas,
+      gasUsed: .result.gasUsed,
+      gasLimit: .result.gasLimit,
+      miner: .result.miner,
+      timestamp: .result.timestamp,
+      transactions: (.result.transactions|length)
+    }'
 ```
 
 出力（抜粋）：
