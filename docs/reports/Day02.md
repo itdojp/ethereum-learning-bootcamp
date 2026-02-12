@@ -22,7 +22,7 @@
 - `testRewrite()` は同じ値を再書込みした結果、`store()` よりガスが少なくなり、Refund を確認できた。
 
 ## RPC での Tx 解析例
-```
+```bash
 curl -s -X POST http://127.0.0.1:8545 \
   -H 'Content-Type: application/json' \
   --data '{

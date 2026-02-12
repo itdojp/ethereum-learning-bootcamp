@@ -4,7 +4,7 @@
 
 ---
 
-# DayXX：タイトルを書く
+## DayXX：タイトルを書く
 
 [← 目次](./TOC.md) | 前: DayYY | 次: DayZZ
 

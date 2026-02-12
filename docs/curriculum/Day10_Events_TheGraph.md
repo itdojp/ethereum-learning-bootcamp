@@ -65,7 +65,7 @@ transfer complete { to: '0x...' }
 
 ### 3.1 設定
 `dapp/.env.local`（なければ `cp dapp/.env.example dapp/.env.local`）を編集する：
-```
+```bash
 VITE_CHAIN_ID=11155111
 VITE_EVENT_TOKEN=0x...      # 2.1 の EventToken アドレス
 ```

@@ -20,7 +20,7 @@
 - 最短手順（迷ったらここ）：2章でIPFSに配置 → 3章の `MyNFT` をデプロイ → 4章でミント → `tokenURI`/Gatewayで表示確認
 
 `.env.example`（項目は同梱してあるので、`.env` に値を入れる）：
-```
+```bash
 NFT_BASE=ipfs://<CID>/
 NFT_ROYALTY_BPS=500   # 5% = 500 basis points
 ```
@@ -38,7 +38,7 @@ NFT_ROYALTY_BPS=500   # 5% = 500 basis points
 ## 2. IPFS へのアップロード
 
 ### 2.1 ディレクトリ構成
-```
+```text
 ipfs/
 ├── 1.png
 ├── 1.json

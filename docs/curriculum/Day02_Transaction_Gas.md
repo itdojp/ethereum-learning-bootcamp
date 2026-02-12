@@ -39,7 +39,7 @@ Ethereumのトランザクション（[Tx](../appendix/glossary.md)）は以下�
 - 各EVM命令にはGasコストが割り当てられている。
   - 例：`ADD`=3Gas, `SSTORE`=最大20,000Gas。
 - トランザクション料金：
-  ```
+  ```text
   手数料 = gasUsed × effectiveGasPrice
   effectiveGasPrice = baseFeePerGas + priorityFee（ただし上限はmaxFee）
   ```
@@ -106,7 +106,7 @@ contract GasTest {
    - `Effective Gas Price`
 
 **手数料計算**：
-```
+```text
 Gas Used × Effective Gas Price = 総手数料（Wei）
 ```
 `1 Ether = 10^18 Wei` を用いてETH換算。

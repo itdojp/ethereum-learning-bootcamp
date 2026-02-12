@@ -20,7 +20,7 @@
 ---
 
 ## 1. 全体構成（このリポジトリ）
-```
+```text
 .
 ├── contracts/        # コントラクト
 ├── scripts/          # デプロイ／操作スクリプト
@@ -85,7 +85,7 @@ cp dapp/.env.example dapp/.env.local
 ```
 
 `dapp/.env.local` を編集する：
-```
+```bash
 VITE_CHAIN_ID=11155111
 VITE_TOKEN_ADDRESS=0x...   # MyToken
 VITE_EVENT_TOKEN=0x...     # EventToken
