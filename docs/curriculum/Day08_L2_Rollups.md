@@ -40,7 +40,7 @@
 ### 1.4 L2手数料の内訳（概念）
 ロールアップの手数料は、ざっくり次の2つに分かれる（表示名はL2やエクスプローラで異なる）。
 
-```
+```text
 L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 ```
 
@@ -85,7 +85,7 @@ networks: {
 }
 ```
 `.env.example`
-```
+```bash
 OPTIMISM_RPC_URL=
 POLYGON_ZKEVM_RPC_URL=
 ```

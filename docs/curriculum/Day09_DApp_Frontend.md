@@ -36,7 +36,7 @@ cp .env.example .env.local
 ```
 
 `dapp/.env.local` を編集する：
-```
+```bash
 VITE_CHAIN_ID=31337
 VITE_TOKEN_ADDRESS=0x...   # MyToken（同じチェーン上）のアドレス
 VITE_EVENT_TOKEN=          # 任意：Day10で使う

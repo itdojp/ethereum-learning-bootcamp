@@ -70,7 +70,7 @@ EventToken: 0x...
 cp dapp/.env.example dapp/.env.local
 ```
 `dapp/.env.local` を編集する（ローカルは `VITE_CHAIN_ID=31337`）：
-```
+```bash
 VITE_CHAIN_ID=31337
 VITE_TOKEN_ADDRESS=0x...   # deploy-token.ts の出力（MTK）
 VITE_EVENT_TOKEN=0x...     # deploy-event-token.ts の出力（EventToken）

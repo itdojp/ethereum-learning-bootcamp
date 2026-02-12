@@ -9,7 +9,7 @@
 - デプロイスクリプト: `scripts/deploy-walletbox.ts`（`hello` 初期メモでデプロイ）。
 
 ## コマンド
-```
+```bash
 # WalletBox のテストのみ
 npx hardhat test test/walletbox.ts
 # => 3 passing

@@ -209,7 +209,7 @@ TS
 npx hardhat run scripts/deploy.ts --network sepolia
 ```
 出力例：
-```
+```text
 Lock deployed to: 0xF1234...7890
 ```
 

@@ -7,7 +7,7 @@
 - テスト: `test/gas-pack.ts`, `test/gas-args.ts`, `test/gas-event.ts`。`console.log` で `gasUsed` を出力し `metrics/gas_day13.md` に転記。
 
 ## 測定手順
-```
+```bash
 npx hardhat test test/gas-pack.ts
 npx hardhat test test/gas-args.ts
 npx hardhat test test/gas-event.ts

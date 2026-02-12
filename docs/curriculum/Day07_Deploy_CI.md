@@ -20,7 +20,7 @@
 - 最短手順（迷ったらここ）：1章の `deploy-generic.ts` で少額デプロイ → 2章でVerify（任意）→ 4章で手動承認付きCIの要点を確認
 
 `.env.example`
-```
+```bash
 SEPOLIA_RPC_URL=
 MAINNET_RPC_URL=
 OPTIMISM_RPC_URL=
@@ -114,7 +114,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 ## 5. デプロイ前後のドキュメント化
 [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md)（同梱。追記して使う）
-```
+```markdown
 # Deployments
 
 ## 例：2025-11-02 mainnet MyToken v1.0.0

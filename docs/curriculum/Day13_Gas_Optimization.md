@@ -217,7 +217,7 @@ PRで差分をレビューできる。
 
 ## 7. 測定結果テンプレート
 `metrics/gas_day13.md`
-```
+```markdown
 # Gas Benchmarks (Day13)
 
 | Case | gasUsed |
