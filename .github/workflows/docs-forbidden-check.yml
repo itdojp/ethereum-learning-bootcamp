@@ -39,4 +39,15 @@ jobs:
           if [ "$found" -ne 0 ]; then
             exit 1
           fi
+
+          # Prevent copy/paste breaks such as `60 _000` or `1_ 000_000` in docs.
+          # These are invalid numeric literals in Solidity/TypeScript and confuse readers.
+          bad=0
+          if grep -RIn --exclude-dir=.git --include='*.md' -E '[0-9]+[[:space:]]+_[0-9]+' docs; then bad=1; fi
+          if grep -RIn --exclude-dir=.git --include='*.md' -E '[0-9]+_[[:space:]]+[0-9]+' docs; then bad=1; fi
+          if [ "$bad" -ne 0 ]; then
+            echo "docs 数値リテラルチェック: FAILED (whitespace around underscore)" >&2
+            exit 1
+          fi
+
           echo "docs 禁止物チェック: OK"

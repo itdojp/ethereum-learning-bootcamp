@@ -9,7 +9,7 @@ description: "Day01〜Day14を迷わず進めるための、最小の成功判�
 このページは、Day01〜Day14を進めるときの「最小の成功判定」をまとめたチェックリストだ。  
 迷ったら、まずここで「いまどこまでできているか」を確認する。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ## 使い方
 - このチェックリストは「写して自分のメモにする」用途を想定する（GitHub Pages上のチェックは保存されない）。
@@ -51,4 +51,3 @@ description: "Day01〜Day14を迷わず進めるための、最小の成功判�
 
 ### Part 5：統合
 - [ ] Day14：デプロイ→DApp接続→（任意）Verify/CI/The Graph を、できる範囲で統合できる（本文：[`docs/curriculum/Day14_Integration.md`](./Day14_Integration.md)）
-

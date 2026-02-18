@@ -6,7 +6,7 @@
 - トランザクション構造、署名、Gas、EIP‑1559料金モデルを理解し、簡単に説明できるようになる。
 - コントラクトを用いてGas使用量を比較し、[Etherscan](../appendix/glossary.md)で手数料を確認・解析できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 
@@ -41,12 +41,15 @@ Ethereumのトランザクション（[Tx](../appendix/glossary.md)）は以下�
 - トランザクション料金：
   ```text
   手数料 = gasUsed × effectiveGasPrice
-  effectiveGasPrice = baseFeePerGas + priorityFee（ただし上限はmaxFee）
+
+  effectivePriorityFee = min(maxPriorityFeePerGas, maxFeePerGas - baseFeePerGas)
+  effectiveGasPrice = baseFeePerGas + effectivePriorityFee
   ```
 
 ### 1.3 EIP‑1559の仕組み
 - baseFeePerGas はネットワーク混雑に応じて自動調整。
 - priorityFee（チップ）は送信者が自由に設定。
+- `maxFeePerGas` が上限なので、実効チップは `maxFeePerGas - baseFeePerGas` で頭打ちになり得る（式の `min(...)` の意味）。
 - 結果として手数料は安定し、予測可能性が向上。
 
 ### 1.4 トランザクション失敗時の注意

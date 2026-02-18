@@ -7,7 +7,7 @@
 - ブラウザからリアルタイム購読（ethers）を動かして表示を確認できるようになる。
 - [The Graph](../appendix/glossary.md)で履歴データをインデックス化し、[GraphQL](../appendix/glossary.md)で取得できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 

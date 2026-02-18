@@ -22,7 +22,12 @@
 3) EntryPointがスマートウォレット（アカウントコントラクト）を呼び出して実行  
 
 ## 3. アプローチB：EIP‑7702（EOA委任）
-**ポイント**：プロトコル側の変更により、EOAが **delegation indicator（委任先）** をセットして、実行時に別アドレスのコードへ委譲する挙動が入り得る。
+**ポイント**：プロトコル側の変更により、EOAが「委譲先コード」を署名付きで指定し、EOAの code を **delegation indicator** に設定できる。結果として、EOAが“スマートウォレットっぽく”振る舞うための土台になり得る。
+
+最低限の仕様要点（概念）：
+- 新しい tx type（EIP‑2718 系）に `authorization_list` を持ち、要素は概ね `[chain_id, address, nonce, y_parity, r, s]` の形式
+- クライアントは実行前に `authorization_list` を処理し、権限者（EOA）の code を delegation indicator `0xef0100 || address` に設定する（`address=0` でクリア）
+- 「委譲先コードの実行」はトランザクション単位の一時処理ではなく、EOAの code 状態として残り得るため、解除/更新の運用が必要
 
 初学者向けの直感としては：
 - 「EOAは必ず code empty」と思い込まない

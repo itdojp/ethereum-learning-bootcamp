@@ -7,7 +7,7 @@
 - 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認までを一連で実行できるようになる。
 - EIP‑2981（ロイヤリティ）と固定価格販売の最小例を実装し、動作確認できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 
@@ -170,7 +170,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $
 ---
 
 ## 5. 表示確認（`tokenURI` と IPFS Gateway）
-OpenSea はテストネット表示を終了したため、次の手順で確認する。
+マーケットプレイスの対応ネットワークは更新されるため、テストネットでの表示を前提にしない。ここでは `tokenURI` と IPFS Gateway で確認する（参考: https://docs.opensea.io/）。
 
 1) `tokenURI(1)` が `ipfs://<CID>/1.json` を返すこと（スクリプト、またはエクスプローラの Read Contract で確認）。  
 2) `ipfs://<CID>/1.json` を HTTP に置き換えて開く（例：`https://ipfs.io/ipfs/<CID>/1.json`）。  

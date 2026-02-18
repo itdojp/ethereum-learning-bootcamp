@@ -37,8 +37,8 @@
 | 2981 | NFT Royalty Standard | 二次流通ロイヤリティ通知 |
 | 4337 | Account Abstraction via EntryPoint | コンセンサス変更なしでAAを実現（UserOperation/EntryPoint/Bundler） |
 | 4844 | Proto‑Danksharding (Blob) | L2のデータ可用性（DA）コスト改善 |
-| 7691 | Blob throughput increase | blob の target/max を 3/6 → 6/9 に増やす（Pectra） |
-| 7702 | EOA delegation | EOAが delegation indicator を持ち、実行時に別コードへ委譲し得る |
+| 7691 | Blob throughput increase | （EIP上の提案）blob の target/max を 3/6 → 6/9 に増やす（Pectra） |
+| 7702 | EOA delegation | （概要）EOAが署名付きで委譲先コードを指定し、delegation indicator（`0xef0100 || address`）経由で実行時に委譲し得る |
 
 ---
 
@@ -69,7 +69,7 @@
 | テーマ | 目的 |
 |---------|------|
 | zk‑SNARK / zk‑STARK | ZK Rollupの暗号基礎を理解する |
-| MEV（Miner Extractable Value） | トランザクション順序操作の影響を学ぶ |
+| MEV（Maximal Extractable Value。旧称 Miner Extractable Value） | トランザクション順序操作の影響を学ぶ |
 | EigenLayer / Restaking | Ethereumセキュリティ再利用の仕組み |
 | Account Abstraction（EIP‑4337） | スマートウォレットによるUX改善 |
 | L2間ブリッジ | 複数L2を跨ぐ資産移動設計 |
@@ -88,14 +88,15 @@
 ---
 
 ## G. 参考書籍・講座
-| 分類 | タイトル / 提供元 | 備考 |
-|------|----------------|------|
-| 書籍 | 『Mastering Ethereum』（Andreas Antonopoulos） | Ethereum基礎〜応用解説書の定番 |
-| 書籍 | 『Solidityプログラミング』（O'Reilly Japan） | 実装中心。初級者向け |
-| 書籍 | 『DeFiとスマートコントラクトのしくみ』（技術評論社） | 金融応用視点 |
-| 無料講座 | CryptoZombies | ブラウザ上でゲーム形式学習 |
-| 無料講座 | ChainShot / Encode Club | 短期ブートキャンプ形式 |
-| 有料講座 | ConsenSys Academy | 開発者公式認定コース |
+| 分類 | タイトル | 著者/提供元 | 出版年/版 | 対応Day（目安） | 備考 |
+|------|----------|-------------|-----------|------------------|------|
+| 書籍（英語） | Mastering Ethereum: Building Smart Contracts and DApps | Andreas M. Antonopoulos / Gavin Wood | 1st ed., 2018 | Day01-05, Day12 | 概念は有効だが、ツール/ネットワーク周りは陳腐化しやすい |
+| 書籍（日本語） | Solidityプログラミング ―ブロックチェーン・スマートコントラクト開発入門 | Ritesh Modi（著）/ 花村直親ほか（訳） | 2019 | Day04-05 | Solidity入門（周辺ツールは現行手順に読み替える） |
+| 書籍（日本語） | SolidityとEthereumによる実践スマートコントラクト開発 ―Truffle Suiteを用いた開発の基礎からデプロイまで | Kevin Solorio / Randall Kanna / David H. Hoover（著） | 2021（邦訳） | Day03-07 | フレームワークがTruffle中心のため、Hardhatに読み替える前提 |
+| 書籍（日本語） | スマートコントラクト本格入門 ―FinTechとブロックチェーンが作り出す近未来がわかる | 鳥谷部昭寛 / 加世田敏宏 / 林田駿弥（著） | 2017 | Day01-04 | 全体像・背景理解向け（実装は現在の環境に合わせて補う） |
+| 無料講座 | CryptoZombies | https://cryptozombies.io/ | 随時更新 | Day04 | ブラウザ上でゲーム形式学習 |
+| 無料講座 | ChainShot / Encode Club | https://www.chainshot.com/ / https://www.encode.club/ | 随時更新 | Day04-07, Day12 | 課題駆動の短期コースが多い |
+| 有料講座 | ConsenSys Academy | https://consensys.io/academy | 随時更新 | Day01-14 | コース改定があるため、内容は都度確認 |
 
 ---
 

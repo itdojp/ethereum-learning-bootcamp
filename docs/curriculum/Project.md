@@ -9,7 +9,7 @@ description: "Day01〜Day14 を通して、MyToken / EventToken / DApp を“1�
 この教材は Day01〜Day14 を順番に進める構成だが、章ごとに題材が変わるため「今どこに向かっているか」を見失いやすい。
 そこで本ページでは、Day14 の統合（デプロイ＋DApp接続）を **小さなプロダクトの完成**として、各Dayの位置づけを整理する。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 > 進捗チェック（完走チェックリスト）：[`docs/curriculum/Progress.md`](./Progress.md)
 
