@@ -7,7 +7,7 @@
 - Dencun（EIP‑4844 / [Blob](../appendix/glossary.md)）の要点を押さえ、L2手数料を実測して記録できるようになる。
 - 既存コントラクトをL2（Optimism、任意でzkEVM/zkSync）にデプロイし、手数料・確定時間を比較できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 
@@ -34,7 +34,7 @@
 
 ### 1.3 Dencun（EIP‑4844：Proto‑Danksharding / Blob）
 - L2データを **[Blob](../appendix/glossary.md)** として一時的にL1へ格納。calldataより安価。
-- Blobは数週間で**非可用化**されるが、DA要件は満たす。結果としてL2手数料が大幅に低減。
+- Blobは一定期間で**非可用化**される（目安: 約18日程度）。ただしロールアップのDA要件は満たす。結果としてL2手数料が大幅に低減。
   - EIP‑4844 は **blob-carrying transactions** を導入し、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっている。
 
 ### 1.4 L2手数料の内訳（概念）
@@ -47,7 +47,7 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 このため、L2上で同じ操作をしても **Blobの混雑**（base fee）次第で費用が変動する。
 
 ### 1.5 Pectra（EIP‑7691）：Blob throughput increase
-**EIP‑7691** により、Blob の供給枠が増える。
+**EIP‑7691（提案）** では、Blob の供給枠が増える。
 
 | パラメータ（1ブロックあたり） | EIP‑4844 初期値 | EIP‑7691（Pectra） |
 |---|---:|---:|

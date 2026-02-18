@@ -7,7 +7,7 @@
 - `solidity-coverage` と `hardhat-gas-reporter` を使い、品質とコストを数値で把握できるようになる。
 - `storage`/`memory`/`calldata` とイベント量の違いを実測し、差分を説明できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 

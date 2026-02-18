@@ -27,6 +27,17 @@
 - `dapp/` 側の依存を入れる（必要な場合）：
   - `cd dapp && npm ci`
 
+### 2.1 動作確認済みバージョン（目安）
+
+この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm ci` の lock に従う。
+
+- Node.js: 20.x
+- Hardhat: 2.22.x
+- Solidity: 0.8.24
+- ethers: v6（Hardhat toolbox 経由）
+- OpenZeppelin Contracts: 5.0.2
+- TypeScript: 5.4.x
+
 ## 3. 環境変数（`.env`）
 - ルートは `.env.example` をコピーして `.env` を作成する：
   - `cp .env.example .env`

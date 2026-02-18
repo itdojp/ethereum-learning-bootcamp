@@ -7,7 +7,7 @@
 - DApp（`dapp/`）から残高確認・送金・イベント購読までを一連で動かせるようになる。
 - （任意）[Verify](../appendix/glossary.md)/[CI](../appendix/glossary.md)/[The Graph](../appendix/glossary.md) の導線を整えて、チーム開発で破綻しない形にできるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 

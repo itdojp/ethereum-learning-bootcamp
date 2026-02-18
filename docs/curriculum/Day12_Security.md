@@ -7,7 +7,7 @@
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装し、テストで検証できるようになる。
 - Slither（静的解析）とFoundry/Echidna（プロパティテスト）を実行し、自動検出を体験できるようになる。
 
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提」を確認してから進める。
+> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
 ---
 
@@ -78,24 +78,45 @@ contract SafeBank is ReentrancyGuard {
 ### 1.4 テスト（攻撃成功/失敗）
 `test/reentrancy.ts`
 ```ts
-import { expect } from "chai"; import { ethers } from "hardhat";
-describe("Reentrancy", ()=>{
-  it("VulnBank gets drained", async()=>{
-    const [deployer] = await ethers.getSigners();
-    const V = await (await ethers.getContractFactory("VulnBank")).deploy(); await V.waitForDeployment();
-    const vAddr = await V.getAddress();
-    await deployer.sendTransaction({to: vAddr, value: ethers.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(vAddr); await A.waitForDeployment();
-    await A.attack({value: ethers.parseEther("1")});
-    expect(await ethers.provider.getBalance(vAddr)).to.be.lt(ethers.parseEther("10"));
+import { expect } from "chai";
+import { ethers } from "hardhat";
+
+describe("Reentrancy scenario", () => {
+  it("VulnBank is drainable", async () => {
+    const [deployer, attackerSigner] = await ethers.getSigners();
+    const bankFactory = await ethers.getContractFactory("VulnBank");
+    const bank = await bankFactory.deploy();
+    await bank.waitForDeployment();
+
+    // 直送（sendTransaction）ではなく、payable関数（dep）経由で入金する。
+    await bank.connect(deployer).dep({ value: ethers.parseEther("10") });
+
+    const attackerFactory = await ethers.getContractFactory("Attacker");
+    const attacker = await attackerFactory
+      .connect(attackerSigner)
+      .deploy(await bank.getAddress());
+    await attacker.waitForDeployment();
+
+    await attacker.connect(attackerSigner).attack({ value: ethers.parseEther("1") });
+
+    const bankBalance = await ethers.provider.getBalance(await bank.getAddress());
+    expect(bankBalance).to.be.lessThan(ethers.parseEther("9"));
   });
-  it("SafeBank resists", async()=>{
-    const [deployer] = await ethers.getSigners();
-    const S = await (await ethers.getContractFactory("SafeBank")).deploy(); await S.waitForDeployment();
-    const sAddr = await S.getAddress();
-    await deployer.sendTransaction({to: sAddr, value: ethers.parseEther("10")});
-    const A = await (await ethers.getContractFactory("Attacker")).deploy(sAddr); await A.waitForDeployment();
-    await expect(A.attack({value: ethers.parseEther("1")})).to.be.reverted; // or no drain
+
+  it("SafeBank resists reentrancy", async () => {
+    const [deployer, attackerSigner] = await ethers.getSigners();
+    const bankFactory = await ethers.getContractFactory("SafeBank");
+    const bank = await bankFactory.deploy();
+    await bank.waitForDeployment();
+    await bank.connect(deployer).dep({ value: ethers.parseEther("10") });
+
+    const attackerFactory = await ethers.getContractFactory("Attacker");
+    const attacker = await attackerFactory
+      .connect(attackerSigner)
+      .deploy(await bank.getAddress());
+    await attacker.waitForDeployment();
+
+    await expect(attacker.connect(attackerSigner).attack({ value: ethers.parseEther("1") })).to.be.reverted;
   });
 });
 ```
