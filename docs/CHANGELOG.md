@@ -12,3 +12,6 @@
 - 付録を強化（Verify / CI / The Graph / Account Abstraction など）
 - CI に Markdown 相対リンクチェックと DApp build を追加
 - 実行ログ（`docs/reports/`）を整備し、再現手順の確認に使えるようにした
+
+## 2026.02
+- Issue #93 対応：教材の正誤・不整合を修正（Day1/2 の記録先統一、Day1 のコマンドと出力例の整合、Day3 の導線整理、Day12 のツール説明の誤解低減 など）

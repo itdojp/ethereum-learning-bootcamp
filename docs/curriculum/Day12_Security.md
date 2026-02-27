@@ -5,7 +5,7 @@
 ## 学習目的
 - 代表的脆弱性（Reentrancy, tx.origin誤用, delegatecall乱用, Proxyのストレージ衝突）を理解し、簡単に説明できるようになる。
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装し、テストで検証できるようになる。
-- Slither（静的解析）とFoundry/Echidna（プロパティテスト）を実行し、自動検出を体験できるようになる。
+- Slither（静的解析）、Foundry（テスト + fuzz / invariant）、Echidna（任意：別系統のプロパティベーステスト/ファジング）を実行し、自動検出を体験できるようになる。
 
 > まず [`docs/curriculum/README.md`](./README.md) の「共通の前提」を確認してから進める。
 
@@ -192,7 +192,10 @@ slither . --filter-paths "node_modules"
 
 ---
 
-## 6. ツール：Foundry/Echidna（プロパティテスト）
+## 6. ツール：Foundry（テスト + fuzz / invariant）とEchidna（任意）
+
+Foundry はテストフレームワークで、fuzz（ランダム入力探索）や invariant（永続条件）を内蔵する。  
+Echidna は Foundry の一部ではなく、別系統のツールとしてプロパティベーステスト/ファジングに使われる。
 
 ### 6.1 Invariant（永続条件）例（Foundry）
 `test/Invariant.t.sol`

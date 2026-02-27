@@ -14,7 +14,7 @@
 - Day1 で `RPC` を設定済み（2.5 の CLI パートで使う）
 - Remix IDE を使う場合はブラウザで操作する（ウォレット連携は環境により異なる）
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
-- 触るファイル（主なもの）：（任意）`REPORT.md`
+- 触るファイル（主なもの）：（任意）`docs/reports/Day02.md`（実行ログ）
 - 今回触らないこと：ガス最適化の細部（Day13）／ガス計測の実装（Day6）
 - 最短手順（迷ったらここ）：2.2 でコントラクト作成 → 2.3 で `store/add` の違い確認 → 2.4 でEtherscan解析（2.5は任意）
 
@@ -193,10 +193,9 @@ curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
 ```
 
 ## 5. 提出物
-- [ ] `REPORT.md` を作成し、次を記載する：
-  - [ ] `store()`（Tx）のGas Used と、2.6 の3パターンのGas差（表形式）
-  - [ ] Etherscanで確認したTx詳細（スクリーンショットまたは値）
-  - [ ] 2.6の追加実験の結果（3パターンの比較）
+- [ ] `docs/reports/Day02.md` に、`store()`（Tx）のGas Used と 2.6 の3パターンのGas差を表形式で記録する
+- [ ] `docs/reports/Day02.md` に、Etherscanで確認したTx詳細（スクリーンショットまたは値）を記録する
+- [ ] `docs/reports/Day02.md` に、2.6 の追加実験の結果（3パターンの比較）を記録する
 
 ## 6. 実行例
 - 実行ログ例：[`docs/reports/Day02.md`](../reports/Day02.md)

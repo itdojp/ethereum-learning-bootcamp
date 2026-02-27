@@ -16,7 +16,7 @@
 - 必要なもの：Sepolia などの RPC エンドポイント（Alchemy/Infura 等）
 - この章は **Tx を送らない**。テストETHは不要だ。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
-- 触るファイル（主なもの）：（任意）`REPORT.md`
+- 触るファイル（主なもの）：（任意）`docs/reports/Day01.md`（実行ログ）
 - 今回触らないこと：秘密鍵で署名してTxを送る／コントラクトのデプロイ（Day3以降で扱う）
 - 最短手順（迷ったらここ）：RPCを `RPC` に設定 → 2.3 でブロック番号 → 2.4 でブロック詳細 → 2.5 で3ブロック比較
 
@@ -51,7 +51,7 @@
   - トランザクション実行をL2で行い、結果をL1に保存。
   - 近年は **rollup-centric（L2中心）** のスケーリングが前提で、L2手数料は「L1へ投稿するデータ可用性（[DA](../appendix/glossary.md)）コスト」の影響が大きくなりやすい（詳細はDay8）。
     - **Dencun（EIP‑4844）** で blob-carrying transactions（[Blob](../appendix/glossary.md)）が導入され、L2のDAコストが下がりやすくなった。
-    - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられている。
+    - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられる（注：有効化タイミングはネットワークや時期で異なる。実測と公式情報を優先する）。
 
 ---
 
@@ -115,9 +115,12 @@ curl -s -X POST "$RPC" -H 'Content-Type: application/json' \
 ```json
 {
   "number": "0x158b4c9",
+  "hash": "0x...",
   "baseFeePerGas": "0x19a3af8b6",
   "gasUsed": "0x5f9d03",
   "gasLimit": "0x1c9c380",
+  "miner": "0x...",
+  "timestamp": "0x...",
   "transactions": 143
 }
 ```
@@ -181,10 +184,9 @@ curl -s -X POST "$RPC" \
 ```
 
 ## 5. 提出物
-- [ ] `REPORT.md` を作成し、次を記載する：
-  - [ ] 実行したコマンドと出力例
-  - [ ] 3ブロック分の混雑度分析
-  - [ ] 学んだ内容を3行で要約
+- [ ] `docs/reports/Day01.md` に、実行したコマンドと出力例を記録する
+- [ ] `docs/reports/Day01.md` に、3ブロック分の混雑度分析を記録する
+- [ ] `docs/reports/Day01.md` に、学んだ内容を3行で要約する
 
 ## 6. 実行例
 - 実行ログ例：[`docs/reports/Day01.md`](../reports/Day01.md)

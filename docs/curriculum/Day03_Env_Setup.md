@@ -90,6 +90,8 @@ MTK: 0x...
 ### 2.1 環境構築（参考：ゼロから作る場合）
 この節は「本リポジトリを使わず、ゼロから Hardhat プロジェクトを作る」場合の参考だ。迷ったら 2.0 を優先する。
 
+> 注意：以降の章は **本リポジトリの構成（`package.json` / lockfile で依存固定）** を前提にしている。2.1 の手順で作った別プロジェクトに、教材のコードをそのまま混ぜないこと（依存差分で再現性が落ちやすい）。教材を進める場合は、本リポジトリに戻って 2.0 の `npm ci` を実行する。
+
 #### 2.1.0 この節のゴール（成功判定）
 - `node -v` が v20 系になっている
 - `npx hardhat` で TypeScript プロジェクトを作成できる
@@ -129,14 +131,14 @@ npm -v
 ```bash
 mkdir eth-bootcamp && cd eth-bootcamp
 npm init -y
-npm install --save-dev hardhat
+npm install --save-dev hardhat@^2.22.1
 npx hardhat
 ```
 プロンプトで「Create a TypeScript project」を選択。
 
 #### (3) 推奨プラグインの追加
 ```bash
-npm install --save-dev @nomicfoundation/hardhat-toolbox dotenv
+npm install --save-dev @nomicfoundation/hardhat-toolbox@^6.1.0 dotenv@^16.4.5
 ```
 
 #### (4) .envファイルを準備
