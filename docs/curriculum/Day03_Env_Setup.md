@@ -131,14 +131,14 @@ npm -v
 ```bash
 mkdir eth-bootcamp && cd eth-bootcamp
 npm init -y
-npm install --save-dev hardhat@^2.22.1
+npm install --save-dev hardhat@2.22.1
 npx hardhat
 ```
 プロンプトで「Create a TypeScript project」を選択。
 
 #### (3) 推奨プラグインの追加
 ```bash
-npm install --save-dev @nomicfoundation/hardhat-toolbox@^6.1.0 dotenv@^16.4.5
+npm install --save-dev @nomicfoundation/hardhat-toolbox@6.1.0 dotenv@16.4.5
 ```
 
 #### (4) .envファイルを準備
