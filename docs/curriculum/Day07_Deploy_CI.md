@@ -139,6 +139,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ---
 
 ## 7. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `insufficient funds` | 手数料不足 | 少額ETHを補充。maxFee確認 |

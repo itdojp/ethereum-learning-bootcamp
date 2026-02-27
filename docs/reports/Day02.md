@@ -12,6 +12,7 @@
 4. `curl -X POST ... eth_getTransactionReceipt` で `store` Tx を解析
 
 ## Gas 計測結果
+
 | 呼び出し | Tx Hash | Gas Used | Effective Gas Price (wei) | 手数料 (ETH) |
 |----------|---------|---------|---------------------------|--------------|
 | `store(123)` | `0xba728419...` | 43,516 | 970,068,939 | 4.221e-05 |

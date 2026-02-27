@@ -159,6 +159,7 @@ done
 ---
 
 ## 3. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `jq: command not found` | `jq` が未インストール | OSの方法で `jq` を入れる（Ubuntu/WSL2なら `sudo apt install -y jq`） |

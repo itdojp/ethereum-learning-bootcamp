@@ -66,6 +66,7 @@ done
 ```
 
 ### 3ブロック分の混雑度（`gasUsed/gasLimit`）
+
 | Block | gasUsed | gasLimit | congestion |
 |-------|--------:|---------:|-----------:|
 | 0x1 | 21,000 | 30,000,000 | 0.000700 |
