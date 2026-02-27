@@ -5,7 +5,7 @@
 ## 学習目的
 - 代表的脆弱性（Reentrancy, tx.origin誤用, delegatecall乱用, Proxyのストレージ衝突）を理解し、簡単に説明できるようになる。
 - 対策（CEI, ReentrancyGuard, AccessControl/Ownable, Pull-Payment, Pausable）を実装し、テストで検証できるようになる。
-- Slither（静的解析）、Foundry（テスト + fuzz / invariant）、Echidna（任意：別系統のプロパティベーステスト/ファジング）を実行し、自動検出を体験できるようになる。
+- Slither（静的解析）、Foundry（任意：テスト + fuzz / invariant）、Echidna（任意：別系統のプロパティベーステスト/ファジング）を実行し、自動検出を体験できるようになる。
 
 > まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
