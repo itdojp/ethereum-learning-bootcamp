@@ -258,6 +258,7 @@ forge test --match-contract Invariant -vvvv
 ---
 
 ## 8. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `slither` が実行できない | 未インストール / PATH問題 | 章中の `pipx install slither-analyzer` を再確認する |

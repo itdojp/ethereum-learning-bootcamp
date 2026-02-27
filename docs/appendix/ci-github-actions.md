@@ -60,6 +60,7 @@ npm test
 - `insufficient funds` の場合は、対象チェーンにETHを用意する。
 
 ## 3. よくあるエラー（症状→原因候補→確認→解決）
+
 | 症状 | 原因候補 | 確認 | 解決 |
 |---|---|---|---|
 | `npm ci` が落ちる | lockfile不整合 / 依存更新漏れ | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |

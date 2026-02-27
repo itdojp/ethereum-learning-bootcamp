@@ -159,6 +159,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 ---
 
 ## 8. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | DApp が動かない / 残高が出ない | chainId とアドレスが不一致 | `dapp/.env.local` と MetaMask のチェーンを揃え、アドレスを再確認する |

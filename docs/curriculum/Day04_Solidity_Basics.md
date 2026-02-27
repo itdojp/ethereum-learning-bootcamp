@@ -205,6 +205,7 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 ---
 
 ## 4. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `execution reverted` / `reverted with custom error` | 前提条件を満たしていない（空文字、権限、残高など） | テストの期待値（`revertedWithCustomError`/イベント）を手がかりに、どの条件で落ちたか切り分ける |

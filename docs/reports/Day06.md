@@ -16,6 +16,7 @@ npx hardhat test test/hello.ts
 > Gas reporter を有効化しているため、テスト完了時に関数単位のgas表が出力される。
 
 ## 取得した主な数値（USD列は`gasReporter`デフォルト）
+
 | Contract   | Method           | Gas (avg) |
 |------------|------------------|-----------|
 | GasBench   | `benchSumMemory` | 123,548   |

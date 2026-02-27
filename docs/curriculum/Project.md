@@ -114,6 +114,7 @@ npx hardhat run scripts/deploy-event-token.ts --network sepolia
 ---
 
 ## 4. Dayごとの位置づけ（プロダクト視点）
+
 | Day | 章の主題 | プロダクトとしての増分（何が進むか） |
 |---|---|---|
 | Day01 | 全体像 / RPC | ネットワーク・用語・数値の読み方を揃える（迷子防止） |

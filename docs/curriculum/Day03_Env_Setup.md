@@ -37,6 +37,7 @@
 - Hardhatより軽量で、高速テストに強い。
 
 ### 1.3 ネットワークの種類
+
 | 種類 | 用途 | 例 |
 |------|------|----|
 | ローカルネット | 開発・単体テスト | Hardhat Network, Anvil |
@@ -247,6 +248,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 ---
 
 ## 3. つまずきポイント
+
 | 症状 | 対応 |
 |------|------|
 | Error: invalid private key | `.env`内の0xを付け忘れまたは誤記。 |

@@ -192,6 +192,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 ---
 
 ## 6. つまずきポイント
+
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm ci`（または `npm i @openzeppelin/contracts`）を実行する |

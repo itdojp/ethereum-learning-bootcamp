@@ -14,6 +14,7 @@ npx hardhat test test/gas-event.ts
 ```
 
 ## 結果（`metrics/gas_day13.md`）
+
 | Case | gasUsed |
 |------|--------:|
 | Naive.add | 132,685 |

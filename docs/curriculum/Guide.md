@@ -61,6 +61,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 
 ### 3.1 設定差分（早見表）
 #### Hardhat（テスト/スクリプト/デプロイ/Verify）
+
 | 環境 | Hardhat network | chainId | `.env` のRPC | Verify APIキー | Explorer |
 |---|---|---:|---|---|---|
 | ローカル（Hardhat node） | `localhost` | 31337 | （不要） | （不要） | （なし） |
@@ -71,6 +72,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 > “Explorerは合っているのに表示が出ない”場合は、そもそもチェーンが違う（別ネットワークのTxHash/アドレスを見ている）ことが多い。
 
 #### DApp（Vite / MetaMask）
+
 | 環境 | chainId | `dapp/.env.local` の主な変数 |
 |---|---:|---|
 | ローカル / Sepolia / Optimism | 31337 / 11155111 / 10 | `VITE_CHAIN_ID`, `VITE_TOKEN_ADDRESS`, `VITE_EVENT_TOKEN` |
