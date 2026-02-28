@@ -51,7 +51,10 @@
   - トランザクション実行をL2で行い、結果をL1に保存。
   - 近年は **rollup-centric（L2中心）** のスケーリングが前提で、L2手数料は「L1へ投稿するデータ可用性（[DA](../appendix/glossary.md)）コスト」の影響が大きくなりやすい（詳細はDay8）。
     - **Dencun（EIP‑4844）** で blob-carrying transactions（[Blob](../appendix/glossary.md)）が導入され、L2のDAコストが下がりやすくなった。
-    - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられる（注：有効化タイミングはネットワークや時期で異なる。実測と公式情報を優先する）。
+    - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられた。
+      - mainnet: 2025-05-07（epoch 364032）で有効化済み
+      - 注：テストネット/L2 の有効化タイミングはチェーンや時期で異なるため、実測と公式情報を優先する
+      - 参考： https://ethereum.org/roadmap/pectra/
 
 ---
 
@@ -72,7 +75,11 @@ sudo apt update && sudo apt install -y curl jq
 AlchemyまたはInfuraで取得したRPCを設定。
 
 ```bash
-export RPC="https://sepolia.infura.io/v3/<YOUR_API_KEY>"
+# YOUR_API_KEY を自分の値に置換する（APIキーはコミットしない）
+export RPC="https://sepolia.infura.io/v3/YOUR_API_KEY"
+
+# 例（Alchemy）
+# export RPC="https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY"
 ```
 
 確認：
