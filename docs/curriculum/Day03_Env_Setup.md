@@ -145,15 +145,16 @@ npm install --save-dev @nomicfoundation/hardhat-toolbox@6.1.0 dotenv@16.4.5
 #### (4) .envファイルを準備
 ```bash
 cat > .env.example <<'ENV'
-SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/<YOUR_KEY>
-PRIVATE_KEY=0x<YOUR_PRIVATE_KEY>
-ETHERSCAN_API_KEY=<YOUR_KEY>
+SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
 ENV
 ```
 コピーして設定：
 ```bash
 cp .env.example .env && nano .env
 ```
+> `YOUR_...` は自分の値に置換する。APIキーや秘密鍵はコミットしない。
 
 ---
 

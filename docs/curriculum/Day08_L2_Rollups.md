@@ -47,7 +47,7 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 このため、L2上で同じ操作をしても **Blobの混雑**（base fee）次第で費用が変動する。
 
 ### 1.5 Pectra（EIP‑7691）：Blob throughput increase
-**EIP‑7691（提案）** では、Blob の供給枠が増える。
+**EIP‑7691** は Pectra で **有効化済み** で、Blob の供給枠が増える。
 
 | パラメータ（1ブロックあたり） | EIP‑4844 初期値 | EIP‑7691（Pectra） |
 |---|---:|---:|
@@ -57,7 +57,11 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 - **target**：この値を基準に blob の base fee が上下しやすい（混雑の“中心”）。
 - **max**：1ブロックで許容される上限。
 
-> 注：アップグレードの有効化タイミングはチェーンや時期で異なる。実際のネットワーク状況は各チェーンの公式アナウンスやEIPを確認すること。
+> 注：mainnet では 2025-05-07（epoch 364032）に有効化済み。テストネット/L2 の有効化タイミングはチェーンや時期で異なるため、実測と公式情報を優先する。  
+> 参考：  
+> - https://ethereum.org/roadmap/pectra/  
+> - https://blog.ethereum.org/2025/04/23/pectra-mainnet  
+> - https://eips.ethereum.org/EIPS/eip-7691
 
 ### 1.6 比較観点
 
