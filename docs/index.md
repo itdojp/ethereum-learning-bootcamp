@@ -33,7 +33,8 @@ permalink: /
 ## Quick Start（ローカル検証）
 ```bash
 npm ci
-cp .env.example .env && edit .env
+cp .env.example .env
+# .env を編集して SEPOLIA_RPC_URL / PRIVATE_KEY を設定（APIキーや秘密鍵はコミットしない）
 npm test
 ```
 

@@ -9,7 +9,7 @@
 進捗チェック（完走チェックリスト）は [`docs/curriculum/Progress.md`](./Progress.md) を参照する。
 
 ## 0. 表記ルール（この本の読み方）
-- `<...>` は **自分の値に置き換える**（例：`<YOUR_API_KEY>`, `<PRIVATE_KEY>`, `<CONTRACT_ADDRESS>`）。
+- `<...>` や `YOUR_...` / `0xYOUR_...` は **自分の値に置き換える**（例：`YOUR_API_KEY`, `0xYOUR_PRIVATE_KEY`, `<CONTRACT_ADDRESS>`, `<CID>`）。
 - [Tx](../appendix/glossary.md) はトランザクション（transaction）の略として使う。
 - [RPC](../appendix/glossary.md) はノードと通信するエンドポイント（JSON-RPC）として使う。
 - `0x...` は16進数表記だ。必要に応じて10進数へ変換して読む（Day1参照）。
