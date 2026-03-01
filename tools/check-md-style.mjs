@@ -44,6 +44,14 @@ function scanInlineCodeTrailingSpace(line) {
   return problems;
 }
 
+function isBadNvmInitLine(line) {
+  // Copy/paste trap in bash: `\\.` becomes the command `\.` and can fail with `\.: command not found`.
+  // Intended forms:
+  // - `[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"`
+  // - `[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"`
+  return line.includes('nvm.sh') && line.includes('&&') && line.includes('\\\\.');
+}
+
 function formatProblem({ file, line, message }) {
   return `${file}:${line}: ${message}`;
 }
@@ -64,7 +72,17 @@ for (const file of markdownFiles) {
       inCodeBlock = !inCodeBlock;
       continue;
     }
-    if (inCodeBlock) continue;
+    if (inCodeBlock) {
+      // Some bash typos live inside code fences and won't be caught by prose/table rules.
+      if (isBadNvmInitLine(line)) {
+        problems.push({
+          file,
+          line: i + 1,
+          message: 'contains bad nvm init pattern `\\\\.` (use `\\.` or `.` instead)',
+        });
+      }
+      continue;
+    }
 
     // Prevent invalid-looking table separators from being rendered as text.
     // These typically show up on Pages as `|—|—|—|` when the table block isn't parsed.
@@ -124,4 +142,3 @@ if (problems.length > 0) {
 }
 
 console.log(`OK: ${markdownFiles.length} markdown files checked`);
-
