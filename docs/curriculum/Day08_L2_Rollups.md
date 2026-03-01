@@ -189,7 +189,7 @@ cat /tmp/op.json | tools/to-csv.sh >> metrics.csv
 ### 確認コマンド（最小）
 ```bash
 # 要 .env（OPTIMISM_RPC_URL / PRIVATE_KEY）と、Optimism 側の手数料分ETH
-CONTRACT=Lock ARGS=3600 npx hardhat run scripts/deploy-generic.ts --network optimism
+npx hardhat run scripts/deploy-generic.ts --network optimism
 
 # ETH転送の手数料を実測（feeEth / latencyMs が出る）
 npx hardhat run scripts/measure-fee.ts --network optimism
