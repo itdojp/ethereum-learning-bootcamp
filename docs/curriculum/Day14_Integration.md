@@ -74,6 +74,19 @@ npx hardhat run scripts/deploy-event-token.ts --network optimism
 - コンパイラバージョン（`hardhat.config.ts`）
 - （任意）Verifyリンク
 
+最小記録例：
+```markdown
+## <YYYY-MM-DD> <network> MyToken / EventToken
+- chainId: <chainId>
+- MyToken: 0x...
+- EventToken: 0x...
+- txHash:
+  - MyToken: 0x...
+  - EventToken: 0x...
+- compiler: 0.8.24
+- notes: DApp 接続確認済み
+```
+
 ---
 
 ## 3. フェーズ2：DApp を接続して動かす
@@ -112,6 +125,13 @@ EVT=0x... npx hardhat run scripts/use-event-token.ts --network sepolia
 ```text
 transfer complete { to: '0x...' }
 ```
+
+### 3.3 DApp が動かないときの切り分け順
+1. `dapp/.env.local` の `VITE_CHAIN_ID` が、接続先チェーンと一致しているか確認する
+2. `VITE_TOKEN_ADDRESS` / `VITE_EVENT_TOKEN` が、同じチェーン上でデプロイしたアドレスか確認する
+3. MetaMask 側で接続中のチェーンを確認し、必要なら切り替える
+4. `npm --prefix dapp run dev` を再起動し、ブラウザを再読込する
+5. それでも動かない場合は、Day09 の接続手順と `docs/reports/Day14.md` の実行例を見比べる
 
 ---
 
