@@ -30,9 +30,9 @@
 SEPOLIA_RPC_URL=
 MAINNET_RPC_URL=
 OPTIMISM_RPC_URL=
-PRIVATE_KEY=0x...
-ETHERSCAN_API_KEY=
-OPTIMISTIC_ETHERSCAN_API_KEY=
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
+OPTIMISTIC_ETHERSCAN_API_KEY=YOUR_OPTIMISTIC_ETHERSCAN_API_KEY
 ```
 
 ---
@@ -40,24 +40,27 @@ OPTIMISTIC_ETHERSCAN_API_KEY=
 ## 1. デプロイスクリプトの汎用化
 `scripts/deploy-generic.ts`
 ```ts
-import { ethers, network } from "hardhat";
+import { ethers, network } from 'hardhat';
 
 // デプロイ対象とコンストラクタ引数は環境変数で指定可能
-// 例: CONTRACT=MyToken ARGS="100000000000000000000" npx hardhat run ...
-async function main(){
-  const name = process.env.CONTRACT || "Lock";
-  const args = (process.env.ARGS||"").split(" ").filter(Boolean);
-  console.log("network:", network.name, "contract:", name, "args:", args);
+// 例: CONTRACT=MyToken ARGS=100000000000000000000 npx hardhat run ...
+async function main() {
+  const name = process.env.CONTRACT || 'Hello';
+  const args = (process.env.ARGS || '').split(' ').filter(Boolean);
+  console.log('network:', network.name, 'contract:', name, 'args:', args);
   const F = await ethers.getContractFactory(name);
   const c = await F.deploy(...(args as any));
   await c.waitForDeployment();
-  console.log("deployed:", await c.getAddress());
+  console.log('deployed:', await c.getAddress());
 }
 
-main().catch((e)=>{console.error(e);process.exit(1)});
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
 
-**実行例**（SepoliaにLockを少額で）
+**実行例**（Sepolia に `Hello` をデプロイ：引数なし）
 ```bash
 npx hardhat run scripts/deploy-generic.ts --network sepolia
 ```
@@ -66,15 +69,16 @@ npx hardhat run scripts/deploy-generic.ts --network sepolia
 CONTRACT=MyToken ARGS=1000000000000000000000000 \
   npx hardhat run scripts/deploy-generic.ts --network optimism
 ```
+> Mainnet に出す場合もコマンドは同じ形で `--network mainnet` を指定するが、実費になるため少額・鍵管理・承認フローを必ず確認する。
 
 ---
 
 ## 2. Verify（ソース検証）
 Hardhat Verifyプラグインを導入（Day5参照）。
 
-**コマンド例（Sepolia：Lock）**
+**コマンド例（Sepolia：Hello）**
 ```bash
-npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
+npx hardhat verify --network sepolia <DEPLOYED_ADDR>
 ```
 **コマンド例（Optimism：MyToken）**
 ```bash
@@ -172,11 +176,11 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 ### 確認コマンド（最小）
 ```bash
-# 要 .env（RPC/PRIVATE_KEY）。少額で。
-CONTRACT=Lock ARGS=3600 npx hardhat run scripts/deploy-generic.ts --network sepolia
+# 要 .env（SEPOLIA_RPC_URL / PRIVATE_KEY）。少額で。
+npx hardhat run scripts/deploy-generic.ts --network sepolia
 
-# 任意（Verify：要 ETHERSCAN_API_KEY とデプロイ済みアドレス）
-npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
+# 任意（Verify：要 ETHERSCAN_API_KEY とデプロイ済みアドレス。Hello はコンストラクタ引数なし）
+npx hardhat verify --network sepolia <DEPLOYED_ADDR>
 ```
 
 ## 9. 提出物
