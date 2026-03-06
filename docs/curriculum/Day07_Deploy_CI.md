@@ -19,6 +19,12 @@
 - 今回触らないこと：いきなり多額で本番デプロイ（まずは少額・段階的に進める）
 - 最短手順（迷ったらここ）：1章の `deploy-generic.ts` で少額デプロイ → 2章でVerify（任意）→ 4章で手動承認付きCIの要点を確認
 
+### 0.1 このDayを始めてよい条件
+- `npm test` がローカルで通っている
+- `PRIVATE_KEY` に学習用の鍵だけを使っている
+- 最初の実行先を Mainnet ではなく Sepolia または Optimism にしている
+- デプロイ後に残す場所（[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) と `docs/reports/`）を決めている
+
 `.env.example`
 ```bash
 SEPOLIA_RPC_URL=
