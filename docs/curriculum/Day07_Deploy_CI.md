@@ -3,7 +3,7 @@
 [← 目次](./TOC.md) | [前: Day6](./Day06_Local_Testing.md) | [次: Day8](./Day08_L2_Rollups.md)
 
 ## 学習目的
-- 少額でMainnetまたはL2に安全にデプロイする流れを、手順として実行できるようになる。
+- 少額のテストネットまたはL2から始め、安全にデプロイする流れを手順として実行できるようになる。
 - ソース検証（[Verify](../appendix/glossary.md)）と成果の可観測性を確保し、Explorerで確認できるようになる。
 - GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
 
@@ -57,9 +57,9 @@ async function main(){
 main().catch((e)=>{console.error(e);process.exit(1)});
 ```
 
-**実行例**（MainnetにLockを小額で）
+**実行例**（SepoliaにLockを少額で）
 ```bash
-npx hardhat run scripts/deploy-generic.ts --network mainnet
+npx hardhat run scripts/deploy-generic.ts --network sepolia
 ```
 **実行例**（OptimismにERC20を供給量指定で）
 ```bash
@@ -72,9 +72,9 @@ CONTRACT=MyToken ARGS=1000000000000000000000000 \
 ## 2. Verify（ソース検証）
 Hardhat Verifyプラグインを導入（Day5参照）。
 
-**コマンド例（Mainnet：Lock）**
+**コマンド例（Sepolia：Lock）**
 ```bash
-npx hardhat verify --network mainnet <DEPLOYED_ADDR> 3600
+npx hardhat verify --network sepolia <DEPLOYED_ADDR> 3600
 ```
 **コマンド例（Optimism：MyToken）**
 ```bash
@@ -123,9 +123,9 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ```markdown
 # Deployments
 
-## 例：2025-11-02 mainnet MyToken v1.0.0
+## 例：<YYYY-MM-DD> <network> MyToken v1.0.0
 - contract: MyToken
-- network: mainnet
+- network: <network>
 - address: 0x....
 - txHash: 0x....
 - compiler: 0.8.24
@@ -137,10 +137,10 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 ---
 
 ## 6. 本番デプロイ手順（最小）
-1. **小額**でL2（例：Optimism）へ先行デプロイ。
+1. **少額**でL2（例：Optimism）へ先行デプロイ。
 2. Etherscan/BlockscoutでVerify。
 3. DApp・サブグラフ・モニタを接続して動作確認（Day10以降）。
-4. Mainnetに本デプロイ。[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
+4. 必要な確認を終えたら、本番環境（例: Mainnet）へデプロイする。[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
 
 ---
 

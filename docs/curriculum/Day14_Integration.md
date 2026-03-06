@@ -76,8 +76,8 @@ npx hardhat run scripts/deploy-event-token.ts --network optimism
 
 最小記録例：
 ```markdown
-## 2026-03-06 sepolia MyToken / EventToken
-- chainId: 11155111
+## <YYYY-MM-DD> <network> MyToken / EventToken
+- chainId: <chainId>
 - MyToken: 0x...
 - EventToken: 0x...
 - txHash:
