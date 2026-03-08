@@ -78,7 +78,8 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 
 ### 2.1 HardhatにL2を追加（参考）
 このリポジトリでは `sepolia` / `optimism` / `polygonZk` のネットワーク設定は同梱済みだ（`hardhat.config.ts` を確認する）。  
-自分のプロジェクトに追加する場合は、次を参考にする。
+自分のプロジェクトに追加する場合は、次を参考にする。  
+環境変数は **ルートの `.env.example` をベースに管理**し、この章で最低限必要なのは `OPTIMISM_RPC_URL` / `PRIVATE_KEY` / `OPTIMISTIC_ETHERSCAN_API_KEY` だ。
 
 `hardhat.config.ts`
 ```ts
@@ -89,9 +90,13 @@ networks: {
   // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
 }
 ```
-`.env.example`
+`.env.example`（Day8で最低限見る項目）
 ```bash
 OPTIMISM_RPC_URL=
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+OPTIMISTIC_ETHERSCAN_API_KEY=YOUR_OPTIMISTIC_ETHERSCAN_API_KEY
+
+# 任意：Polygon zkEVM も試す場合
 POLYGON_ZKEVM_RPC_URL=
 ```
 
