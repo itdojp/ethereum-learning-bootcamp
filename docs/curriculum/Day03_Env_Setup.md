@@ -110,7 +110,8 @@ MTK: 0x...
 ```bash
 sudo apt update && sudo apt install -y git curl ca-certificates
 # 注意：curl | bash の実行前に、公式スクリプト（install.sh）の内容を確認する
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+# タグは upstream README / release に合わせて更新する
 
 # 以降はシェルを再起動するか、次を実行
 export NVM_DIR="$HOME/.nvm"

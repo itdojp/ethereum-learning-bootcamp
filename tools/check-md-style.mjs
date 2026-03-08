@@ -7,6 +7,7 @@ function listTargetMarkdownFiles() {
   const out = execSync(
     [
       'git ls-files --',
+      '"docs/*.md"',
       '"docs/curriculum/*.md"',
       '"docs/reports/*.md"',
       '"docs/appendix/*.md"',
@@ -52,6 +53,10 @@ function isBadNvmInitLine(line) {
   return line.includes('nvm.sh') && line.includes('&&') && line.includes('\\\\.');
 }
 
+function hasUnpinnedNvmInstallerUrl(line) {
+  return line.includes('raw.githubusercontent.com/nvm-sh/nvm/master/install.sh');
+}
+
 function formatProblem({ file, line, message }) {
   return `${file}:${line}: ${message}`;
 }
@@ -72,6 +77,16 @@ for (const file of markdownFiles) {
       inCodeBlock = !inCodeBlock;
       continue;
     }
+
+    if (hasUnpinnedNvmInstallerUrl(line)) {
+      problems.push({
+        file,
+        line: i + 1,
+        message:
+          'contains unpinned nvm installer URL (`master/install.sh`); use a release-tagged URL instead',
+      });
+    }
+
     if (inCodeBlock) {
       // Some bash typos live inside code fences and won't be caught by prose/table rules.
       if (isBadNvmInitLine(line)) {
