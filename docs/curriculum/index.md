@@ -39,6 +39,7 @@
 - TypeScript: 5.4.x
 
 ## 3. 環境変数（`.env`）
+- ローカル `npm test` だけなら `.env` の作成や値の投入は不要。Sepolia / Optimism へ deploy・verify するときだけ設定する。
 - ルートは `.env.example` をコピーして `.env` を作成する：
   - `cp .env.example .env`
 - 秘密鍵・APIキーはコミットしない（`.gitignore` 済み）。

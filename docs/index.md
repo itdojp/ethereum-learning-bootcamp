@@ -33,14 +33,20 @@ permalink: /
 ## Quick Start（ローカル検証）
 ```bash
 npm ci
-cp .env.example .env
-# .env を編集して SEPOLIA_RPC_URL / PRIVATE_KEY を設定（APIキーや秘密鍵はコミットしない）
 npm test
 ```
 
+- ローカル `npm test` は Hardhat Network 上で動くため、外部 RPC や秘密鍵は不要
+- `.env` の作成と値の投入は、Sepolia / Optimism へ deploy・verify するときに行う
+- deploy / verify 時に使う主な変数:
+  - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
+  - `ETHERSCAN_API_KEY`: Sepolia verify
+  - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
+  - `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
+
 最小成功判定:
 - `npm test` が通る
-- `.env` に学習用の値だけを入れている
+- ローカル検証だけなら秘密情報なしで進められる
 - Day01 から Day03 のリンクを辿って迷わず次に進める
 
 おすすめ開始パターン:
