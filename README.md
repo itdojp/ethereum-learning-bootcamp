@@ -20,7 +20,7 @@ npm test
 ```bash
 npm ci
 cp .env.example .env
-edit .env
+# 任意のエディタで .env を開いて編集する（例: nano .env / code .env）
 ```
 - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia へ deploy する場合に必要
 - `ETHERSCAN_API_KEY`: Sepolia で verify する場合に必要

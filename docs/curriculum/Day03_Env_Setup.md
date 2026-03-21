@@ -77,7 +77,7 @@ npm test
 
 #### 2.0.2 Sepolia / Optimism へ deploy・verify する場合
 
-3) `.env` を作る：
+1) `.env` を作る：
 ```bash
 cp .env.example .env
 ```
@@ -88,7 +88,7 @@ cp .env.example .env
 - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
 - `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
 
-4) Sepolia にデプロイする（例：MyToken）：
+2) Sepolia にデプロイする（例：MyToken）：
 ```bash
 npx hardhat run scripts/deploy-token.ts --network sepolia
 ```
