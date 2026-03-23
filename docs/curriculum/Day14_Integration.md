@@ -204,6 +204,11 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 - A2. `dapp/.env.local` の `VITE_CHAIN_ID` / `VITE_*_ADDRESS` と、MetaMask側の接続チェーンを確認し、同じチェーン上のアドレスを入れ直す。
 - A3. チームで共有/運用する段階（第三者がExplorerで確認したい、PRで自動テストしたい、履歴/集計を安定して取りたい）になると必要になりやすい。
 
+### 完走後の次アクション
+- [ ] `docs/DEPLOYMENTS.md` と `docs/reports/` を見返し、第三者が再現に必要な情報だけが残っているか確認する。
+- [ ] Day07 の手動承認付きデプロイを使う場合は、対象ブランチ / Environment / Secrets の責務分担を整理する。
+- [ ] DApp とコントラクトの接続が安定したら、PR / CI / approval gate を含む運用設計の整理先として [AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) を参照する。
+
 ### 確認コマンド（最小）
 ```bash
 # ルートで一括チェック（テスト + リンクチェック + dapp build）
