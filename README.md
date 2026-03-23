@@ -10,11 +10,23 @@ Node.js 20 以上（npm 10+）を前提としています。
 - 更新履歴：https://itdojp.github.io/ethereum-learning-bootcamp/CHANGELOG/
 
 ## Quick Start
+### ローカル検証
 ```bash
 npm ci
-cp .env.example .env && edit .env
 npm test
 ```
+
+### Sepolia / Optimism へ deploy・verify する場合
+```bash
+npm ci
+cp .env.example .env
+# 任意のエディタで .env を開いて編集する（例: nano .env / code .env）
+```
+- `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia へ deploy する場合に必要
+- `ETHERSCAN_API_KEY`: Sepolia で verify する場合に必要
+- `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism へ deploy する場合に必要
+- `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism で verify する場合に必要
+
 （まとめて確認する場合：`npm run check:all`）
 
 ## 参考リンク
