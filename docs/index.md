@@ -71,6 +71,9 @@ npm test
 - つまずきやすいテーマ（Verify/CI/The Graph）は、該当 Day の前後で「つまずきポイント（先に読む）」を参照します。
 - 一通り完走した後は、ミニプロジェクトを題材に「再実装（リファクタ/テスト追加/CI整備）」で定着を図ります。
 
+## 関連書籍
+- [AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) - Day07 の GitHub Actions / approval gate を、PR 運用や CI 設計まで広げて整理したい場合に接続しやすい。
+
 ## ライセンス
 本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。
 

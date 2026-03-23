@@ -38,6 +38,12 @@
 - OpenZeppelin Contracts: 5.0.2
 - TypeScript: 5.4.x
 
+### 2.2 確認時点と再確認ポイント
+- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-03-24 時点**で確認した内容を基準としている。
+- 特に変わりやすいのは、RPC 提供者の UI / API キー取得手順、Explorer の Verify 画面、GitHub Actions の画面導線、The Graph の管理画面である。
+- 本文どおりに進まない場合は、まず `npm ci` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
+- 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
+
 ## 3. 環境変数（`.env`）
 - ローカル `npm test` だけなら `.env` の作成や値の投入は不要。Sepolia / Optimism へ deploy・verify するときだけ設定する。
 - ルートは `.env.example` をコピーして `.env` を作成する：
