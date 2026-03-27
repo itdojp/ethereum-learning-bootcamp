@@ -17,3 +17,5 @@
 - Issue #93 対応：教材の正誤・不整合を修正（Day1/2 の記録先統一、Day1 のコマンドと出力例の整合、Day3 の導線整理、Day12 のツール説明の誤解低減 など）
 - Issue #96 対応：GitHub Pages での Markdown テーブル崩れを修正し、インラインコード末尾空白を除去（再発防止チェックを CI に追加）
 - Issue #100 対応：Day03 の nvm 初期化コマンド誤記（`\\.` → `\.`）を修正し、nvm の動作確認コマンドを追記
+- Issue #108 対応：ローカル `npm test` では外部 RPC / 秘密鍵が不要であることを README・Home・Day03・`.env.example` に明記
+- Issue #106 対応：Day03 の nvm install URL を release tag 固定に変更し、Day08 の Optimism Verify に必要な env 記載と Markdown style check の対象/ルールを補強

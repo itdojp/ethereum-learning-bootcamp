@@ -17,7 +17,7 @@
 - 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
 - 触るファイル（主なもの）：`.env` / `hardhat.config.ts` / `scripts/deploy-token.ts`（例）
 - 今回触らないこと：いきなりMainnetへデプロイ（Day7で“安全な流れ”として扱う）
-- 最短手順（迷ったらここ）：2.0 の手順で `npm ci` → `.env` 作成 → `npm test`（デプロイは任意）
+- 最短手順（迷ったらここ）：2.0 の手順で `npm ci` → `npm test`。`.env` は deploy / verify を行うときだけ作成する。
 
 ---
 
@@ -56,18 +56,14 @@
 ### 2.0 本リポジトリで進める場合（推奨）
 このリポジトリには Hardhat プロジェクト（コントラクト・スクリプト・テスト）が同梱されている。ゼロから作る場合は 2.1 以降へ進む。
 
+#### 2.0.1 ローカルだけ先に確認する場合
+
 1) 依存を入れる（リポジトリルート）：
 ```bash
 npm ci
 ```
 
-2) `.env` を作る：
-```bash
-cp .env.example .env
-```
-`.env` を編集し、少なくとも `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を埋める。
-
-3) テストを実行する（ローカルで一通り動くことを確認）：
+2) テストを実行する（ローカルで一通り動くことを確認）：
 ```bash
 npm test
 ```
@@ -75,9 +71,24 @@ npm test
 ```text
 16 passing
 ```
-> 数字は追加テストで増減する。最後に `passing` が出ていればOK。
+> 数字は追加テストで増減する。最後に `passing` が出ていればよい。
+>
+> `npm test` はローカルの Hardhat Network を使うため、この段階では `.env` や外部 RPC、秘密鍵は不要。
 
-4) Sepolia にデプロイする（例：MyToken）：
+#### 2.0.2 Sepolia / Optimism へ deploy・verify する場合
+
+1) `.env` を作る：
+```bash
+cp .env.example .env
+```
+`.env` は「外部ネットワークへ接続する操作」に応じて必要な値だけ埋める。
+
+- `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
+- `ETHERSCAN_API_KEY`: Sepolia verify
+- `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
+- `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
+
+2) Sepolia にデプロイする（例：MyToken）：
 ```bash
 npx hardhat run scripts/deploy-token.ts --network sepolia
 ```
@@ -96,7 +107,8 @@ MTK: 0x...
 #### 2.1.0 この節のゴール（成功判定）
 - `node -v` が v20 系になっている
 - `npx hardhat` で TypeScript プロジェクトを作成できる
-- `.env` を作成し、少なくとも `SEPOLIA_RPC_URL` / `PRIVATE_KEY` を設定できる
+- ローカル `npm test` を外部 RPC / 秘密鍵なしで実行できる
+- テストネットへ出す場合に `.env` を作成し、必要な値を設定できる
 
 #### 2.1.1 よくある失敗（最短の切り分け）
 - `node -v` が古い：`apt` で入る Node が古い場合がある。`nvm` を使う（手順はこの節の A）。
@@ -110,7 +122,8 @@ MTK: 0x...
 ```bash
 sudo apt update && sudo apt install -y git curl ca-certificates
 # 注意：curl | bash の実行前に、公式スクリプト（install.sh）の内容を確認する
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+# タグは upstream README / release に合わせて更新する
 
 # 以降はシェルを再起動するか、次を実行
 export NVM_DIR="$HOME/.nvm"
@@ -144,7 +157,7 @@ npx hardhat
 npm install --save-dev @nomicfoundation/hardhat-toolbox@6.1.0 dotenv@16.4.5
 ```
 
-#### (4) .envファイルを準備
+#### (4) .envファイルを準備（deploy / verify を行う場合）
 ```bash
 cat > .env.example <<'ENV'
 SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY
@@ -156,6 +169,7 @@ ENV
 ```bash
 cp .env.example .env && nano .env
 ```
+> ローカル `npm test` だけなら、この手順は不要。
 > `YOUR_...` は自分の値に置換する。APIキーや秘密鍵はコミットしない。
 
 ---
@@ -267,8 +281,8 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 ---
 
 ## 5. まとめ
-- ルートで `npm ci` し、`npm test` でローカル実行できる状態を確認した。
-- `.env` に `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、秘密情報をコミットしない運用を押さえた。
+- ルートで `npm ci` し、外部 RPC や秘密鍵なしで `npm test` を実行できる状態を確認した。
+- deploy / verify を行う場合にだけ `.env` を作成し、必要な値を設定する運用を押さえた。
 - `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
 
 ### 理解チェック（3問）

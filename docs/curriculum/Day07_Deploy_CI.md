@@ -174,6 +174,12 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 - A2. 例：network/chainId、コントラクト名とアドレス、デプロイTxHash（加えてsolc/optimizer設定があるとさらに良い）。
 - A3. 誤ったブランチ/タイミングで本番やL2へデプロイしてしまう事故を減らす（人間の確認ポイントを作る）。
 
+### 次に進む前の確認
+- [ ] `docs/DEPLOYMENTS.md` に、確認に使ったネットワーク / アドレス / TxHash を残した。
+- [ ] 失敗時の切り分け先として、[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と [`docs/appendix/verify.md`](../appendix/verify.md) の位置を把握した。
+- [ ] Day09 / Day14 で使うアドレスや chainId を控えた。
+- CI 設計や approval gate をチーム運用へ広げる場合は、[AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) を参照すると整理しやすい。
+
 ### 確認コマンド（最小）
 ```bash
 # 要 .env（SEPOLIA_RPC_URL / PRIVATE_KEY）。少額で。

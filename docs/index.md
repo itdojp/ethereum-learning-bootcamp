@@ -33,20 +33,25 @@ permalink: /
 ## Quick Start（ローカル検証）
 ```bash
 npm ci
-cp .env.example .env
-# .env を編集して SEPOLIA_RPC_URL / PRIVATE_KEY を設定（APIキーや秘密鍵はコミットしない）
 npm test
 ```
 
 最小成功判定:
 - `npm test` が通る
-- `.env` に学習用の値だけを入れている
+- ローカル `npm test` は Hardhat Network 上で動くため、外部 RPC や秘密鍵は不要
 - Day01 から Day03 のリンクを辿って迷わず次に進める
 
 おすすめ開始パターン:
 - まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
 - まず手を動かしたい: `npm test` を通してから Day04 へ進む
 - デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
+- `.env` の作成と値の投入は、Sepolia / Optimism へ deploy・verify するときに行う
+- deploy / verify 時に使う主な変数:
+  - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
+  - `ETHERSCAN_API_KEY`: Sepolia verify
+  - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
+  - `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
+
 
 ## 前提知識
 - 基本的なプログラミング経験（変数/制御構文/関数の概念）
@@ -71,6 +76,9 @@ npm test
 - `.env` や `.env.local` の内容はコミットしない。スクリーンショット、ログ、共有資料にも秘密情報を残さない。
 - Gas、手数料、ネットワーク仕様、Etherscan/Blockscout 等の周辺サービス仕様は変化しやすい。実運用に転用する前に公式情報を確認する。
 - Day07 以降の deploy / verify / CI は課金や公開チェーンへの書き込みを伴い得る。まずはローカル検証とテストネットで手順を確認する。
+
+## 関連書籍
+- [AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) - Day07 の GitHub Actions / approval gate を、PR 運用や CI 設計まで広げて整理したい場合に接続しやすい。
 
 ## ライセンス
 本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。

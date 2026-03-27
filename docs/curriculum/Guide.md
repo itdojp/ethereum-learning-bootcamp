@@ -19,6 +19,11 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 4) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)  
 5) 通しで作るもの：[`docs/curriculum/Project.md`](./Project.md)  
 
+### 1.1 各 Day を閉じる前の確認
+- 章末の「確認コマンド」を実行し、最低1つは自分の環境で再現できたことを確認する。
+- 「提出物」にあるログ / 画面 / 更新ファイルのうち、最低限残すべきものを `docs/reports/` や `docs/DEPLOYMENTS.md` に反映する。
+- 次の Day に必要な前提（例: `.env`、デプロイ済みアドレス、`dapp/.env.local`、Explorer 上の Verify 状態）を埋めてから進む。
+
 ---
 
 ## 2. 学習ルート（目的別）
@@ -34,6 +39,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ### 2.3 L2や運用中心（実務寄り）
 - Day07/Day08 を重点的に読む（運用・観測・記録が主題になる）。
 - Day14 のチェックリストを “Done” にするのがゴールになる。
+- GitHub Actions の運用設計や PR / CI の型まで広げたい場合は、[AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) を続けて読むとよい。
 
 ### 2.4 1つの小さなプロダクトとして進める（完走ルート）
 この教材は章ごとに題材が変わるが、「最後に全部つなぐ（Day14）」を小さなプロダクト完成のゴールにすると迷いにくい。
