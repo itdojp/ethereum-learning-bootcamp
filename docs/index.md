@@ -36,7 +36,15 @@ npm ci
 npm test
 ```
 
+最小成功判定:
+- `npm test` が通る
 - ローカル `npm test` は Hardhat Network 上で動くため、外部 RPC や秘密鍵は不要
+- Day01 から Day03 のリンクを辿って迷わず次に進める
+
+おすすめ開始パターン:
+- まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
+- まず手を動かしたい: `npm test` を通してから Day04 へ進む
+- デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
 - `.env` の作成と値の投入は、Sepolia / Optimism へ deploy・verify するときに行う
 - deploy / verify 時に使う主な変数:
   - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
@@ -44,15 +52,6 @@ npm test
   - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
   - `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
 
-最小成功判定:
-- `npm test` が通る
-- ローカル検証だけなら秘密情報なしで進められる
-- Day01 から Day03 のリンクを辿って迷わず次に進める
-
-おすすめ開始パターン:
-- まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
-- まず手を動かしたい: `npm test` を通してから Day04 へ進む
-- デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
 
 ## 前提知識
 - 基本的なプログラミング経験（変数/制御構文/関数の概念）
@@ -71,11 +70,25 @@ npm test
 - つまずきやすいテーマ（Verify/CI/The Graph）は、該当 Day の前後で「つまずきポイント（先に読む）」を参照します。
 - 一通り完走した後は、ミニプロジェクトを題材に「再実装（リファクタ/テスト追加/CI整備）」で定着を図ります。
 
+## 安全に学習するための注意
+
+- 秘密鍵、RPC API キー、デプロイ先アカウントの資格情報は学習用のものに限定し、メインネットや実資産を扱う鍵は使わない。
+- `.env` や `.env.local` の内容はコミットしない。スクリーンショット、ログ、共有資料にも秘密情報を残さない。
+- Gas、手数料、ネットワーク仕様、Etherscan/Blockscout 等の周辺サービス仕様は変化しやすい。実運用に転用する前に公式情報を確認する。
+- Day07 以降の deploy / verify / CI は課金や公開チェーンへの書き込みを伴い得る。まずはローカル検証とテストネットで手順を確認する。
+
 ## 関連書籍
 - [AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) - Day07 の GitHub Actions / approval gate を、PR 運用や CI 設計まで広げて整理したい場合に接続しやすい。
 
 ## ライセンス
 本書は CC BY-NC-SA 4.0 で公開されています。商用利用は別途契約が必要です。
+
+## 利用と更新情報
+
+- 公開ページ: [https://itdojp.github.io/ethereum-learning-bootcamp/](https://itdojp.github.io/ethereum-learning-bootcamp/)
+- リポジトリ: [https://github.com/itdojp/ethereum-learning-bootcamp](https://github.com/itdojp/ethereum-learning-bootcamp)
+- カリキュラム、依存パッケージ、チェーン周辺仕様の差分確認は、リポジトリのコミット履歴・PR・[`CHANGELOG.md`]({{ '/CHANGELOG/' | relative_url }}) を起点に行う。
+- 教材内のコマンドは学習用の最小構成である。本番向けには秘密情報管理、承認フロー、監査ログ、権限制御を追加で設計すること。
 
 ## 目次
 - まずは Day1 から：[`docs/curriculum/Day01_Ethereum_Intro.md`]({{ '/curriculum/Day01_Ethereum_Intro/' | relative_url }})

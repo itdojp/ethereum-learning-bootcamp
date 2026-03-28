@@ -8,6 +8,26 @@
 通しで作るもの（ミニプロジェクト）は [`docs/curriculum/Project.md`](./Project.md) を参照する。
 進捗チェック（完走チェックリスト）は [`docs/curriculum/Progress.md`](./Progress.md) を参照する。
 
+## 開始前チェック
+
+### 必須
+- Node.js 20 系と npm を使えること
+- Git とターミナル操作の基本が分かること
+- リポジトリルートで `npm ci` と `npm test` を実行できること
+- 学習用の `.env` を自分で作成し、秘密情報をコミットしない前提を理解していること
+
+### 任意だが後半で必要になりやすいもの
+- RPC プロバイダのアカウントとテストネット用エンドポイント（Day03 以降）
+- テスト ETH を受け取れるウォレット（Sepolia / Optimism など）
+- MetaMask 等のウォレット拡張（Day09 以降）
+- The Graph のアカウント（Day10 を実際に試す場合）
+- IPFS / NFT メタデータ配信用のサービスアカウント（Day11 を実際に試す場合）
+
+### 安全運用の前提
+- 学習にはテストネット用またはローカル開発用の秘密鍵だけを使う。Mainnet や実資産を扱う鍵は使わない。
+- RPC、IPFS、The Graph、Explorer などの外部サービスは無料枠や課金条件、レート制限がある。利用前に公式情報を確認する。
+- アドレス、Tx、イベント、NFT メタデータは公開前提で扱う。共有してよい情報だけを使う。
+
 ## 0. 表記ルール（この本の読み方）
 - `<...>` や `YOUR_...` / `0xYOUR_...` は **自分の値に置き換える**（例：`YOUR_API_KEY`, `0xYOUR_PRIVATE_KEY`, `<CONTRACT_ADDRESS>`, `<CID>`）。
 - [Tx](../appendix/glossary.md) はトランザクション（transaction）の略として使う。
