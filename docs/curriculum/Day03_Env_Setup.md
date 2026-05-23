@@ -160,14 +160,14 @@ npm -v
 mkdir eth-bootcamp && cd eth-bootcamp
 npm init -y
 # 本教材互換で Hardhat 2 を使う場合。Hardhat 3 を採用する場合は公式 Getting Started に従う。
-npm install --save-dev hardhat@^2.26.0
+npm install --save-dev hardhat@2.27.0
 npx hardhat
 ```
-プロンプトで「Create a TypeScript project」を選択。表示されるテンプレートや質問は Hardhat の major version で変わるため、手元の `npx hardhat --version` を記録する。
+プロンプトで「Create a TypeScript project」を選択。ここでは本教材と同じ Hardhat 2.x 系を固定しているが、表示されるテンプレートや質問は Hardhat の version で変わるため、手元の `npx hardhat --version` を記録する。
 
 #### (3) 推奨プラグインの追加
 ```bash
-npm install --save-dev @nomicfoundation/hardhat-toolbox@^6.1.0 dotenv@^16.4.5
+npm install --save-dev @nomicfoundation/hardhat-toolbox@6.1.0 dotenv@16.6.1
 ```
 
 #### (4) .envファイルを準備（deploy / verify を行う場合）

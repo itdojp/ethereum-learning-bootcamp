@@ -52,7 +52,7 @@
 この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm ci` の lock に従う。
 
 - Node.js: 20.x（本リポジトリの Hardhat 2.x 再現用）
-- Hardhat: 2.x（`package.json` は `^2.22.1`、lock file は 2.27.0 系を解決）
+- Hardhat: 2.x（`package.json` は `^2.22.1`、現行 lock file は 2.27.0 を解決）
 - Solidity: 0.8.24
 - ethers: v6（Hardhat toolbox 経由）
 - OpenZeppelin Contracts: 5.0.2
