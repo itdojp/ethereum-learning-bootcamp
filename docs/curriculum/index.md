@@ -11,7 +11,7 @@
 ## 開始前チェック
 
 ### 必須
-- Node.js 20 系と npm を使えること
+- Node.js 20 系と npm を使えること（本リポジトリの Hardhat 2.x 再現用）
 - Git とターミナル操作の基本が分かること
 - リポジトリルートで `npm ci` と `npm test` を実行できること
 - 学習用の `.env` を自分で作成し、秘密情報をコミットしない前提を理解していること
@@ -51,18 +51,26 @@
 
 この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm ci` の lock に従う。
 
-- Node.js: 20.x
-- Hardhat: 2.22.x
+- Node.js: 20.x（本リポジトリの Hardhat 2.x 再現用）
+- Hardhat: 2.x（`package.json` は `^2.22.1`、現行 lock file は 2.27.0 を解決）
 - Solidity: 0.8.24
 - ethers: v6（Hardhat toolbox 経由）
 - OpenZeppelin Contracts: 5.0.2
 - TypeScript: 5.4.x
 
 ### 2.2 確認時点と再確認ポイント
-- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-03-24 時点**で確認した内容を基準としている。
-- 特に変わりやすいのは、RPC 提供者の UI / API キー取得手順、Explorer の Verify 画面、GitHub Actions の画面導線、The Graph の管理画面である。
+- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-05-23（Asia/Tokyo）時点**で確認した内容を基準としている。
+- 特に変わりやすいのは、Hardhat 2 / Hardhat 3 のドキュメント差分、Node.js サポート、Solidity 最新リリース、OpenZeppelin Contracts 5.x、RPC 提供者の UI / API キー取得手順、Explorer の Verify 画面、GitHub Actions の画面導線、The Graph の管理画面である。
 - 本文どおりに進まない場合は、まず `npm ci` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
 - 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
+
+### 2.3 現行仕様レビューゲート
+- 本リポジトリを学習用に進める場合は、lock file による再現性を優先し、Hardhat 2.x / Node.js 20 / Solidity 0.8.24 の組み合わせを変更しない。
+- 新規プロジェクトを作る場合は、Hardhat 3 の公式ドキュメント、Node.js サポート条件、plugin 互換性、`hardhat.config` の形式を確認してから作業する。
+- Solidity は公式ドキュメントが「デプロイ時は最新リリースを使う」ことを推奨しているため、本番転用時は pragma、compiler、known bugs、optimizer、EVM version を確認する。
+- OpenZeppelin Contracts は 5.x の `latest` / `dev` tag と監査済み release の扱い、upgradeable 版との storage 互換性を確認する。
+- Sepolia、Holesky、Hoodi、Optimism、Arbitrum などの testnet / L2 名、faucet、Explorer、RPC、Verify API は固定前提にしない。各チェーンの公式情報を確認し、学習用の鍵だけを使う。
+- Dencun / Pectra / Fusaka・PeerDAS / Blob Parameter Only fork の影響で、L2手数料や blob target/max は時点依存になる。Day08 では数値暗記ではなく、観測時刻・RPC・chainId・txHash を記録する。
 
 ## 3. 環境変数（`.env`）
 - ローカル `npm test` だけなら `.env` の作成や値の投入は不要。Sepolia / Optimism へ deploy・verify するときだけ設定する。

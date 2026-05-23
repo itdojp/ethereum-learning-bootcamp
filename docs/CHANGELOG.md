@@ -2,6 +2,12 @@
 
 このページでは、本教材の「大きな変更」をまとめます。細かな修正は GitHub のコミット履歴を参照してください。
 
+## 2026.05
+- Issue #114 / Phase 5 対応：Ethereum / Solidity / L2 / Hardhat / Foundry / OpenZeppelin / The Graph の現行仕様レビューゲートを README、Home、Curriculum、Progress、Day03、Day08、Day12、参考資料、PR template に追加
+- Day08 を Fusaka / PeerDAS / Blob Parameter Only fork の時点情報に更新し、L2/bridge の安全確認と `metrics/` 配下の記録例を明確化
+- Day12 の監査チェックリストに署名・permit・approval・bridge・upgrade・自動解析の限界を追加
+- DApp フロントエンドの Vite / Rollup / PostCSS / Picomatch を更新し、ethers 配下の `ws` advisory 対応として npm overrides を限定指定して、`npm --prefix dapp audit` で既知脆弱性 0 を確認
+
 ## 2026.01
 - 書籍（GitHub Pages）として読みやすいレイアウト／ナビゲーションを整備
 - 進捗チェック（完走チェックリスト）ページを追加し、迷子になりにくくした

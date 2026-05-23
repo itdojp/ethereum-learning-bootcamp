@@ -41,10 +41,19 @@ cp .env.example .env
 - `.env` / `.env.local` はコミットせず、ログや画面共有にも秘密情報を残さないでください。
 - RPC、Explorer、IPFS、The Graph などの外部サービスは無料枠や課金条件、レート制限があるため、利用前に公式情報を確認してください。
 - アドレス、トランザクション、イベント、NFTメタデータは公開前提で扱ってください。
+- ウォレットのリカバリーフレーズ、秘密鍵、署名リクエスト、token approval は、フィッシングや資産流出の主要経路です。教材外のサイトやチャットで入力・署名しないでください。
+
+## Phase 5 現行仕様レビューゲート
+- 確認日: 2026-05-23（Asia/Tokyo）。本書は `package.json` / `package-lock.json` の再現性を優先し、Hardhat 2.x・Solidity 0.8.24・OpenZeppelin Contracts 5.0.2 の学習用構成を維持します。
+- 新規プロジェクトへ転用する場合は、Hardhat 3、Solidity 最新リリース、OpenZeppelin Contracts 5.x、Foundry、The Graph、各L2/Explorer/RPCの公式ドキュメントを再確認してください。
+- L2/Blob は Dencun、Pectra、Fusaka/PeerDAS 以降も Blob Parameter Only fork 等で容量・手数料前提が変わるため、本文の数値は「観測時点の前提」として扱い、実測と公式情報を優先してください。
+- GitHub Copilot review の本文・inline comment・suggestion は全件確認し、対応後に未解決 review thread 0 を確認してからマージします。
 
 ## 参考リンク
 - Optimism Etherscan: https://optimistic.etherscan.io/
-- Hardhat Etherscan plugin docs: https://hardhat.org/hardhat-runner/docs/guides/verifying
+- Hardhat 2 verify docs: https://v2.hardhat.org/hardhat-runner/docs/guides/verifying
+- Hardhat 3 docs: https://hardhat.org/docs/getting-started
+- Ethereum security and scam prevention: https://ethereum.org/security/
 
 ## 構成
 - 公開用コンテンツ（GitHub Pages のソース想定）：`docs/`
