@@ -29,6 +29,14 @@
 - [ ] 章間リンク・参照リンクが壊れていない
 - [ ] CI（`npm test` / `npm run check:links` など）が通っている
 
+## Review Completion Gate（必須）
+
+- [ ] GitHub Copilot review を依頼した
+- [ ] review 本文・inline comment・suggestion を全件確認した
+- [ ] 必要な修正を行った、または不要な理由を該当 thread / PR に返信した
+- [ ] 未解決 review thread 0 を確認した
+- [ ] merge 前に CI green を確認した
+
 ## 補足
 
 - 既知の制約 / TODO:

@@ -13,12 +13,17 @@
 | 種別 | URL | 内容 |
 |------|-----|------|
 | Ethereum Developer Portal | https://ethereum.org/en/developers/ | 全体像と入門解説 |
-| Solidity Docs | https://docs.soliditylang.org/ | 言語仕様・リリースノート |
-| OpenZeppelin Contracts | https://docs.openzeppelin.com/contracts/ | セキュリティ対応済み実装集 |
-| Hardhat | https://hardhat.org/ | 開発環境設定とプラグインAPI |
-| Foundry | https://book.getfoundry.sh/ | 高速テストツールセット |
-| The Graph | https://thegraph.com/docs/en/ | イベントインデックスとGraphQLクエリ |
-| Optimism Docs | https://community.optimism.io/docs/ | L2アーキテクチャとブリッジ |
+| Ethereum security and scam prevention | https://ethereum.org/security/ | wallet / seed phrase / approval / phishing の安全確認 |
+| Ethereum Pectra | https://ethereum.org/roadmap/pectra/ | Pectra 有効化と EIP-7702 / EIP-7691 など |
+| Ethereum Fusaka / PeerDAS | https://ethereum.org/roadmap/fusaka/peerdas/ | Fusaka、PeerDAS、blob scaling の現行説明 |
+| Ethereum Foundation protocol announcements | https://blog.ethereum.org/category/protocol | mainnet / testnet upgrade announcement |
+| Solidity Docs | https://docs.soliditylang.org/ | 言語仕様・リリースノート・security considerations |
+| OpenZeppelin Contracts 5.x | https://docs.openzeppelin.com/contracts/5.x | 監査済み release / dev tag / upgradeable 境界 |
+| Hardhat 3 Docs | https://hardhat.org/docs/getting-started | 新規プロジェクト向けの現行導線 |
+| Hardhat 2 Docs | https://v2.hardhat.org/hardhat-runner/docs/getting-started | 本リポジトリの Hardhat 2.x 互換確認 |
+| Foundry | https://www.getfoundry.sh/ | 高速テストツールセット |
+| The Graph | https://thegraph.com/docs/en/ | Subgraph / Substreams / Token API と対応チェーン |
+| Optimism Docs | https://docs.optimism.io/ | L2アーキテクチャとブリッジ |
 | Arbitrum Docs | https://docs.arbitrum.io/ | L2運用ガイド |
 | zkSync Era | https://docs.zksync.io/ | ZK Rollup実装とSDK |
 | OpenSea Docs | https://docs.opensea.io/ | NFT標準とメタデータガイド |
@@ -39,8 +44,10 @@
 | 2981 | NFT Royalty Standard | 二次流通ロイヤリティ通知 |
 | 4337 | Account Abstraction via EntryPoint | コンセンサス変更なしでAAを実現（UserOperation/EntryPoint/Bundler） |
 | 4844 | Proto‑Danksharding (Blob) | L2のデータ可用性（DA）コスト改善 |
-| 7691 | Blob throughput increase | （EIP上の提案）blob の target/max を 3/6 → 6/9 に増やす（Pectra） |
-| 7702 | EOA delegation | （概要）EOAが署名付きで委譲先コードを指定し、delegation indicator（`0xef0100 || address`）経由で実行時に委譲し得る |
+| 7691 | Blob throughput increase | Pectra で blob の target/max を 3/6 から 6/9 に増やした Core EIP |
+| 7702 | EOA delegation | Pectra の account abstraction 系改善。署名・wallet UX・phishing 境界を確認する |
+| 7594 | PeerDAS | Fusaka の主要機能。blob data availability を sampling で検証する方向へ進める |
+| 7892 | Blob Parameter Only Hardforks | Fusaka 後の blob target/max 調整を BPO fork として扱う |
 
 ---
 
@@ -50,7 +57,7 @@
 |------|----------------|------|
 | 秘密鍵管理 | AWS KMS, GCP KMS, HashiCorp Vault | dev/private keyは避ける |
 | CI/CD | GitHub Actions, CircleCI | デプロイ前にLint/Verify |
-| セキュリティ監査 | Slither, Mythril, Echidna | 自動検出＋専門監査併用 |
+| セキュリティ監査 | Slither, Foundry fuzz/invariant, Echidna, 専門監査 | 自動検出は補助。threat model と manual review を併用 |
 | 分析/監視 | Tenderly, Etherscan API, Dune | Txリプレイ・メトリクス可視化 |
 | ステーブルデプロイ | Safe (旧Gnosis Safe) | マルチシグ管理 |
 
@@ -77,7 +84,7 @@
 | MEV（Maximal Extractable Value。旧称 Miner Extractable Value） | トランザクション順序操作の影響を学ぶ |
 | EigenLayer / Restaking | Ethereumセキュリティ再利用の仕組み |
 | Account Abstraction（EIP‑4337） | スマートウォレットによるUX改善 |
-| L2間ブリッジ | 複数L2を跨ぐ資産移動設計 |
+| L2間ブリッジ | 複数L2を跨ぐ資産移動設計。公式導線、trust assumption、withdrawal/finality、rescue 手順を確認 |
 | Rollup‑as‑a‑Service | 独自L2構築の実務モデル |
 
 ---
@@ -111,7 +118,7 @@
 | 用途 | CLI/サービス | 備考 |
 |------|--------------|------|
 | トランザクション再現 | Tenderly CLI / UI | 実行状況のステップ実行が可能 |
-| ガス推定 | ethgasstation.info, Blocknative | Mainnet動向監視 |
+| ガス/Blob手数料確認 | Etherscan Gas Tracker, Blocknative, chain-specific Explorer / status page | Mainnet/L2/Blob の混雑と RPC 差分を時刻つきで確認 |
 | 構造図生成 | Mermaid, draw.io | サブグラフやフロー可視化 |
 | ドキュメント生成 | TypeDoc, mdBook | Hardhat / Foundry連携可 |
 | 教材配布 | GitHub Pages, Notion, Zenn | Markdown変換容易 |

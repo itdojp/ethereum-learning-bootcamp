@@ -11,19 +11,31 @@
 
 ---
 
-## 0. 前提
+## 0. セキュリティ実務レビューゲート
+
+確認日: **2026-05-23（Asia/Tokyo）**。この章の攻撃例は学習目的であり、実ネットワークや第三者資産に対して実行しない。
+
+- すべての検証は Hardhat Network、Anvil、または学習用 testnet アカウントに限定する。Mainnet、実資産、第三者 contract、許可のない fork target は対象外にする。
+- リカバリーフレーズ、秘密鍵、RPC/APIキー、Explorer APIキーをチャット、Issue、PR、ログ、スクリーンショット、AIツールへ貼り付けない。
+- wallet signature、permit、token approval、bridge、airdrop claim は資産流出に直結し得る。署名前に domain、chainId、spender、amount、deadline、calldata を確認する。
+- Slither、Foundry fuzz/invariant、Echidna はレビュー補助であり、専門監査や threat modeling の代替ではない。
+- OpenZeppelin Contracts、Solidity compiler、proxy / upgradeable contract の breaking change と known bugs は、導入・更新のたびに公式情報で再確認する。
+
+---
+
+## 1. 前提
 - Hardhat環境（Day3）。
 - 任意でFoundry（`foundryup` 済）。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/VulnBank.sol` / `contracts/SafeBank.sol` / `contracts/Attacker.sol` / `test/reentrancy.ts` / `contracts/AdminBox.sol`
 - 今回触らないこと：すべての脆弱性の網羅（まずは頻出の再入と権限の基本から）
-- 最短手順（迷ったらここ）：1章のコントラクト/テストを動かして“攻撃できる/防げる”を体験 → `npx hardhat test test/reentrancy.ts` で確認
+- 最短手順（迷ったらここ）：2章のコントラクト/テストを動かして“攻撃できる/防げる”を体験 → `npx hardhat test test/reentrancy.ts` で確認
 
 ---
 
-## 1. 脆弱性：Reentrancy（再入）
+## 2. 脆弱性：Reentrancy（再入）
 
-### 1.1 脆弱コントラクト
+### 2.1 脆弱コントラクト
 `contracts/VulnBank.sol`
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -41,7 +53,7 @@ contract VulnBank {
 }
 ```
 
-### 1.2 攻撃コントラクト
+### 2.2 攻撃コントラクト
 `contracts/Attacker.sol`
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -56,7 +68,7 @@ contract Attacker {
 }
 ```
 
-### 1.3 対策版（CEI + ReentrancyGuard）
+### 2.3 対策版（CEI + ReentrancyGuard）
 `contracts/SafeBank.sol`
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -75,7 +87,7 @@ contract SafeBank is ReentrancyGuard {
 }
 ```
 
-### 1.4 テスト（攻撃成功/失敗）
+### 2.4 テスト（攻撃成功/失敗）
 `test/reentrancy.ts`
 ```ts
 import { expect } from "chai";
@@ -127,9 +139,9 @@ npx hardhat test test/reentrancy.ts
 
 ---
 
-## 2. 権限：tx.origin、AccessControl、Pausable
+## 3. 権限：tx.origin、AccessControl、Pausable
 
-### 2.1 tx.originの誤用
+### 3.1 tx.originの誤用
 `tx.origin` を認可に使うと**中継コントラクト経由**で権限漏れ。
 
 誤り例：
@@ -138,7 +150,7 @@ if (tx.origin != owner) revert(); // NG
 ```
 正：`msg.sender`で判断し、必要に応じて`Ownable`/`AccessControl`を使用。
 
-### 2.2 Ownable + Pausable
+### 3.2 Ownable + Pausable
 `contracts/AdminBox.sol`
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -154,7 +166,7 @@ contract AdminBox is Ownable, Pausable {
 }
 ```
 
-### 2.3 AccessControl（ロール）
+### 3.3 AccessControl（ロール）
 ```solidity
 import "@openzeppelin/contracts/access/AccessControl.sol";
 contract Roles is AccessControl {
@@ -166,13 +178,13 @@ contract Roles is AccessControl {
 
 ---
 
-## 3. delegatecall と Proxyの落とし穴
+## 4. delegatecall と Proxyの落とし穴
 
-### 3.1 delegatecallの危険
+### 4.1 delegatecallの危険
 呼び出し先の**ストレージレイアウト**を共有。誤ると上書きや資産流出につながる。
 > 補足：`SELFDESTRUCT` は近年のアップグレードで挙動が大きく変わっている（設計・監査時に都度確認）。
 
-### 3.2 ストレージ衝突（Proxy）
+### 4.2 ストレージ衝突（Proxy）
 UUPS/Transparent Proxyでは**永続化変数の並び**が重要。新実装で順序変更・削除は禁止。`storage gap` を確保する。
 
 雛形（UUPS要点、実運用はOpenZeppelin Upgradesを利用）：
@@ -182,9 +194,9 @@ uint256[50] private __gap; // 予約領域
 
 ---
 
-## 4. 支払い設計：Pull-Payment
+## 5. 支払い設計：Pull-Payment
 
-### 4.1 原則
+### 5.1 原則
 - **Push型**送金（その場で`call`）は再入/失敗リスク。
 - **Pull型**（受取人が引出）に分離すると安全性向上。
 
@@ -197,14 +209,14 @@ function withdraw() external { uint v=credit[msg.sender]; credit[msg.sender]=0; 
 
 ---
 
-## 5. ツール：Slither（静的解析）
+## 6. ツール：Slither（静的解析）
 
-### 5.1 インストール
+### 6.1 インストール
 ```bash
 pipx install slither-analyzer
 ```
 
-### 5.2 実行
+### 6.2 実行
 ```bash
 slither . --filter-paths "node_modules"
 ```
@@ -213,12 +225,12 @@ slither . --filter-paths "node_modules"
 
 ---
 
-## 6. ツール：Foundry（テスト + fuzz / invariant）とEchidna（任意）
+## 7. ツール：Foundry（テスト + fuzz / invariant）とEchidna（任意）
 
 Foundry はテストフレームワークで、fuzz（ランダム入力探索）や invariant（永続条件）を内蔵する。  
 Echidna は Foundry の一部ではなく、別系統のツールとしてプロパティベーステスト/ファジングに使われる。
 
-### 6.1 Invariant（永続条件）例（Foundry）
+### 7.1 Invariant（永続条件）例（Foundry）
 `test/Invariant.t.sol`
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -239,25 +251,29 @@ contract Invariant is Test {
 forge test --match-contract Invariant -vvvv
 ```
 
-### 6.2 Echidna（任意）
+### 7.2 Echidna（任意）
 - 目的：ランダム化された呼び出し列で特性違反を探索。
 - セットアップは公式ドキュメント参照。時間があれば`VulnBank`に対して資産流出を検出させる設定を追加。
 
 ---
 
-## 7. 監査チェックリスト（抜粋）
+## 8. 監査チェックリスト（抜粋）
 - [ ] 重要関数は`onlyOwner`/`AccessControl`で保護。
+- [ ] `DEFAULT_ADMIN_ROLE`、owner、upgrade admin、pauser、minter、bridge admin の保管先と多署名/遅延実行を文書化。
 - [ ] `pause`可能か。緊急停止Runbookがあるか。
 - [ ] 送金はPull型。Pushは最小化。
 - [ ] CEI順序（Checks→Effects→Interactions）。
 - [ ] 外部呼び出しの戻り値を検査。
 - [ ] `tx.origin`不使用。
-- [ ] Proxyのストレージ互換性を文書化。
-- [ ] イベントは必要最小限を`indexed`で設計。
+- [ ] Proxyのストレージ互換性、initializer、upgrade 権限、rollback 手順を文書化。
+- [ ] signature / permit / approval は domain separator、chainId、spender、amount、deadline、nonce を検査。
+- [ ] bridge / cross-chain message は replay、finality、challenge window、失敗時の rescue 手順を検査。
+- [ ] Slither、Foundry fuzz/invariant、Echidna の結果と「検出できない前提」をレビュー記録に残す。
+- [ ] イベントは必要最小限を`indexed`で設計し、機密情報を出さない。
 
 ---
 
-## 8. つまずきポイント
+## 9. つまずきポイント
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
@@ -267,10 +283,10 @@ forge test --match-contract Invariant -vvvv
 
 ---
 
-## 9. まとめ
+## 10. まとめ
 - 代表的な脆弱性を「攻撃→原因→対策（パターン/ライブラリ）」の形で整理した。
 - 静的解析やプロパティテストの入口として、まずは“自動で検査する”習慣を作るのが重要だと分かった。
-- チェックリストを使い、レビュー時に見るべき観点を言語化できる状態にした。
+- チェックリストを使い、権限・署名・approval・bridge・upgrade・自動解析の限界をレビュー時に言語化できる状態にした。
 
 ### 理解チェック（3問）
 - Q1. 再入（reentrancy）が起きる条件を、状態更新の順序まで含めて説明してみる。
@@ -290,11 +306,11 @@ npx hardhat test test/reentrancy.ts
 slither .
 ```
 
-## 10. 提出物
+## 11. 提出物
 - [ ] `VulnBank`攻撃ログ、`SafeBank`防御ログ
 - [ ] Slitherレポート（主要警告の抜粋）と対応方針
 - [ ] Invariantテストの結果スクリーンショット
 - [ ] 監査チェックリストの自己評価（5項目以上）
 
-## 11. 実行例
+## 12. 実行例
 - 実行ログ例：[`docs/reports/Day12.md`](../reports/Day12.md)
