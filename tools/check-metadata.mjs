@@ -37,7 +37,7 @@ function parseYamlScalars(text) {
 
 function parseFrontMatter(file) {
   const text = readText(file);
-  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
   if (!match) {
     errors.push(`${file}: front matter is missing`);
     return {};
@@ -53,7 +53,12 @@ function parseGitHubRepositoryUrl(value, label) {
 
   try {
     const parsed = new URL(value.trim().replace(/\.git$/, ''));
-    const [owner, repo, ...rest] = parsed.pathname.replace(/^\//, '').split('/');
+    const segments = parsed.pathname
+      .replace(/\/+$/, '')
+      .replace(/^\//, '')
+      .split('/')
+      .filter(Boolean);
+    const [owner, repo, ...rest] = segments;
     if (parsed.hostname !== 'github.com' || !owner || !repo || rest.length) {
       errors.push(`${label}: expected https://github.com/<owner>/<repo>[.git], got ${JSON.stringify(value)}`);
       return null;
