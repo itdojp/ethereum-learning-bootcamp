@@ -36,6 +36,14 @@ cp .env.example .env
 
 （まとめて確認する場合：`npm run check:all`）
 
+### メタデータ整合性チェック
+
+```bash
+npm run check:metadata
+```
+
+`npm run check:metadata` は、`book-config.json` / `package.json` / `package-lock.json` / `docs/_config.yml` / `docs/index.md` のタイトル・説明・著者・版数・公開URLがずれていないことを検証します。
+
 ## 安全運用の注意
 - 学習用の秘密鍵とテストネットを使い、Mainnet や実資産を扱う鍵は使わないでください。
 - `.env` / `.env.local` はコミットせず、ログや画面共有にも秘密情報を残さないでください。
