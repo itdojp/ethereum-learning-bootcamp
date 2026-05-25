@@ -38,6 +38,9 @@ jobs:
         working-directory: book-formatter
         run: npm ci
 
+      - name: Check book metadata
+        run: node tools/check-metadata.mjs
+
       - name: Determine scan directory
         id: scan
         shell: bash

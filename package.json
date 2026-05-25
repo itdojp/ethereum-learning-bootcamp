@@ -2,17 +2,28 @@
   "name": "ethereum-learning-bootcamp",
   "private": true,
   "version": "0.1.0",
+  "description": "14日間でEthereum開発の基礎から応用まで学ぶ完全教材",
+  "author": "ITDO Inc.",
   "license": "CC-BY-NC-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itdojp/ethereum-learning-bootcamp.git"
+  },
+  "homepage": "https://itdojp.github.io/ethereum-learning-bootcamp/",
+  "bugs": {
+    "url": "https://github.com/itdojp/ethereum-learning-bootcamp/issues"
+  },
   "scripts": {
     "build": "hardhat compile",
     "test": "hardhat test",
     "coverage": "hardhat coverage",
     "check:links": "node tools/check-links.mjs",
     "check:md-style": "node tools/check-md-style.mjs",
-    "check:all": "npm test && npm run check:links && npm run check:md-style && npm --prefix dapp ci && npm --prefix dapp run build",
+    "check:all": "npm run check:metadata && npm test && npm run check:links && npm run check:md-style && npm --prefix dapp ci && npm --prefix dapp run build",
     "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
-    "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia"
+    "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia",
+    "check:metadata": "node tools/check-metadata.mjs"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",

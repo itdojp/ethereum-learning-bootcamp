@@ -2,6 +2,8 @@
 layout: book
 title: "Ethereum Learning Bootcamp"
 description: "14日間でEthereum開発の基礎から応用まで学ぶ完全教材"
+author: "ITDO Inc."
+version: "2026.05"
 permalink: /
 ---
 
