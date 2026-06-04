@@ -26,8 +26,17 @@ dapp/.env
 dapp/.env.*
 !dapp/.env.example
 
+## Jekyll / GitHub Pages local builds
+_site/
+docs/_site/
+.jekyll-cache/
+.jekyll-metadata
+.bundle/
+vendor/bundle/
+Gemfile.lock
+docs/Gemfile.lock
+
 ## OS / editor
 .DS_Store
 .idea/
 .vscode/
-

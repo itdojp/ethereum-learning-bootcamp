@@ -20,9 +20,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:metadata
+      - run: npm run check:toolchain
       - run: npm test
       - run: npm run check:links
       - run: npm run check:md-style
+      - run: npm run check:security
 
   dapp-build:
     runs-on: ubuntu-latest

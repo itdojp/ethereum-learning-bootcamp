@@ -20,7 +20,9 @@ Node.js 20 以上（npm 10+）を前提としています。
 ### ローカル検証
 ```bash
 npm ci
+npm run check:toolchain
 npm test
+npm run check:security
 ```
 
 ### Sepolia / Optimism へ deploy・verify する場合
@@ -43,6 +45,22 @@ npm run check:metadata
 ```
 
 `npm run check:metadata` は、`book-config.json` / `package.json` / `package-lock.json` / `docs/_config.yml` / `docs/index.md` のタイトル・説明・著者・版数・公開URLがずれていないことを検証します。
+
+### Hardhat / Solidity ツールチェーン整合性チェック
+
+```bash
+npm run check:toolchain
+```
+
+`npm run check:toolchain` は、`hardhat.config.ts` の Solidity コンパイラ版数と `package.json` / `package-lock.json` の `solc` 版数が一致し、Hardhat 2.x 系の学習用構成が維持されていることを検証します。`hardhat.config.ts` はローカル `solc` を使う設定のため、`solc` は `0.8.24` に固定しています。
+
+### 依存関係のセキュリティチェック
+
+```bash
+npm run check:security
+```
+
+`npm run check:security` は、本番依存の監査範囲としてルートと `dapp/` の `npm audit --omit=dev` を実行します。`contracts/*.sol` に取り込まれる OpenZeppelin Contracts はこの監査対象に含めるため、ルートの `dependencies` に配置しています。ルートの完全な `npm audit` には、Hardhat 2.x 系の開発用ツールチェーンに起因する transitive advisory が含まれるため、Hardhat 3 への移行は学習内容・設定・本文を合わせた移行判断として扱います。
 
 ## 安全運用の注意
 - 学習用の秘密鍵とテストネットを使い、Mainnet や実資産を扱う鍵は使わないでください。
