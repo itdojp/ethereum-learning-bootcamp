@@ -19,22 +19,26 @@
     "coverage": "hardhat coverage",
     "check:links": "node tools/check-links.mjs",
     "check:md-style": "node tools/check-md-style.mjs",
-    "check:all": "npm run check:metadata && npm test && npm run check:links && npm run check:md-style && npm --prefix dapp ci && npm --prefix dapp run build",
+    "check:toolchain": "node tools/check-toolchain.mjs",
+    "check:security": "npm audit --omit=dev && npm --prefix dapp audit --omit=dev",
+    "check:all": "npm run check:metadata && npm run check:toolchain && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
     "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia",
     "check:metadata": "node tools/check-metadata.mjs"
   },
+  "dependencies": {
+    "@openzeppelin/contracts": "~5.0.2"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
-    "@openzeppelin/contracts": "~5.0.2",
     "@types/chai": "^4.3.11",
     "@types/node": "^20.12.7",
     "chai": "^4.4.1",
     "dotenv": "^16.4.5",
     "hardhat": "^2.22.1",
     "hardhat-gas-reporter": "^2.3.0",
-    "solc": "^0.8.24",
+    "solc": "0.8.24",
     "solidity-coverage": "^0.8.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.0"
