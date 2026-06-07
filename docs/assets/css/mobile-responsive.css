@@ -53,7 +53,13 @@ html {
     background: var(--bg-primary);
     border-right: 1px solid var(--border-color);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    /*
+     * Keep the mobile drawer above the backdrop (`.book-sidebar-overlay` is
+     * 950) but below the fixed header (`.book-header` is 1000). This also
+     * needs to stay important so the later desktop `.book-sidebar` z-index in
+     * main.css cannot drop the mobile drawer behind the overlay.
+     */
+    z-index: 999 !important;
     /*
      * main.css imports this file before declaring the default desktop sidebar
      * transform. Keep the closed drawer state important so the later desktop
