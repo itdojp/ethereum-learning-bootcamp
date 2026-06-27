@@ -69,8 +69,8 @@
 |------------|------|------|---------|
 | デプロイ | `nonce too low` | 同アカウントでTx競合 | Hardhatの`nonce`指定 or reset |
 | Verify | `Error HH606` | コンパイラ設定不一致 | `solidity.version`と一致させる |
-| MetaMask | `invalid chainId` | RPC設定ミス | 正しいChain IDを指定（Sepolia=11155111, Optimism=10） |
-| IPFS | 画像が表示されない | CIDや拡張子誤り | Gateway経由で検証 |
+| MetaMask | `invalid chainId` | RPC 設定ミス | 正しい Chain ID を指定（Sepolia=11155111, Optimism=10） |
+| IPFS | 画像が表示されない | CID や拡張子誤り | Gateway経由で検証 |
 | Event購読 | ログが出ない | トピック不一致 | イベント定義とABI整合性を確認 |
 | Subgraph | `index out of range` | startBlock誤設定 | 正確なブロック番号に修正 |
 
@@ -105,7 +105,7 @@
 |------|----------|-------------|-----------|------------------|------|
 | 書籍（英語） | Mastering Ethereum: Building Smart Contracts and DApps | Andreas M. Antonopoulos / Gavin Wood | 1st ed., 2018 | Day01-05, Day12 | 概念は有効だが、ツール/ネットワーク周りは陳腐化しやすい |
 | 書籍（日本語） | Solidityプログラミング ―ブロックチェーン・スマートコントラクト開発入門 | Ritesh Modi（著）/ 花村直親ほか（訳） | 2019 | Day04-05 | Solidity入門（周辺ツールは現行手順に読み替える） |
-| 書籍（日本語） | SolidityとEthereumによる実践スマートコントラクト開発 ―Truffle Suiteを用いた開発の基礎からデプロイまで | Kevin Solorio / Randall Kanna / David H. Hoover（著） | 2021（邦訳） | Day03-07 | フレームワークがTruffle中心のため、Hardhatに読み替える前提 |
+| 書籍（日本語） | Solidity とEthereumによる実践スマートコントラクト開発 ―Truffle Suiteを用いた開発の基礎からデプロイまで | Kevin Solorio / Randall Kanna / David H. Hoover（著） | 2021（邦訳） | Day03-07 | フレームワークがTruffle中心のため、Hardhatに読み替える前提 |
 | 書籍（日本語） | スマートコントラクト本格入門 ―FinTechとブロックチェーンが作り出す近未来がわかる | 鳥谷部昭寛 / 加世田敏宏 / 林田駿弥（著） | 2017 | Day01-04 | 全体像・背景理解向け（実装は現在の環境に合わせて補う） |
 | 無料講座 | CryptoZombies | https://cryptozombies.io/ | 随時更新 | Day04 | ブラウザ上でゲーム形式学習 |
 | 無料講座 | ChainShot / Encode Club | https://www.chainshot.com/ / https://www.encode.club/ | 随時更新 | Day04-07, Day12 | 課題駆動の短期コースが多い |

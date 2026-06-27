@@ -24,8 +24,8 @@
 
 ## 1. 前提
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
-- L2（例：Optimism）へ送る場合は、対象チェーン側に手数料分のETHが必要だ（ブリッジ等で用意する）
-- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（任意：L2でVerifyする場合）
+- L2（例：Optimism）へ送る場合は、対象チェーン側に手数料分の ETH が必要だ（ブリッジ等で用意する）
+- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（任意：L2 でVerifyする場合）
 - 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `scripts/measure-fee.ts` / `scripts/measure-contract.ts` / `metrics/metrics.csv`
 - 今回触らないこと：各L2の運用最適解（まずは「Blob前提のコスト構造」を押さえる）
 - 最短手順（迷ったらここ）：3.2 でL2へ再デプロイ → 4.1 で `measure-fee.ts` を回してL1/L2の差分を記録（Verifyは任意）
@@ -191,7 +191,7 @@ cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
 
 ## 6. 評価観点とドキュメント
 - `metrics/metrics.csv` に **feeEth** と **latencyMs** を時刻つきで蓄積。
-- [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に L2デプロイ・Verify・ブリッジ手順の要約を追記。
+- [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に L2 デプロイ・Verify・ブリッジ手順の要約を追記。
 - 差分が大きいときは、**RPCベンダ、L2 status page**や**Blob可用状況**を確認。
 
 ---
@@ -200,7 +200,7 @@ cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
 
 | 症状 | 原因 | 対策 |
 |---|---|---|
-| `insufficient funds` | L2で手数料不足 | L2のETHをブリッジまたは取引所から供給 |
+| `insufficient funds` | L2 で手数料不足 | L2のETH をブリッジまたは取引所から供給 |
 | Verify失敗 | コンパイラ設定差分 | `hardhat.config.ts` の設定を一致させる。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
 | 異常な`latencyMs` | RPC遅延/混雑 | 別RPCで再測、再試行、バッチ間隔を変える |
 

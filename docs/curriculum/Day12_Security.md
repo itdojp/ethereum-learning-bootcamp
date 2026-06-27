@@ -16,7 +16,7 @@
 確認日: **2026-05-23（Asia/Tokyo）**。この章の攻撃例は学習目的であり、実ネットワークや第三者資産に対して実行しない。
 
 - すべての検証は Hardhat Network、Anvil、または学習用 testnet アカウントに限定する。Mainnet、実資産、第三者 contract、許可のない fork target は対象外にする。
-- リカバリーフレーズ、秘密鍵、RPC/APIキー、Explorer APIキーをチャット、Issue、PR、ログ、スクリーンショット、AIツールへ貼り付けない。
+- リカバリーフレーズ、秘密鍵、RPC/API キー、Explorer API キーをチャット、Issue、PR、ログ、スクリーンショット、AI ツールへ貼り付けない。
 - wallet signature、permit、token approval、bridge、airdrop claim は資産流出に直結し得る。署名前に domain、chainId、spender、amount、deadline、calldata を確認する。
 - Slither、Foundry fuzz/invariant、Echidna はレビュー補助であり、専門監査や threat modeling の代替ではない。
 - OpenZeppelin Contracts、Solidity compiler、proxy / upgradeable contract の breaking change と known bugs は、導入・更新のたびに公式情報で再確認する。
@@ -24,7 +24,7 @@
 ---
 
 ## 1. 前提
-- Hardhat環境（Day3）。
+- Hardhat 環境（Day3）。
 - 任意でFoundry（`foundryup` 済）。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/VulnBank.sol` / `contracts/SafeBank.sol` / `contracts/Attacker.sol` / `test/reentrancy.ts` / `contracts/AdminBox.sol`

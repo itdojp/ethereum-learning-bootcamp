@@ -70,7 +70,7 @@ VITE_CHAIN_ID=11155111
 VITE_EVENT_TOKEN=0x...      # 2.1 の EventToken アドレス
 ```
 
-> `dapp/` は injected provider（MetaMask等）を使うため、MetaMask側の接続チェーンも揃える必要がある。
+> `dapp/` は injected provider（MetaMask 等）を使うため、MetaMask 側の接続チェーンも揃える必要がある。
 
 ### 3.2 起動
 ```bash
@@ -117,7 +117,7 @@ graph build
 ## 5. つまずきポイント
 - startBlock が分からない / 遅すぎる：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 - build が落ちる（ABI/スキーマ不一致）：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
-- ブラウザ購読が発火しない：チェーンID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
+- ブラウザ購読が発火しない：チェーン ID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---
 

@@ -1,4 +1,4 @@
-# Day4：Solidity基礎（型・可視性・イベント・エラー・支払い）
+# Day4：Solidity 基礎（型・可視性・イベント・エラー・支払い）
 
 [← 目次](./TOC.md) | [前: Day3](./Day03_Env_Setup.md) | [次: Day5](./Day05_ERC_Standards.md)
 
@@ -12,7 +12,7 @@
 
 ## 0. 前提
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
-- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
+- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテスト ETH を入れておく
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/WalletBox.sol` / `test/walletbox.ts` / `scripts/deploy-walletbox.ts`
 - 今回触らないこと：複雑な権限設計（AccessControl）やアップグレード（Proxy）
@@ -46,13 +46,13 @@
 ## 2. ハンズオン（即実行）
 
 ### 2.1 コントラクト実装
-この章の `WalletBox` は「状態を持つ」「イベントを出す」「ETHを受け取る」「権限付きで引き出す」を最小でまとめた練習用コントラクトだ。
+この章の `WalletBox` は「状態を持つ」「イベントを出す」「ETH を受け取る」「権限付きで引き出す」を最小でまとめた練習用コントラクトだ。
 
 #### 2.1.1 概念（何を作るか）
 - `owner`：デプロイ時に固定する（`immutable`）。引き出し権限の判定に使う。
 - `note`：文字列メモ。空文字はエラーにする（`EmptyMessage`）。
 - イベント：状態変更や入出金をログとして残す（`NoteChanged` / `Deposited` / `Withdrawn`）。
-- `receive()`：ETHを受け取ったときにイベントを出す。
+- `receive()`：ETH を受け取ったときにイベントを出す。
 - `withdraw()`：オーナーだけが引き出せる。送金は `call` で行い、失敗時は revert する。
 
 #### 2.1.2 最小コード（`contracts/WalletBox.sol`）
@@ -108,7 +108,7 @@ contract WalletBox {
 #### 2.1.3 結果の見方（ここが確認できればOK）
 - `note()` を呼ぶとデプロイ時の文字列が返る。
 - `setNote("ok")` で `NoteChanged` イベントが出る（空文字は `EmptyMessage` で revert）。
-- コントラクトにETHを送ると `Deposited` イベントが出る。
+- コントラクトにETH を送ると `Deposited` イベントが出る。
 - `withdraw()` はオーナー以外だと `NotOwner` で revert する。
 
 #### 2.1.4 よくある失敗
@@ -120,7 +120,7 @@ contract WalletBox {
 #### 2.2.1 何をテストするか
 - デプロイ直後の状態（`owner` / `note`）が正しいこと
 - `setNote` の revert 条件とイベント
-- ETHの入金と、オーナーのみ引き出せること
+- ETH の入金と、オーナーのみ引き出せること
 
 #### 2.2.2 最小コード（`test/walletbox.ts`）
 ```ts
@@ -216,7 +216,7 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 
 ## 5. まとめ
 - `WalletBox` を題材に、状態・エラー・イベント・ETH受領/引出の最小構成を実装した。
-- Hardhatテストで「revertする条件」「イベント」「ETHの入出金」を検証する流れを確認した。
+- Hardhat テストで「revertする条件」「イベント」「ETH の入出金」を検証する流れを確認した。
 - テストネットにデプロイし、TxHash/イベントをエクスプローラで追跡できる状態にした。
 
 ### 理解チェック（3問）

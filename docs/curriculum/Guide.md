@@ -13,11 +13,11 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ---
 
 ## 1. まず読むページ（最短）
-1) 共通の前提：[`docs/curriculum/index.md`](./index.md)  
-2) 目次（読む順序）：[`docs/curriculum/TOC.md`](./TOC.md)  
-3) 進捗チェック：[`docs/curriculum/Progress.md`](./Progress.md)  
-4) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)  
-5) 通しで作るもの：[`docs/curriculum/Project.md`](./Project.md)  
+1) 共通の前提：[`docs/curriculum/index.md`](./index.md)
+2) 目次（読む順序）：[`docs/curriculum/TOC.md`](./TOC.md)
+3) 進捗チェック：[`docs/curriculum/Progress.md`](./Progress.md)
+4) 用語に迷ったら：[`docs/appendix/glossary.md`](../appendix/glossary.md)
+5) 通しで作るもの：[`docs/curriculum/Project.md`](./Project.md)
 
 ### 1.1 各 Day を閉じる前の確認
 - 章末の「確認コマンド」を実行し、最低1つは自分の環境で再現できたことを確認する。
@@ -32,9 +32,9 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 - Day07 は「Verify/CI」の入口として一度読んでおく。
 - Day12/Day13 で「セキュリティ/ガス」まで固める。
 
-### 2.2 DApp中心（フロント寄り）
+### 2.2 DApp 中心（フロント寄り）
 - Day01〜Day05 を押さえたら、Day09/Day10 を優先してよい。
-- Day14 で「デプロイ→DApp接続→（任意）Verify/CI/The Graph」を通す。
+- Day14 で「デプロイ→DApp 接続→（任意）Verify/CI/The Graph」を通す。
 
 ### 2.3 L2や運用中心（実務寄り）
 - Day07/Day08 を重点的に読む（運用・観測・記録が主題になる）。
@@ -44,14 +44,14 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ### 2.4 1つの小さなプロダクトとして進める（完走ルート）
 この教材は章ごとに題材が変わるが、「最後に全部つなぐ（Day14）」を小さなプロダクト完成のゴールにすると迷いにくい。
 
-- ゴール：Day14 で「デプロイ→DApp接続」まで通し、`docs/DEPLOYMENTS.md` と `docs/reports/` に記録を残す
-- 中心にする題材：`MyToken` / `EventToken`（DAppとイベント購読で使う）。NFTやThe Graphは任意で足す
+- ゴール：Day14 で「デプロイ→DApp 接続」まで通し、`docs/DEPLOYMENTS.md` と `docs/reports/` に記録を残す
+- 中心にする題材：`MyToken` / `EventToken`（DApp とイベント購読で使う）。NFTやThe Graphは任意で足す
 
 進め方（最小）：
-1) Day01〜Day03：環境を整え、ローカルで `npm test` を通す  
-2) Day04〜Day06：コントラクト実装とテスト・計測の流れを掴む  
-3) Day07：テストネット/L2へデプロイし、必要ならVerifyする（詰まったら付録へ）  
-4) Day09〜Day10：DAppから接続し、イベントを読める状態にする（必要ならThe Graphへ）  
+1) Day01〜Day03：環境を整え、ローカルで `npm test` を通す
+2) Day04〜Day06：コントラクト実装とテスト・計測の流れを掴む
+3) Day07：テストネット/L2へデプロイし、必要ならVerifyする（詰まったら付録へ）
+4) Day09〜Day10：DApp から接続し、イベントを読める状態にする（必要ならThe Graphへ）
 5) Day14：統合チェックリストをできる範囲でDoneにする（ここが“完成”）
 
 ### 2.5 迷ったときの選び方
@@ -74,7 +74,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 ### 3.1 設定差分（早見表）
 #### Hardhat（テスト/スクリプト/デプロイ/Verify）
 
-| 環境 | Hardhat network | chainId | `.env` のRPC | Verify APIキー | Explorer |
+| 環境 | Hardhat network | chainId | `.env` のRPC | Verify API キー | Explorer |
 |---|---|---:|---|---|---|
 | ローカル（Hardhat node） | `localhost` | 31337 | （不要） | （不要） | （なし） |
 | テストネット（Sepolia） | `sepolia` | 11155111 | `SEPOLIA_RPC_URL` | `ETHERSCAN_API_KEY` | https://sepolia.etherscan.io/ |
@@ -89,7 +89,7 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 |---|---:|---|
 | ローカル / Sepolia / Optimism | 31337 / 11155111 / 10 | `VITE_CHAIN_ID`, `VITE_TOKEN_ADDRESS`, `VITE_EVENT_TOKEN` |
 
-- `VITE_CHAIN_ID` と、MetaMask側で接続中のチェーンが一致していないと動かない（Day9参照）。
+- `VITE_CHAIN_ID` と、MetaMask 側で接続中のチェーンが一致していないと動かない（Day9参照）。
 - アドレス（`VITE_TOKEN_ADDRESS` 等）は **同じチェーン上でデプロイしたもの**を入れる。
 
 ---

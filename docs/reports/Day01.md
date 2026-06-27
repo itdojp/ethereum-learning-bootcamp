@@ -2,7 +2,7 @@
 
 ## 環境
 - RPC: `http://127.0.0.1:8545`（ローカル Hardhat node）
-- Day01 本文は Sepolia RPC 前提だが、今回はローカルで再現（APIキー不要）。
+- Day01 本文は Sepolia RPC 前提だが、今回はローカルで再現（API キー不要）。
 
 ## 実行
 ```bash

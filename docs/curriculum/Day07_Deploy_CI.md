@@ -1,4 +1,4 @@
-# Day7：本番・L2デプロイ／Etherscan検証／手動承認付きCI
+# Day7：本番・L2 デプロイ／Etherscan検証／手動承認付きCI
 
 [← 目次](./TOC.md) | [前: Day6](./Day06_Local_Testing.md) | [次: Day8](./Day08_L2_Rollups.md)
 
@@ -84,7 +84,7 @@ npx hardhat verify --network sepolia <DEPLOYED_ADDR>
 ```bash
 npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
 ```
-> L2ごとにAPIキーが異なる。[Blockscout](../appendix/glossary.md)系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) の「最短成功ルート」→「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
+> L2ごとに API キーが異なる。[Blockscout](../appendix/glossary.md)系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) の「最短成功ルート」→「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
 
 ---
 
@@ -152,7 +152,7 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
-| `insufficient funds` | 手数料不足 | 少額ETHを補充。maxFee確認 |
+| `insufficient funds` | 手数料不足 | 少額 ETH を補充。maxFee確認 |
 | `nonce too low` | ノンス衝突 | `--network`とアカウントの送信履歴を確認 |
 | Verify失敗 | コンパイラ設定不一致/引数違い | `hardhat.config.ts`の設定と引数を合わせる。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
 | 承認が出ない | Environment reviewers未設定 | Settings > Environments を再確認。詰まったら [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) |

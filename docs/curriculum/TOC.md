@@ -20,7 +20,7 @@
 - Day02：[`./Day02_Transaction_Gas.md`](./Day02_Transaction_Gas.md)
 - Day03：[`./Day03_Env_Setup.md`](./Day03_Env_Setup.md)
 
-## Part 1：Solidityと標準規格
+## Part 1：Solidity と標準規格
 - Part 1（概要と進め方）：[`./Part1.md`](./Part1.md)
 - Day04：[`./Day04_Solidity_Basics.md`](./Day04_Solidity_Basics.md)
 - Day05：[`./Day05_ERC_Standards.md`](./Day05_ERC_Standards.md)

@@ -14,7 +14,7 @@
 - OS：Linux/macOS/WSL2（コマンドは `bash` 想定）
 - 必要コマンド：`curl`, `jq`
 - 必要なもの：Sepolia などの RPC エンドポイント（Alchemy/Infura 等）
-- この章は **Tx を送らない**。テストETHは不要だ。
+- この章は **Tx を送らない**。テスト ETH は不要だ。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`docs/reports/Day01.md`（実行ログ。提出物として残す場合は必須）
 - 今回触らないこと：秘密鍵で署名してTxを送る／コントラクトのデプロイ（Day3以降で扱う）
@@ -42,13 +42,13 @@
 
 ### 1.3 Proof of Stake (PoS) の仕組み
 - Ethereumは2022年の「Merge」以降、PoSを採用。
-- **バリデータ**がステークしたETHを担保にブロック提案・検証。
+- **バリデータ**がステークしたETH を担保にブロック提案・検証。
 - 最終性（[Finality](../appendix/glossary.md)）は**Gasper（Casper FFG + LMD-GHOST）**により達成。
 
 ### 1.4 L1とL2の関係
 - L1（Ethereum Mainnet）は安全性・データ可用性を重視。
 - L2（Optimism、Arbitrumなど）はスケーラビリティを重視。
-  - トランザクション実行をL2で行い、結果をL1に保存。
+  - トランザクション実行を L2 で行い、結果をL1に保存。
   - 近年は **rollup-centric（L2中心）** のスケーリングが前提で、L2手数料は「L1へ投稿するデータ可用性（[DA](../appendix/glossary.md)）コスト」の影響が大きくなりやすい（詳細はDay8）。
     - **Dencun（EIP‑4844）** で blob-carrying transactions（[Blob](../appendix/glossary.md)）が導入され、L2のDAコストが下がりやすくなった。
     - **Pectra（EIP‑7691）** では blob の throughput が増え、blob の target/max が **3/6 → 6/9** に引き上げられた。
@@ -75,7 +75,7 @@ sudo apt update && sudo apt install -y curl jq
 AlchemyまたはInfuraで取得したRPCを設定。
 
 ```bash
-# YOUR_API_KEY を自分の値に置換する（APIキーはコミットしない）
+# YOUR_API_KEY を自分の値に置換する（API キーはコミットしない）
 export RPC="https://sepolia.infura.io/v3/YOUR_API_KEY"
 
 # 例（Alchemy）
@@ -170,7 +170,7 @@ done
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | `jq: command not found` | `jq` が未インストール | OSの方法で `jq` を入れる（Ubuntu/WSL2なら `sudo apt install -y jq`） |
-| RPCが `403` / `unauthorized` | APIキー不正/制限、URLの貼り間違い | RPC URLを見直し、プロバイダ側でキーを確認する |
+| RPCが `403` / `unauthorized` | API キー不正/制限、URLの貼り間違い | RPC URLを見直し、プロバイダ側でキーを確認する |
 | 10進変換がうまくいかない | 16進数（`0x...`）の扱いミス | `printf \"%d\\n\" 0x...` の形で変換する（例は 2.3 を参照） |
 
 ---

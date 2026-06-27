@@ -4,7 +4,7 @@
 
 ## 学習目的
 - ERC‑721の `tokenURI` 設計とIPFSメタデータのベストプラクティスを理解し、簡単に説明できるようになる。
-- 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gatewayで表示確認までを一連で実行できるようになる。
+- 画像→IPFS→`baseURI`→ミント→`tokenURI`/Gateway で表示確認までを一連で実行できるようになる。
 - EIP‑2981（ロイヤリティ）と固定価格販売の最小例を実装し、動作確認できるようになる。
 
 > まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
@@ -17,7 +17,7 @@
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/MyNFT.sol` / `scripts/deploy-nft.ts` / `scripts/mint-nft.ts` / `contracts/FixedPriceMarket.sol` / `test/mynft.ts`
 - 今回触らないこと：NFTマーケットの本格実装（まずはtokenURI/IPFSの流れを固める）
-- 最短手順（迷ったらここ）：2章でIPFSに配置 → 3章の `MyNFT` をデプロイ → 4章でミント → `tokenURI`/Gatewayで表示確認
+- 最短手順（迷ったらここ）：2章でIPFSに配置 → 3章の `MyNFT` をデプロイ → 4章でミント → `tokenURI`/Gateway で表示確認
 
 `.env.example`（項目は同梱してあるので、`.env` に値を入れる）：
 ```bash
@@ -57,10 +57,10 @@ ipfs/
   ]
 }
 ```
-> 画像CIDとメタデータCIDは**異なる**可能性がある。Pinataでフォルダ単位アップロードするとルートCIDが付く。
+> 画像 CID とメタデータ CID は**異なる**可能性がある。Pinataでフォルダ単位アップロードするとルート CID が付く。
 
 ### 2.3 CLI例（Pinata）
-Web UIで`ipfs/`フォルダをアップロード→取得したルートCIDを`NFT_BASE`に設定。
+Web UIで`ipfs/`フォルダをアップロード→取得したルート CID を`NFT_BASE`に設定。
 
 ---
 
@@ -176,7 +176,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "$NFT_BASE" <OWNER_ADDRESS> $
 2) `ipfs://<CID>/1.json` を HTTP に置き換えて開く（例：`https://ipfs.io/ipfs/<CID>/1.json`）。  
 3) JSON 内の `image` も同様に置き換えて開き、画像が表示されることを確認。  
 
-> メモ：IPFS Gateway は複数ある。表示できない場合は別Gatewayで再確認する。
+> メモ：IPFS Gateway は複数ある。表示できない場合は別 Gateway で再確認する。
 
 ---
 
@@ -251,7 +251,7 @@ describe('MyNFT', () => {
 
 | 症状 | 原因 | 対応 |
 |---|---|---|
-| Gatewayで開けない | Gateway側の障害/レート制限、またはURIのパス不一致 | 別Gatewayで再確認。`tokenURI` とファイル名（`1.json` 等）が一致しているか確認 |
+| Gateway で開けない | Gateway 側の障害/レート制限、またはURIのパス不一致 | 別 Gateway で再確認。`tokenURI` とファイル名（`1.json` 等）が一致しているか確認 |
 | 画像が表示されない | `image`がHTTP/HTTPSや拡張子誤り | `ipfs://CID/...png` を再確認 |
 | Verify失敗 | コンストラクタ引数不一致 | 引数順序・型・設定を確認。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
 | `safeTransferFrom`失敗 | `approve`不足 | `setApprovalForAll` または `approve(id)` 実行 |
@@ -260,17 +260,17 @@ describe('MyNFT', () => {
 
 ## 9. まとめ
 - `tokenURI` とIPFSメタデータの設計（CID/パス/凍結方針）を、実装と表示確認の流れで整理した。
-- デプロイ→ミント→Gatewayで表示確認までをつなぎ、`tokenURI` とファイル名の一致が重要だと分かった。
+- デプロイ→ミント→Gateway で表示確認までをつなぎ、`tokenURI` とファイル名の一致が重要だと分かった。
 - 固定価格マーケットの最小例を通して、実運用で必要な防御（再入対策等）を明確化した。
 
 ### 理解チェック（3問）
 - Q1. NFTの `tokenURI` が指しているものは何か？オンチェーン/オフチェーンで分けて説明してみる。
-- Q2. IPFSのCIDとGatewayのURLは、どちらが「安定」しやすいか？理由も添える。
+- Q2. IPFS の CID と Gateway の URLは、どちらが「安定」しやすいか？理由も添える。
 - Q3. 固定価格マーケットで「購入できる状態」にするために、最低限必要な手順を2つ挙げる。
 
 ### 解答例（短く）
 - A1. `tokenURI` はメタデータ（JSON等）への参照だ。オンチェーンでは参照先（文字列）を返し、オフチェーンでその参照先から名前/画像などを取得して表示する。
-- A2. CIDの方が内容に紐づく識別子で安定しやすい。Gatewayは提供元やパスで変わり得るため、複数候補を持つと事故が減る。
+- A2. CID の方が内容に紐づく識別子で安定しやすい。Gateway は提供元やパスで変わり得るため、複数候補を持つと事故が減る。
 - A3. 例：NFTをミントする、マーケットに移転/出品できるよう `approve`（または `setApprovalForAll`）する、価格を指定してlistする。
 
 ### 確認コマンド（最小）
@@ -285,7 +285,7 @@ NFT=0x... npx hardhat run scripts/mint-nft.ts --network sepolia
 
 ## 10. 提出物
 - [ ] `MyNFT` と `FixedPriceMarket` のアドレス、Verifyリンク
-- [ ] `tokenURI(1)` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のスクリーンショット
+- [ ] `tokenURI(1)` の戻り値と、IPFS Gateway で開いたメタデータ/画像のスクリーンショット
 - [ ] IPFSのCID、`1.json` の最終版
 
 ## 11. 実行例

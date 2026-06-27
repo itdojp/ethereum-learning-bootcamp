@@ -23,7 +23,7 @@ EVT=<EVT> npx hardhat run scripts/use-event-token.ts --network localhost
 
 ## DApp（ブラウザ確認が必要）
 - `dapp/.env.local` に `VITE_EVENT_TOKEN=<EVT>` を設定すると、`Recent TransferLogged events` の表示が有効になる。
-- ただし `dapp/` は injected provider（MetaMask等）前提のため、この環境ではUI表示まで未確認。
+- ただし `dapp/` は injected provider（MetaMask 等）前提のため、この環境ではUI表示まで未確認。
 
 ## The Graph（未実施）
 - 生成物は同梱しない運用。`docs/subgraph/README.md` と `docs/appendix/the-graph.md` を参照。
