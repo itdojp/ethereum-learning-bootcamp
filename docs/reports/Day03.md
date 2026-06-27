@@ -19,10 +19,10 @@
 - `cast` コマンドがローカルRPCへ接続できることを確認。
 
 ## 未実施項目 / 注意
-- Sepolia へのデプロイは実施していません（APIキー・秘密鍵未設定）。`scripts/deploy-generic.ts` を `--network sepolia` で動かすには `.env` へ `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を投入する必要があります。
+- Sepolia へのデプロイは実施していません（API キー・秘密鍵未設定）。`scripts/deploy-generic.ts` を `--network sepolia` で動かすには `.env` へ `SEPOLIA_RPC_URL` と `PRIVATE_KEY` を投入する必要があります。
 - Foundry の `forge` テンプレート生成や `anvil` 起動は未実施。必要になったら `forge init` / `anvil` を任意ディレクトリで実行してください。
 
 ## まとめ
 1. Hardhat/Foundry ともに最新バイナリで利用可能な状態を構築済み。
 2. 既存サンプル（Hello, GasBench）のビルド＆テストが正常に通ることを確認。
-3. 次章（Day04以降）で必要になるデプロイスクリプトはローカルRPCで即実行できるようになった。SepoliaデプロイはAPIキー入力後に `npx hardhat run scripts/deploy-generic.ts --network sepolia` で対応可能。
+3. 次章（Day04以降）で必要になるデプロイスクリプトはローカルRPCで即実行できるようになった。Sepoliaデプロイは API キー入力後に `npx hardhat run scripts/deploy-generic.ts --network sepolia` で対応可能。

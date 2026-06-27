@@ -33,7 +33,7 @@
 
 ### 解答例（短く）
 - A1. コントラクトの振る舞い（成功/失敗条件、イベント、状態変化）が、手元で同じ手順で再現できること。
-- A2. 例：コンストラクタ引数が違う、optimizerやsolc設定が違う、Explorer/APIキーが未設定（詳細は付録 `docs/appendix/verify.md`）。
+- A2. 例：コンストラクタ引数が違う、optimizerやsolc設定が違う、Explorer/API キーが未設定（詳細は付録 `docs/appendix/verify.md`）。
 - A3. 例：Node.jsバージョン、環境変数の有無、依存インストールの差（`npm ci` になっているか）など（詳細は付録 `docs/appendix/ci-github-actions.md`）。
 
 ---

@@ -59,7 +59,7 @@ TOKEN=<TOKEN> npx hardhat run scripts/measure-contract.ts --network localhost
 > `feeEth` は `gasUsed * effectiveGasPrice` で計算している。実ネットワーク（Sepolia/Optimism等）では価格が変動するため、比較したい場合は同じ条件で複数回計測する。
 
 ## DApp / Verify / CI / The Graph（入口）
-- DApp：`cd dapp && npm ci && npm run build` が成功（UI動作はMetaMask等が必要）。
+- DApp：`cd dapp && npm ci && npm run build` が成功（UI動作は MetaMask 等が必要）。
 - Verify：`docs/appendix/verify.md`
 - CI：`.github/workflows/test.yml`（PR/Pushで `npm test`）
 - The Graph：`docs/appendix/the-graph.md` / `docs/subgraph/README.md`

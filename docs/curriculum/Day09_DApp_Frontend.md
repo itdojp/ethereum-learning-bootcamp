@@ -1,11 +1,11 @@
-# Day9：DAppフロント（React + ethers）— ウォレット接続／ネットワーク切替／残高・送金UI
+# Day9：DApp フロント（React + ethers）— ウォレット接続／ネットワーク切替／残高・送金UI
 
 [← 目次](./TOC.md) | [前: Day8](./Day08_L2_Rollups.md) | [次: Day10](./Day10_Events_TheGraph.md)
 
 ## 学習目的
-- ブラウザからMetaMask等に接続し、アカウント・ネットワークを取得できるようになる。
+- ブラウザから MetaMask 等に接続し、アカウント・ネットワークを取得できるようになる。
 - ネットワーク切替（Local/Sepolia/Optimism）とエラー処理の考え方を理解し、典型的な失敗を切り分けできるようになる。
-- ETH残高、ERC‑20残高の表示と送金UIを動かして確認できるようになる。
+- ETH 残高、ERC‑20残高の表示と送金UIを動かして確認できるようになる。
 
 > まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
 
@@ -14,7 +14,7 @@
 ## 0. 前提
 - フロントエンドは `dapp/` に同梱してある（新規作成不要）。
 - Day5 で `MyToken` をデプロイして、アドレスを控えている。
-- ブラウザにMetaMask等のウォレット拡張が入っている。
+- ブラウザに MetaMask 等のウォレット拡張が入っている。
 - ミニプロジェクト（通しで作るもの）：Day14 を“完成”としてつなぐ（全体像：[`docs/curriculum/Project.md`](./Project.md)）
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`dapp/.env.local` / `dapp/src/App.tsx` / `dapp/src/lib/web3.ts`
@@ -109,11 +109,11 @@ MTK: 0x...
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
-| `No injected provider detected` | MetaMask等が入っていない | 拡張機能を入れて再読み込みする |
-| Switch が失敗する | チェーンが未追加 / 許可がない | 先にMetaMask側でネットワークを追加してから再実行する |
+| `No injected provider detected` | MetaMask 等が入っていない | 拡張機能を入れて再読み込みする |
+| Switch が失敗する | チェーンが未追加 / 許可がない | 先に MetaMask 側でネットワークを追加してから再実行する |
 | `Token contract not configured` | `VITE_TOKEN_ADDRESS` 未設定 | `.env.local` を見直す |
 | トークン残高が 0 | デプロイしたアカウントと接続中アカウントが違う | デプロイ時と同じアカウントで接続する（初期供給はデプロイアドレスにミントされる） |
-| `call revert` / `execution reverted` | アドレスが違う / コントラクトが存在しない | チェーンIDとアドレスの組み合わせを確認する |
+| `call revert` / `execution reverted` | アドレスが違う / コントラクトが存在しない | チェーン ID とアドレスの組み合わせを確認する |
 
 ---
 
@@ -130,14 +130,14 @@ MTK: 0x...
 - 典型的なエラー（provider未検出、チェーン不一致、アドレス不一致）の切り分け観点を整理した。
 
 ### 理解チェック（3問）
-- Q1. DApp が injected provider（MetaMask等）を使うとき、何が前提になるか？
+- Q1. DApp が injected provider（MetaMask 等）を使うとき、何が前提になるか？
 - Q2. `VITE_CHAIN_ID` と MetaMask 側のチェーンが不一致だと、どんな症状が起きやすいか？
 - Q3. `dapp/.env.local` の `VITE_*` を分けて管理する利点は何か？
 
 ### 解答例（短く）
 - A1. ブラウザにウォレット拡張があり、ユーザーが接続/承認する前提になる（勝手に送金できない）。
 - A2. コントラクトが見つからない、残高が0に見える、イベントが読めないなど「別チェーンを見ている」症状が起きやすい。
-- A3. チェーンIDやアドレスなど環境依存の設定をコードから切り離し、切り替えミスやコミット事故を減らせる。
+- A3. チェーン ID やアドレスなど環境依存の設定をコードから切り離し、切り替えミスやコミット事故を減らせる。
 
 ### 確認コマンド（最小）
 ```bash

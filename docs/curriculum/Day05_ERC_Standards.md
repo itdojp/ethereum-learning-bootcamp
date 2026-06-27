@@ -13,7 +13,7 @@
 
 ## 0. 前提
 - Day3 までの環境構築が完了している（`npm ci` / `.env`）
-- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテストETHを入れておく
+- Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテスト ETH を入れておく
 - Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md) / [`docs/appendix/verify.md`](../appendix/verify.md)（任意）
 - 触るファイル（主なもの）：
@@ -180,7 +180,7 @@ npm i -D @nomicfoundation/hardhat-verify
 npx hardhat verify --network sepolia <TOKEN_ADDRESS> 1000000000000000000000000
 npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECEIVER_ADDR> 500
 ```
-> つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する（コンストラクタ引数・optimizer設定・APIキーの不足が典型）。
+> つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する（コンストラクタ引数・optimizer設定・API キーの不足が典型）。
 
 ---
 
@@ -197,7 +197,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 |---|---|---|
 | `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm ci`（または `npm i @openzeppelin/contracts`）を実行する |
 | スクリプトが落ちる（`TOKEN` など） | 環境変数未設定 / `--network` 不一致 | `TOKEN`/`NFT_ADDRESS` 等の値と、`--network` を見直す |
-| Verifyが失敗する | APIキー/引数/コンパイラ設定不一致 | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
+| Verifyが失敗する | API キー/引数/コンパイラ設定不一致 | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
 
 ---
 
@@ -214,7 +214,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 ### 解答例（短く）
 - A1. 保有者（owner）が、第三者（spender）に「自分の残高から一定量を引き出してよい」権限（allowance）を渡す。
 - A2. `tokenURI` の戻り値（参照先）が意図どおりか、参照先のメタデータ/画像が取得できるか。
-- A3. 例：コンストラクタ引数、solc/optimizer設定、APIキーやネットワーク（Explorer）が正しいか。
+- A3. 例：コンストラクタ引数、solc/optimizer設定、API キーやネットワーク（Explorer）が正しいか。
 
 ### 確認コマンド（最小）
 ```bash
@@ -229,7 +229,7 @@ npx hardhat run scripts/deploy-nft.ts --network sepolia
 ## 8. 提出物
 - [ ] トークン・NFTのコントラクトアドレス、Verifyリンク
 - [ ] `approve→transferFrom`の実行ログと`allowance`の値
-- [ ] `tokenURI` の戻り値と、IPFS Gatewayで開いたメタデータ/画像のキャプチャ
+- [ ] `tokenURI` の戻り値と、IPFS Gateway で開いたメタデータ/画像のキャプチャ
 
 ## 9. 実行例
 - 実行ログ例：[`docs/reports/Day05.md`](../reports/Day05.md)

@@ -27,7 +27,7 @@
 - Data Availability（DA）: 誰でも検証できるよう必要データが公開され続ける性質。
 - EIP‑7691: Blob throughput increase。blob の target/max（1ブロックあたりの目安/上限）を 3/6 → 6/9 に増やす。
 - Bridge: L1/L2間で資産を移す仕組み。
-- Sequencer: L2でトランザクション順序を決める役割。
+- Sequencer: L2 でトランザクション順序を決める役割。
 - Fraud Proof: Optimisticで不正を検知する異議申立て証明。
 - Validity Proof: ZKで正当性を示す暗号学的証明。
 
@@ -45,7 +45,7 @@
 - CI（Continuous Integration）: Pull Request などを契機にテストを自動実行し、差分の不具合を早期に検出する仕組み。
 - Verify（ソース検証）: エクスプローラ上で、ソースコードとデプロイ済みバイトコードを対応付ける作業。
 - Etherscan: Ethereum系チェーンのブロックエクスプローラ。トランザクションやコントラクト、Verify（ソース検証）の確認に使う。
-- Blockscout: Etherscan系ではないブロックエクスプローラ実装の一つ。L2で採用されることがある。
+- Blockscout: Etherscan系ではないブロックエクスプローラ実装の一つ。L2 で採用されることがある。
 - The Graph: コントラクトのイベント等をインデックス化し、GraphQLで検索・取得できるようにする仕組み/サービス。
 - Subgraph: The Graph の「インデックス定義」。どのコントラクトのどのイベントを、どの形で保存するかを宣言する。
 - GraphQL: The Graph などで使われるクエリ言語。必要な項目だけを問い合わせられる。

@@ -43,4 +43,4 @@ NFT_ADDRESS=<NFT_ADDRESS> npx hardhat run scripts/mint-nft.ts --network localhos
 - `tokenURI: ipfs://example/1.json`
 
 ## 未実施（外部依存）
-- Sepolia 等へのデプロイや Verify は、APIキー・秘密鍵が必要なため未実施。
+- Sepolia 等へのデプロイや Verify は、API キー・秘密鍵が必要なため未実施。

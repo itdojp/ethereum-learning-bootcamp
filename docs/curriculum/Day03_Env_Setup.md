@@ -24,7 +24,7 @@
 
 ## 1. 前提
 - 推奨：Node.js 20（LTS）
-- テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテストETHを入れておく
+- テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテスト ETH を入れておく
   - メイン資産の鍵は使わない（流出時の被害が大きい）
 - 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
 - 触るファイル（主なもの）：`.env` / `hardhat.config.ts` / `scripts/deploy-token.ts`（例）
@@ -39,14 +39,14 @@
 - Ethereumスマートコントラクト開発フレームワーク。
 - 主な機能：
   - コントラクトのコンパイル、テスト、デプロイの自動化。
-  - ローカルEVMノード（Hardhat Network）内蔵。
+  - ローカル EVM ノード（Hardhat Network）内蔵。
   - TypeScript対応で型安全なスクリプトが書ける。
 
 ### 2.2 Foundryとは
 - Rust製の高速開発環境。
 - `forge`：テスト実行、デプロイ、検証。
-- `cast`：RPC呼び出しなどCLI操作。
-- Hardhatより軽量で、高速テストに強い。
+- `cast`：RPC 呼び出しなど CLI 操作。
+- Hardhat より軽量で、高速テストに強い。
 
 ### 2.3 ネットワークの種類
 
@@ -59,7 +59,7 @@
 ### 2.4 RPCプロバイダ
 - Ethereumノードとの通信API。
 - 代表例：Alchemy、Infura、QuickNode。
-- Hardhat設定ファイルで指定して利用。
+- Hardhat 設定ファイルで指定して利用。
 
 ---
 
@@ -155,7 +155,7 @@ node -v
 npm -v
 ```
 
-#### (2) Hardhatプロジェクト作成
+#### (2) Hardhat プロジェクト作成
 ```bash
 mkdir eth-bootcamp && cd eth-bootcamp
 npm init -y
@@ -183,11 +183,11 @@ ENV
 cp .env.example .env && nano .env
 ```
 > ローカル `npm test` だけなら、この手順は不要。
-> `YOUR_...` は自分の値に置換する。APIキーや秘密鍵はコミットしない。
+> `YOUR_...` は自分の値に置換する。API キーや秘密鍵はコミットしない。
 
 ---
 
-### 3.2 Hardhat設定
+### 3.2 Hardhat 設定
 `hardhat.config.ts` を編集：
 ```ts
 import * as dotenv from 'dotenv';
@@ -271,7 +271,7 @@ cd foundry-demo
 forge test -vvvv
 ```
 
-#### (3) RPC呼び出し例
+#### (3) RPC 呼び出し例
 ```bash
 cast block-number --rpc-url $SEPOLIA_RPC_URL
 ```
@@ -318,10 +318,10 @@ npx hardhat run scripts/deploy-token.ts --network sepolia
 ```
 
 ## 7. 提出物
-- [ ] Hardhatプロジェクト構成のスクリーンショット
+- [ ] Hardhat プロジェクト構成のスクリーンショット
 - [ ] デプロイ時のログとコントラクトアドレス
 - [ ] `cast block-number` の出力
-- [ ] `.env` 設定（APIキーなどは伏せる）
+- [ ] `.env` 設定（API キーなどは伏せる）
 
 ## 8. 実行例
 - 実行ログ例：[`docs/reports/Day03.md`](../reports/Day03.md)

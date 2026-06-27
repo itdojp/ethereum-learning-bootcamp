@@ -31,7 +31,7 @@ permalink: /
 - **再現対象**: 本リポジトリの `package.json` / `package-lock.json` を優先し、Hardhat 2.x、Solidity 0.8.24、OpenZeppelin Contracts 5.0.2 の学習用構成として扱う。
 - **現行公式確認**: 新規プロジェクトでは Hardhat 3、Solidity 最新リリース、OpenZeppelin Contracts 5.x、Foundry、The Graph、各L2/Explorer/RPCの公式ドキュメントを確認し、教材のコマンドを盲目的に転用しない。
 - **L2/Blob前提**: Dencun / Pectra / Fusaka・PeerDAS / Blob Parameter Only fork により、blob target/max、手数料、データ可用性の前提は変化する。Day08 の数値は実測と公式情報で更新する。
-- **安全境界**: 秘密鍵、リカバリーフレーズ、RPC/APIキー、署名リクエスト、token approval、ブリッジ操作は学習用アカウントに限定し、Mainnet や実資産を使わない。
+- **安全境界**: 秘密鍵、リカバリーフレーズ、RPC/API キー、署名リクエスト、token approval、ブリッジ操作は学習用アカウントに限定し、Mainnet や実資産を使わない。
 - **レビュー完了条件**: PR では GitHub Copilot review の本文・inline comment・suggestion を全件確認し、必要な修正または不要理由の返信後、未解決 review thread 0 を確認する。
 
 ## 進め方（最短ルート）

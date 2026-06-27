@@ -21,7 +21,7 @@ NFT_ADDRESS=<NFT_ADDRESS> npx hardhat run scripts/mint-nft.ts --network localhos
 
 ## IPFS 表示確認（未実施）
 - OpenSea はテストネット表示を終了しているため、`tokenURI` を HTTP Gateway（例：`https://ipfs.io/ipfs/<CID>/1.json`）に置き換えて確認する流れになる。
-- 実際のIPFSアップロードは APIキーや素材ファイルが必要なため未実施。
+- 実際のIPFSアップロードは API キーや素材ファイルが必要なため未実施。
 
 ## Market（FixedPriceMarket）
 - `test/market.ts` が `list`→`buy` の最小フローを自動テストしている（UIは未実施）。

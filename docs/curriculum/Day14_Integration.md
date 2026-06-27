@@ -169,7 +169,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ## 7. チェックリスト
 - [ ] デプロイしたアドレスを `docs/DEPLOYMENTS.md` に記録した
-- [ ] DApp で chainId / ETH残高 / MyToken残高が表示できる
+- [ ] DApp で chainId / ETH 残高 / MyToken残高が表示できる
 - [ ] DApp から MyToken を送金できる（少額で）
 - [ ] EventToken のイベントを DApp で購読できる（任意）
 - [ ] Verify を通せる（任意）
@@ -183,14 +183,14 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | DApp が動かない / 残高が出ない | chainId とアドレスが不一致 | `dapp/.env.local` と MetaMask のチェーンを揃え、アドレスを再確認する |
-| Verifyが通らない | APIキー/引数/設定不一致、反映待ち | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
+| Verifyが通らない | API キー/引数/設定不一致、反映待ち | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
 | 手動デプロイの承認が出ない | Environment設定・Secretsの場所違い | [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
 | サブグラフが同期しない | `startBlock`/アドレス不一致 | [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照して確認する |
 
 ---
 
 ## 9. まとめ
-- デプロイ記録（`docs/DEPLOYMENTS.md`）→DApp接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
+- デプロイ記録（`docs/DEPLOYMENTS.md`）→DApp 接続→（任意）Verify/CI/The Graph の順で、統合手順を一本化した。
 - `dapp/.env.local` の chainId/アドレス不一致が典型的な原因になるため、設定の置き場所を意識する必要がある。
 - チェックリストで「どこまで動けばOKか」を明確にし、チーム開発で破綻しにくい形にした。
 
@@ -201,7 +201,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ### 解答例（短く）
 - A1. `docs/DEPLOYMENTS.md`（デプロイ記録）と `docs/reports/`（実行ログ）を残す。
-- A2. `dapp/.env.local` の `VITE_CHAIN_ID` / `VITE_*_ADDRESS` と、MetaMask側の接続チェーンを確認し、同じチェーン上のアドレスを入れ直す。
+- A2. `dapp/.env.local` の `VITE_CHAIN_ID` / `VITE_*_ADDRESS` と、MetaMask 側の接続チェーンを確認し、同じチェーン上のアドレスを入れ直す。
 - A3. チームで共有/運用する段階（第三者がExplorerで確認したい、PRで自動テストしたい、履歴/集計を安定して取りたい）になると必要になりやすい。
 
 ### 完走後の次アクション

@@ -52,7 +52,7 @@ npm ci
 
 | 症状 | 原因 | 対策 |
 |---|---|---|
-| 例：`insufficient funds` | 例：手数料不足 | 例：テスト用ETHを用意 |
+| 例：`insufficient funds` | 例：手数料不足 | 例：テスト用ETH を用意 |
 
 ---
 
