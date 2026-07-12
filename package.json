@@ -20,8 +20,9 @@
     "check:links": "node tools/check-links.mjs",
     "check:md-style": "node tools/check-md-style.mjs",
     "check:toolchain": "node tools/check-toolchain.mjs",
-    "check:security": "npm audit --omit=dev && npm --prefix dapp audit --omit=dev",
-    "check:all": "npm run check:metadata && npm run check:toolchain && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
+    "check:dependency-compat": "node tools/check-dependency-compat.cjs",
+    "check:security": "npm audit --include=dev --audit-level=moderate && npm --prefix dapp audit --include=dev --audit-level=moderate",
+    "check:all": "npm run check:metadata && npm run check:toolchain && npm run check:dependency-compat && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
     "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia",
@@ -44,9 +45,23 @@
     "typescript": "^5.4.0"
   },
   "overrides": {
+    "ethers": {
+      "ws": "8.21.0"
+    },
+    "ethjs-unit": {
+      "bn.js": "4.12.5"
+    },
+    "lodash": "4.18.1",
+    "number-to-bn": {
+      "bn.js": "4.12.5"
+    },
     "qs": "6.14.1",
-    "sc-istanbul": {
-      "js-yaml": "3.14.2"
+    "serialize-javascript": "7.0.7",
+    "tmp": "0.2.7",
+    "undici": "6.27.0",
+    "uuid": "11.1.1",
+    "viem": {
+      "ws": "8.21.0"
     }
   }
 }

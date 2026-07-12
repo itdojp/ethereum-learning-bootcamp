@@ -21,6 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run check:metadata
       - run: npm run check:toolchain
+      - run: npm run check:dependency-compat
       - run: npm test
       - run: npm run check:links
       - run: npm run check:md-style
