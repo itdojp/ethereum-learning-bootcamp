@@ -171,9 +171,9 @@
     "modules": {
       "quickStart": true,
       "readingGuide": true,
-      "checklistPack": false,
+      "checklistPack": true,
       "troubleshootingFlow": false,
-      "conceptMap": true,
+      "conceptMap": false,
       "figureIndex": false,
       "legalNotice": true,
       "glossary": true
