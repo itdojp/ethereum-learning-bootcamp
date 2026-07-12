@@ -43,11 +43,12 @@ async function checkHttpCompatibility() {
       return;
     }
     if (request.url === "/slow") {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         if (response.destroyed) return;
         response.setHeader("content-type", "application/json");
         response.end(JSON.stringify({ jsonrpc: "2.0", id: 1, result: "late" }));
       }, 1500);
+      timer.unref();
       return;
     }
     if (request.url === "/verify-get") {
