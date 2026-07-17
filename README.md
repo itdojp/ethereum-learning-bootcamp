@@ -33,6 +33,7 @@ cp .env.example .env
 ```
 - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia へ deploy する場合に必要
 - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia へ deploy する場合に必要
+- `MAINNET_RPC_URL` / `PRIVATE_KEY`: Mainnet へ deploy する場合に必要
 - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism へ deploy する場合に必要
 - `ETHERSCAN_API_KEY`: Etherscan V2 で Sepolia / OP Sepolia / Mainnet / Optimism を verify する場合に共通で必要
 
