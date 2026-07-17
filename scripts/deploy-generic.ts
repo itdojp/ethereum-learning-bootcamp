@@ -13,8 +13,8 @@ async function main() {
     throw new Error('ARGS is no longer accepted; use ARGS_JSON with a JSON array');
   }
 
-  const contractName = validateContractName(process.env.CONTRACT || 'Hello');
-  const constructorArgs = parseConstructorArgs(process.env.ARGS_JSON || '[]');
+  const contractName = validateContractName(process.env.CONTRACT ?? 'Hello');
+  const constructorArgs = parseConstructorArgs(process.env.ARGS_JSON ?? '[]');
 
   console.log(
     `Deploying contract=${contractName} to network=${network.name} with ${constructorArgs.length} constructor argument(s)`

@@ -27,7 +27,7 @@ function numberedHeadings(relative) {
       continue;
     }
     if (fence !== null) continue;
-    const match = line.match(/^(#{2,6})\s+(\d+(?:\.\d+)*)\.(?:\s|$)/u);
+    const match = line.match(/^(#{2,6})\s+(\d+(?:\.\d+)*)(?:\.)?(?:\s|$)/u);
     if (match) {
       headings.push({
         line: index + 1,
@@ -44,6 +44,7 @@ for (const filename of fs.readdirSync(path.join(root, 'docs/curriculum')).sort()
   if (!/^Day\d+.*\.md$/u.test(filename)) continue;
   const relative = `docs/curriculum/${filename}`;
   const headings = numberedHeadings(relative);
+  check(headings.length > 0, `${relative}: no numbered headings detected`);
   const latest = new Map();
   const previousByParent = new Map();
 

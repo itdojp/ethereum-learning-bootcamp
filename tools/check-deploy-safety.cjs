@@ -13,8 +13,10 @@ const {
 const root = process.cwd();
 const workflowPath = path.join(root, '.github/workflows/deploy.yml');
 const configPath = path.join(root, 'hardhat.config.ts');
+const deployScriptPath = path.join(root, 'scripts/deploy-generic.ts');
 const workflow = fs.readFileSync(workflowPath, 'utf8');
 const config = fs.readFileSync(configPath, 'utf8');
+const deployScript = fs.readFileSync(deployScriptPath, 'utf8');
 const errors = [];
 
 function check(condition, message) {
@@ -113,6 +115,14 @@ check(/check-deployment-environment\.cjs/u.test(workflow), 'deploy job must veri
 check(/secrets\[needs\.validate\.outputs\.rpc_secret_name\]/u.test(workflow), 'RPC secret must use a validated network-specific name');
 check(/secrets\[needs\.validate\.outputs\.private_key_secret_name\]/u.test(workflow), 'private-key secret must use a validated network-specific name');
 check(!/secrets\.[A-Za-z0-9_]*ETHERSCAN/u.test(workflow), 'deploy workflow must not load Explorer API keys');
+check(
+  /process\.env\.CONTRACT\s*\?\?\s*['"]Hello['"]/u.test(deployScript),
+  'deploy script must default CONTRACT only when the variable is absent'
+);
+check(
+  /process\.env\.ARGS_JSON\s*\?\?\s*['"]\[\]['"]/u.test(deployScript),
+  'deploy script must default ARGS_JSON only when the variable is absent'
+);
 
 for (const match of workflow.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
   const reference = match[1];
