@@ -52,15 +52,44 @@ async function main() {
   if (!(await token.transfer.staticCall(recipient, tokenValue))) {
     throw new Error('The ERC-20 transfer preflight returned false');
   }
-  await unlockedDeployer.estimateGas({ to: recipient, value: ethValue });
+
+  const feeData = await ethers.provider.getFeeData();
+  const feeOverrides =
+    feeData.maxFeePerGas !== null
+      ? {
+          maxFeePerGas: feeData.maxFeePerGas,
+          maxPriorityFeePerGas: feeData.maxPriorityFeePerGas ?? 0n
+        }
+      : feeData.gasPrice !== null
+        ? { gasPrice: feeData.gasPrice }
+        : undefined;
+  if (!feeOverrides) {
+    throw new Error('Unable to determine localhost transaction fees');
+  }
+  const feePerGas = 'maxFeePerGas' in feeOverrides ? feeOverrides.maxFeePerGas : feeOverrides.gasPrice;
+  const ethGasLimit = await unlockedDeployer.estimateGas({
+    to: recipient,
+    value: ethValue,
+    ...feeOverrides
+  });
+  const tokenGasLimit = await token.transfer.estimateGas(recipient, tokenValue, feeOverrides);
+  const requiredEthBalance = ethValue + (ethGasLimit + tokenGasLimit) * feePerGas;
+  if ((await ethers.provider.getBalance(deployerAddress)) < requiredEthBalance) {
+    throw new Error('The localhost deployer cannot cover both transfers and their maximum fees');
+  }
 
   const ethTransaction = await unlockedDeployer.sendTransaction({
     to: recipient,
-    value: ethValue
+    value: ethValue,
+    gasLimit: ethGasLimit,
+    ...feeOverrides
   });
   await ethTransaction.wait();
 
-  const tokenTransaction = await token.transfer(recipient, tokenValue);
+  const tokenTransaction = await token.transfer(recipient, tokenValue, {
+    gasLimit: tokenGasLimit,
+    ...feeOverrides
+  });
   await tokenTransaction.wait();
 
   console.log(`Funded local learning wallet ${recipient}`);
