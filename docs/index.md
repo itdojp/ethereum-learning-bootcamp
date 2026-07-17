@@ -61,6 +61,7 @@ npm test
 - deploy / verify 時に使う主な変数:
   - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
   - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy
+  - `MAINNET_RPC_URL` / `PRIVATE_KEY`: Mainnet deploy
   - `ETHERSCAN_API_KEY`: Etherscan V2 による Sepolia / OP Sepolia / Mainnet / Optimism verify
   - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
 

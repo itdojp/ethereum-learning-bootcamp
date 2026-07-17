@@ -14,7 +14,7 @@
    - testnet: `deploy-sepolia`, `deploy-optimism-sepolia`
    - production: `production-mainnet`, `production-optimism`
 2. 各 Environment Secrets に、下表の network 固有名で RPC と学習用 private key を保存する。
-3. 4つすべてに exact `main` deployment branch rule を設定し、`production-*` には Required reviewers も設定する。
+3. 4つすべてに exact `main` deployment branch rule を設定し、`production-*` には Required reviewers と Prevent self-review も設定する。
 4. Actions > `deploy` から、まず `sepolia` または `optimismSepolia` を選ぶ。
 5. `mainnet` / `optimism` の場合だけ、確認欄へ `DEPLOY_PRODUCTION` を正確に入力し、Environment approval を通す。
 
@@ -47,11 +47,11 @@ npm run check:all
 - deploy 前に toolchain check、contract tests、compile を完了
 - action は監査済み commit SHA に固定
 - network 単位の concurrency で並行 deploy を抑止
-- deploy job は main branch 以外で起動せず、GitHub API で exact main branch policy と production reviewer を再確認してから secrets を step へ渡す
+- deploy job は main branch 以外で起動せず、GitHub API で exact main branch policy、production reviewer、Prevent self-review を再確認してから secrets を step へ渡す
 
 ### 2.1 承認が出ない
 
-選択した network に対応する Environment 名を確認する。全 Environment に exact `main` branch policy、production には `production-mainnet` または `production-optimism` の Required reviewers が必要になる。設定が不足すると secret 使用前の preflight が fail closed する。
+選択した network に対応する Environment 名を確認する。全 Environment に exact `main` branch policy、production には `production-mainnet` または `production-optimism` の Required reviewers と Prevent self-review が必要になる。設定が不足すると secret 使用前の preflight が fail closed する。
 
 ### 2.2 Secrets が読めない
 
@@ -74,7 +74,7 @@ validator が allowlist に基づいて secret 名を決め、workflow は選択
 |---|---|---|---|
 | `npm ci` が落ちる | lockfile 不整合 | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |
 | deploy input validation が落ちる | network / contract / JSON /確認文字列が不正 | validation job のエラー | allowlist と `ARGS_JSON` 例を確認 |
-| Environment approval が出ない | Environment名または保護設定不足 | Settings > Environments | 対応する `production-*` に reviewer を設定 |
+| Environment approval が出ない | Environment名または保護設定不足 | Settings > Environments | 対応する `production-*` に reviewer と Prevent self-review を設定 |
 | Secrets が読めない | Environment / network固有secret名の不一致 | 選択 network と上記の対応表 | 対応 Environment へ固有名で配置 |
 | `insufficient funds` | deploy address の残高不足 | 対象 chain の残高 | testnet faucet または少額を用意 |
 | 公開鮮度チェックが落ちる | Pages が main より古い | `/build-info.json` の revision / version | Pages build 完了後に再確認し、継続する場合は build を調査 |

@@ -59,6 +59,13 @@ function permissionBlock(yaml, indentation) {
   return entries;
 }
 
+function hasPermissionDeclaration(yaml, indentation) {
+  const prefix = ' '.repeat(indentation);
+  return yaml.split(/\r?\n/u).some((line) =>
+    new RegExp(`^${prefix}permissions\\s*:`, 'u').test(line)
+  );
+}
+
 function hasExactPermissions(actual, expected) {
   if (!actual) return false;
   const actualKeys = Object.keys(actual).sort();
@@ -83,7 +90,7 @@ for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
 const validateJob = workflow.match(/^  validate:\s*$([\s\S]*?)(?=^  deploy:\s*$)/mu)?.[1] || '';
 const deployJob = workflow.match(/^  deploy:\s*$([\s\S]*)/mu)?.[1] || '';
 check(hasExactPermissions(permissionBlock(workflow, 0), { contents: 'read' }), 'workflow default permissions must declare contents: read only');
-check(permissionBlock(validateJob, 4) === null, 'validate job must inherit the contents-only workflow permission');
+check(!hasPermissionDeclaration(validateJob, 4), 'validate job must inherit the contents-only workflow permission');
 check(hasExactPermissions(permissionBlock(deployJob, 4), {
   actions: 'read',
   contents: 'read',

@@ -23,4 +23,4 @@
 
 ## まとめ
 - 人手承認付きのCI/CD雛形とデプロイ記録ファイルを整備し、Day07 の要件（安全なデプロイ手順、Verifyへの導線、記録）をローカルで再現できる形にした。
-- 本番ネットで実行する際は network 別 protected Environment の `RPC_URL` / `PRIVATE_KEY`、固定確認文字列、reviewer approval が必要になる。
+- 本番ネットで実行する際は network 別 protected Environment の `RPC_URL` / `PRIVATE_KEY`、固定確認文字列、Prevent self-review を有効にした別 reviewer の approval が必要になる。

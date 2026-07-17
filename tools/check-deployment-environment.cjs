@@ -23,6 +23,8 @@ function validateEnvironmentConfiguration(environment, branchPolicies, networkPo
     );
     if (!reviewerRule || !Array.isArray(reviewerRule.reviewers) || reviewerRule.reviewers.length === 0) {
       errors.push('production environment requires at least one required reviewer');
+    } else if (reviewerRule.prevent_self_review !== true) {
+      errors.push('production environment must prevent self-review');
     }
   }
   return errors;

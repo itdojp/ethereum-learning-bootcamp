@@ -14,7 +14,11 @@ function configuredEnvironment(name, withReviewers) {
       custom_branch_policies: true
     },
     protection_rules: withReviewers
-      ? [{ type: 'required_reviewers', reviewers: [{ type: 'User', id: 1 }] }]
+      ? [{
+          type: 'required_reviewers',
+          prevent_self_review: true,
+          reviewers: [{ type: 'User', id: 1 }]
+        }]
       : []
   };
 }
@@ -44,6 +48,17 @@ test('rejects production without reviewers', () => {
     { network: 'mainnet', ...NETWORK_POLICIES.mainnet }
   );
   assert.match(errors.join('\n'), /required reviewer/u);
+});
+
+test('rejects production when the initiator can self-approve', () => {
+  const environment = configuredEnvironment('production-mainnet', true);
+  environment.protection_rules[0].prevent_self_review = false;
+  const errors = validateEnvironmentConfiguration(
+    environment,
+    [{ name: 'main' }],
+    { network: 'mainnet', ...NETWORK_POLICIES.mainnet }
+  );
+  assert.match(errors.join('\n'), /prevent self-review/u);
 });
 
 test('rejects a missing main branch policy and wrong environment', () => {
