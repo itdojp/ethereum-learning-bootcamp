@@ -93,7 +93,7 @@ gh secret list --repo "$REPO" --env deploy-optimism-sepolia
 | `insufficient funds` | deploy address の残高不足 | 対象 chain の残高 | testnet faucet または少額を用意 |
 | 公開鮮度チェックが落ちる | Pages が main より古い | `/build-info.json` の revision / version | Pages build 完了後に再確認し、継続する場合は build を調査 |
 
-公開鮮度チェックは毎週の定期実行に加えて`main`更新時にも起動し、live markerが更新SHAへ収束するまで再試行してから全URLを検査する。
+公開鮮度チェックは毎週の定期実行に加えて `main` 更新時にも起動し、live marker が更新 SHA へ収束するまで再試行してから全 URL を検査する。
 
 ## 4. Verify は別メモへ
 

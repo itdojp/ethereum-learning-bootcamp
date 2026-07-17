@@ -145,8 +145,16 @@ check(
     ciAppendix.includes('本番用 private key を GitHub Secrets に保存しない'),
   'deployment guidance must forbid production private keys in GitHub Secrets'
 );
+const productionPrivateKeyPattern =
+  /(?:mainnet|optimism)\s*:\s*\{[^}]*accounts:\s*\[\s*process\.env\.PRIVATE_KEY/u;
 check(
-  !/(?:mainnet|optimism)\s*:\s*\{[^}\n]*accounts:\s*\[process\.env\.PRIVATE_KEY/u.test(day08),
+  productionPrivateKeyPattern.test(
+    'mainnet: {\n  url: process.env.MAINNET_RPC_URL,\n  accounts: [process.env.PRIVATE_KEY]\n}'
+  ),
+  'production PRIVATE_KEY regression pattern must detect multiline snippets'
+);
+check(
+  !productionPrivateKeyPattern.test(day08),
   'Day08 must not reconnect a production network to PRIVATE_KEY'
 );
 for (const [name, contents] of [
