@@ -53,6 +53,7 @@ for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
 }
 check(/permissions:[\s\S]*?contents:\s*read/u.test(workflow), 'workflow must declare contents: read');
 check(/permissions:[\s\S]*?actions:\s*read[\s\S]*?contents:\s*read/u.test(workflow), 'Environment API preflight requires actions: read');
+check(/permissions:[\s\S]*?deployments:\s*write/u.test(workflow), 'jobs using environments require deployments: write');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
 check(/production_confirmation:/u.test(workflow), 'production confirmation input is required');
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
@@ -69,7 +70,7 @@ for (const match of workflow.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
   check(at > 0 && /^[0-9a-f]{40}$/u.test(reference.slice(at + 1)), `action must use a full commit SHA: ${reference}`);
 }
 
-const forbiddenEndpoint = ['api-optimistic', '.etherscan.io/api'].join('');
+const forbiddenV1EtherscanEndpoint = /https?:\/\/api(?:-[a-z0-9-]+)?\.etherscan\.io\/api(?:\b|[/?#])/iu;
 const forbiddenKey = ['OPTIMISTIC_', 'ETHERSCAN_API_KEY'].join('');
 const ignoredDirectories = new Set(['.git', 'node_modules', 'artifacts', 'cache', 'coverage', 'dist', 'typechain-types']);
 
@@ -87,7 +88,7 @@ function walk(directory) {
         continue;
       }
       const relative = path.relative(root, absolute);
-      check(!contents.includes(forbiddenEndpoint), `${relative}: legacy Etherscan V1 endpoint is forbidden`);
+      check(!forbiddenV1EtherscanEndpoint.test(contents), `${relative}: legacy Etherscan V1 endpoint is forbidden`);
       check(!contents.includes(forbiddenKey), `${relative}: chain-specific Etherscan key name is forbidden`);
     }
   }
