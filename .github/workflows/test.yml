@@ -22,6 +22,11 @@ jobs:
       - run: npm run check:metadata
       - run: npm run check:toolchain
       - run: npm run check:dependency-compat
+      - run: npm run test:deploy-inputs
+      - run: npm run test:deployment-environment
+      - run: npm run test:public-site
+      - run: npm run check:deploy-safety
+      - run: npm run check:docs-consistency
       - run: npm test
       - run: npm run check:links
       - run: npm run check:md-style

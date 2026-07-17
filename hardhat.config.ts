@@ -35,25 +35,28 @@ const config: HardhatUserConfig = {
   },
   networks: {
     localhost: { url: 'http://127.0.0.1:8545' },
-    sepolia: { url: process.env.SEPOLIA_RPC_URL || '', accounts },
-    mainnet: { url: process.env.MAINNET_RPC_URL || '', accounts },
-    optimism: { url: process.env.OPTIMISM_RPC_URL || '', accounts },
+    sepolia: { chainId: 11155111, url: process.env.SEPOLIA_RPC_URL || '', accounts },
+    optimismSepolia: {
+      chainId: 11155420,
+      url: process.env.OPTIMISM_SEPOLIA_RPC_URL || '',
+      accounts
+    },
+    mainnet: { chainId: 1, url: process.env.MAINNET_RPC_URL || '', accounts },
+    optimism: { chainId: 10, url: process.env.OPTIMISM_RPC_URL || '', accounts },
     polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL || '', accounts }
   },
   etherscan: {
-    apiKey: {
-      mainnet: process.env.ETHERSCAN_API_KEY || '',
-      sepolia: process.env.ETHERSCAN_API_KEY || '',
-      optimism: process.env.OPTIMISTIC_ETHERSCAN_API_KEY || ''
-    },
-    // Optimism向けverify時のcustomChains例（APIエンドポイントは環境に合わせて更新すること）
+    // hardhat-verify 2.1.3 selects Etherscan API V2 when apiKey is one string.
+    apiKey: process.env.ETHERSCAN_API_KEY || '',
+    // Hardhat 2's verify plugin does not yet include OP Sepolia as a built-in chain.
+    // With a string API key, the plugin sends chainid=11155420 to this V2 endpoint.
     customChains: [
       {
-        network: 'optimism',
-        chainId: 10,
+        network: 'optimismSepolia',
+        chainId: 11155420,
         urls: {
-          apiURL: 'https://api-optimistic.etherscan.io/api',
-          browserURL: 'https://optimistic.etherscan.io'
+          apiURL: 'https://api.etherscan.io/v2/api',
+          browserURL: 'https://sepolia-optimism.etherscan.io'
         }
       }
     ]

@@ -19,7 +19,7 @@
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`dapp/.env.local` / `dapp/src/App.tsx` / `dapp/src/lib/web3.ts`
 - 今回触らないこと：UI/UXの作り込み（接続と切り分けが主題）
-- 最短手順（迷ったらここ）：1章で `dapp/` を起動 → `.env.local` に chainId/アドレス設定 → 画面で Connect/Switch/Send を確認
+- 最短手順（迷ったらここ）：localhost を起動 → MyToken を deploy → 専用の学習用 wallet へ ETH / token を送る → `.env.local` に chainId / address を設定 → Connect /残高 / Send を確認
 
 ### 0.1 どのチェーンで動かすか
 - ローカル（推奨）：Hardhat node（chainId=31337）
@@ -28,7 +28,7 @@
 
 ---
 
-## 1. DApp を起動する
+## 1. DApp の設定ファイルを用意する
 ```bash
 cd dapp
 npm ci
@@ -42,21 +42,7 @@ VITE_TOKEN_ADDRESS=0x...   # MyToken（同じチェーン上）のアドレス
 VITE_EVENT_TOKEN=          # 任意：Day10で使う
 ```
 
-起動：
-```bash
-npm run dev
-```
-期待される出力（最小例）：
-```text
-Local:   http://localhost:5173/
-```
-> ポートが埋まっている場合は別ポートになる（表示されたURLを開く）。
-
-ブラウザで `http://localhost:5173` を開き、次の順で操作する：
-1) Connect Wallet  
-2) Switch to Chain  
-3) Refresh Balances  
-4) Send（少額で）  
+`VITE_TOKEN_ADDRESS` は 2章で deploy した後に設定する。このファイルは DApp の公開設定であり、秘密鍵を置かない。
 
 ---
 
@@ -70,22 +56,18 @@ npx hardhat node
 Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 ```
 
+Hardhat node は chain ID 31337 で、複数の **unlocked development accounts** を持つ。localhost deploy は先頭の unlocked account で署名されるため、リポジトリルートの `.env` も `PRIVATE_KEY` も不要である。node が表示する開発用秘密鍵は公開済みの既知情報であり、コピーや browser wallet への import は行わない。
+
 ### 2.2 MetaMask にローカルチェーンを追加する
 MetaMask のネットワーク追加で次を設定する：
 - RPC URL：`http://127.0.0.1:8545`
 - Chain ID：`31337`
 
-> 学習用のローカルチェーン前提。間違って本番鍵を入れないこと。
+専用のブラウザプロファイルで新しい学習用 account を作り、その公開 address を控える。実資産を持つ account や通常利用のブラウザプロファイルは使わない。
 
 ### 2.3 MyToken をローカルへデプロイする
-別ターミナルでリポジトリルートに戻り、`.env` を用意する：
-```bash
-cp .env.example .env
-```
+別ターミナルでリポジトリルートから deploy する。`localhost` は unlocked account を使うため root `.env` は作らない。
 
-`npx hardhat node` の出力に出てくるテスト用の秘密鍵を、`.env` の `PRIVATE_KEY` に入れる。
-
-デプロイ：
 ```bash
 npx hardhat run scripts/deploy-token.ts --network localhost
 ```
@@ -95,6 +77,33 @@ MTK: 0x...
 ```
 
 出力された `MyToken` のアドレスを `dapp/.env.local` の `VITE_TOKEN_ADDRESS` に入れる。
+
+### 2.4 学習用 wallet へ ETH / MyToken を送る
+
+ブラウザ wallet で選択中の公開 address と、deploy 直後の token address を指定する。補助 script は `--network localhost` / chain ID 31337 以外では失敗し、秘密鍵を受け取らない。
+
+```bash
+LOCAL_WALLET_ADDRESS=0xYOUR_LEARNING_WALLET \
+TOKEN_ADDRESS=0xDEPLOYED_MYTOKEN \
+npm run fund:localhost
+```
+
+既定では unlocked deployer から 10 test ETH と 1,000 MTK を送る。量を変える場合だけ `LOCAL_ETH_AMOUNT` / `LOCAL_TOKEN_AMOUNT` を追加する。これらは localhost の test asset であり、価値を持たない。
+
+### 2.5 設定と画面を順に確認する
+
+1. wallet の接続 network が `Localhost 8545`、chain ID が `31337` であることを確認する。
+2. `dapp/.env.local` の `VITE_CHAIN_ID=31337` と `VITE_TOKEN_ADDRESS` が deploy 結果に一致することを確認する。
+3. DApp を起動する。
+
+   ```bash
+   npm --prefix dapp run dev
+   ```
+
+4. `Connect Wallet` 後に、画面の接続 address が資金を送った学習用 address と一致することを確認する。
+5. `Refresh Balances` で ETH と MTK が 0 でないことを確認してから、localhost 内だけで少額の `Send` を試す。
+
+Vite が表示した URL（通常 `http://localhost:5173/`）を開く。ポートが使用中なら表示された別の URL を使う。
 
 ---
 
@@ -112,7 +121,7 @@ MTK: 0x...
 | `No injected provider detected` | MetaMask 等が入っていない | 拡張機能を入れて再読み込みする |
 | Switch が失敗する | チェーンが未追加 / 許可がない | 先に MetaMask 側でネットワークを追加してから再実行する |
 | `Token contract not configured` | `VITE_TOKEN_ADDRESS` 未設定 | `.env.local` を見直す |
-| トークン残高が 0 | デプロイしたアカウントと接続中アカウントが違う | デプロイ時と同じアカウントで接続する（初期供給はデプロイアドレスにミントされる） |
+| ETH /トークン残高が 0 | 学習用 wallet への送付前、address / chain不一致 | `fund:localhost` の宛先、chain ID、`VITE_TOKEN_ADDRESS` を順に確認する |
 | `call revert` / `execution reverted` | アドレスが違う / コントラクトが存在しない | チェーン ID とアドレスの組み合わせを確認する |
 
 ---
@@ -147,7 +156,10 @@ npx hardhat node
 # Terminal B（MyToken をローカルへデプロイ）
 npx hardhat run scripts/deploy-token.ts --network localhost
 
-# Terminal C（dapp を起動：事前に dapp/.env.local を編集）
+# Terminal B（表示されたtoken addressと学習用wallet addressを指定）
+LOCAL_WALLET_ADDRESS=0x... TOKEN_ADDRESS=0x... npm run fund:localhost
+
+# Terminal C（chain ID / token addressを dapp/.env.local に設定済み）
 npm --prefix dapp ci
 test -f dapp/.env.local || cp dapp/.env.example dapp/.env.local
 npm --prefix dapp run dev

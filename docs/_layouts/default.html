@@ -6,6 +6,8 @@
 
     <title>{{ page.title | default: site.title | escape }}</title>
     <meta name="description" content="{{ page.description | default: site.description | escape }}">
+    <meta name="book-version" content="{{ site.version | escape }}">
+    <meta name="build-revision" content="{{ site.github.build_revision | default: 'development' | escape }}">
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">

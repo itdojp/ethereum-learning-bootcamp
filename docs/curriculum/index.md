@@ -52,14 +52,14 @@
 この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm ci` の lock に従う。
 
 - Node.js: 20.x（本リポジトリの Hardhat 2.x 再現用）
-- Hardhat: 2.x（`package.json` は `^2.22.1`、現行 lock file は 2.27.0 を解決）
+- Hardhat: 2.x（`package.json` は `^2.22.1`、現行 lock file は 2.28.6 を解決）
 - Solidity: 0.8.24
 - ethers: v6（Hardhat toolbox 経由）
 - OpenZeppelin Contracts: 5.0.2
 - TypeScript: 5.4.x
 
 ### 2.2 確認時点と再確認ポイント
-- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-05-23（Asia/Tokyo）時点**で確認した内容を基準としている。
+- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-07-11（Asia/Tokyo）時点**で確認した内容を基準としている。
 - 特に変わりやすいのは、Hardhat 2 / Hardhat 3 のドキュメント差分、Node.js サポート、Solidity 最新リリース、OpenZeppelin Contracts 5.x、RPC 提供者の UI / API キー取得手順、Explorer の Verify 画面、GitHub Actions の画面導線、The Graph の管理画面である。
 - 本文どおりに進まない場合は、まず `npm ci` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
 - 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
@@ -73,7 +73,7 @@
 - Dencun / Pectra / Fusaka・PeerDAS / Blob Parameter Only fork の影響で、L2手数料や blob target/max は時点依存になる。Day08 では数値暗記ではなく、観測時刻・RPC・chainId・txHash を記録する。
 
 ## 3. 環境変数（`.env`）
-- ローカル `npm test` だけなら `.env` の作成や値の投入は不要。Sepolia / Optimism へ deploy・verify するときだけ設定する。
+- ローカル `npm test` と localhost deploy だけなら `.env` の作成や値の投入は不要。外部 network へ deploy・verify するときだけ設定する。
 - ルートは `.env.example` をコピーして `.env` を作成する：
   - `cp .env.example .env`
 - 秘密鍵・API キーはコミットしない（`.gitignore` 済み）。

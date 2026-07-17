@@ -78,7 +78,8 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 |---|---|---:|---|---|---|
 | ローカル（Hardhat node） | `localhost` | 31337 | （不要） | （不要） | （なし） |
 | テストネット（Sepolia） | `sepolia` | 11155111 | `SEPOLIA_RPC_URL` | `ETHERSCAN_API_KEY` | https://sepolia.etherscan.io/ |
-| L2（Optimism） | `optimism` | 10 | `OPTIMISM_RPC_URL` | `OPTIMISTIC_ETHERSCAN_API_KEY` | https://optimistic.etherscan.io/ |
+| L2テストネット（OP Sepolia） | `optimismSepolia` | 11155420 | `OPTIMISM_SEPOLIA_RPC_URL` | `ETHERSCAN_API_KEY` | https://sepolia-optimism.etherscan.io/ |
+| L2（Optimism） | `optimism` | 10 | `OPTIMISM_RPC_URL` | `ETHERSCAN_API_KEY` | https://optimistic.etherscan.io/ |
 | Mainnet（注意） | `mainnet` | 1 | `MAINNET_RPC_URL` | `ETHERSCAN_API_KEY` | https://etherscan.io/ |
 
 > “Explorerは合っているのに表示が出ない”場合は、そもそもチェーンが違う（別ネットワークのTxHash/アドレスを見ている）ことが多い。

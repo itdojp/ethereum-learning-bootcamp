@@ -12,7 +12,7 @@
 
 ## 0. 現行ツールチェーン確認ゲート
 
-確認日: **2026-05-23（Asia/Tokyo）**。この章は学習再現性を優先しているため、次の境界を明示する。
+確認日: **2026-07-11（Asia/Tokyo）**。この章は学習再現性を優先しているため、次の境界を明示する。
 
 - 本リポジトリで進める場合は `npm ci` による lock file 再現を優先し、Hardhat 2.x / Node.js 20 / Solidity 0.8.24 の組み合わせで確認する。
 - Hardhat 公式ドキュメントの既定導線は Hardhat 3 へ移行している。Hardhat 3 は Node.js サポート条件や設定形式が異なるため、Hardhat 2 の教材コードへ Hardhat 3 手順を混在させない。
@@ -96,9 +96,9 @@ cp .env.example .env
 `.env` は「外部ネットワークへ接続する操作」に応じて必要な値だけ埋める。
 
 - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
-- `ETHERSCAN_API_KEY`: Sepolia verify
+- `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy
 - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
-- `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
+- `ETHERSCAN_API_KEY`: Etherscan V2 による Sepolia / OP Sepolia / Mainnet / Optimism verify
 
 2) Sepolia にデプロイする（例：MyToken）：
 ```bash

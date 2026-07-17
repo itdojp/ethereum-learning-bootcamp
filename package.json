@@ -25,17 +25,25 @@
     "check:toolchain": "node tools/check-toolchain.mjs",
     "check:dependency-compat": "node tools/check-dependency-compat.cjs",
     "check:security": "npm audit --include=dev --audit-level=moderate && npm --prefix dapp audit --include=dev --audit-level=moderate",
-    "check:all": "npm run check:metadata && npm run check:toolchain && npm run check:dependency-compat && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
+    "check:all": "npm run check:metadata && npm run check:toolchain && npm run check:dependency-compat && npm run test:deploy-inputs && npm run test:deployment-environment && npm run test:public-site && npm run check:deploy-safety && npm run check:docs-consistency && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
     "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia",
-    "check:metadata": "node tools/check-metadata.mjs"
+    "check:metadata": "node tools/check-metadata.mjs",
+    "test:deploy-inputs": "node --test tools/test-deploy-inputs.cjs",
+    "test:public-site": "node --test tools/test-public-site.mjs",
+    "check:deploy-safety": "node tools/check-deploy-safety.cjs",
+    "check:docs-consistency": "node tools/check-docs-consistency.mjs",
+    "check:public-site": "node tools/check-public-site.mjs",
+    "fund:localhost": "hardhat run scripts/fund-local-wallet.ts --network localhost",
+    "test:deployment-environment": "node --test tools/test-deployment-environment.cjs"
   },
   "dependencies": {
     "@openzeppelin/contracts": "~5.0.2"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-verify": "2.1.3",
     "@types/chai": "^4.3.11",
     "@types/node": "^20.12.7",
     "chai": "^4.4.1",
