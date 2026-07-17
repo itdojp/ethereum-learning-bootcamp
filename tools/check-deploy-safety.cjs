@@ -40,6 +40,35 @@ function runBlocks(yaml) {
   return blocks;
 }
 
+function permissionBlock(yaml, indentation) {
+  const lines = yaml.split(/\r?\n/u);
+  const prefix = ' '.repeat(indentation);
+  const start = lines.findIndex((line) => line === `${prefix}permissions:`);
+  if (start < 0) return null;
+
+  const entries = Object.create(null);
+  for (let index = start + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!line.trim()) continue;
+    const leading = line.match(/^\s*/u)[0].length;
+    if (leading <= indentation) break;
+    const match = line.match(new RegExp(`^\\s{${indentation + 2}}([a-z-]+):\\s*(read|write|none)\\s*$`, 'u'));
+    if (!match || Object.hasOwn(entries, match[1])) return null;
+    entries[match[1]] = match[2];
+  }
+  return entries;
+}
+
+function hasExactPermissions(actual, expected) {
+  if (!actual) return false;
+  const actualKeys = Object.keys(actual).sort();
+  const expectedKeys = Object.keys(expected).sort();
+  return (
+    actualKeys.length === expectedKeys.length &&
+    actualKeys.every((key, index) => key === expectedKeys[index] && actual[key] === expected[key])
+  );
+}
+
 for (const block of runBlocks(workflow)) {
   check(
     !/\$\{\{\s*(?:github\.event\.)?inputs\./u.test(block),
@@ -53,9 +82,13 @@ for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
 }
 const validateJob = workflow.match(/^  validate:\s*$([\s\S]*?)(?=^  deploy:\s*$)/mu)?.[1] || '';
 const deployJob = workflow.match(/^  deploy:\s*$([\s\S]*)/mu)?.[1] || '';
-check(/^permissions:\s*\r?\n  contents:\s*read\s*$/mu.test(workflow), 'workflow default permissions must declare contents: read only');
-check(!/^\s{4}permissions:/mu.test(validateJob), 'validate job must inherit the contents-only workflow permission');
-check(/^\s{4}permissions:\s*\r?\n\s{6}actions:\s*read\s*\r?\n\s{6}contents:\s*read\s*\r?\n\s{6}deployments:\s*write\s*$/mu.test(deployJob), 'deploy job requires actions: read, contents: read, and deployments: write');
+check(hasExactPermissions(permissionBlock(workflow, 0), { contents: 'read' }), 'workflow default permissions must declare contents: read only');
+check(permissionBlock(validateJob, 4) === null, 'validate job must inherit the contents-only workflow permission');
+check(hasExactPermissions(permissionBlock(deployJob, 4), {
+  actions: 'read',
+  contents: 'read',
+  deployments: 'write'
+}), 'deploy job requires exactly actions: read, contents: read, and deployments: write');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
 check(/production_confirmation:/u.test(workflow), 'production confirmation input is required');
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
