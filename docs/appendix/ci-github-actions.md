@@ -14,7 +14,7 @@
    - testnet: `deploy-sepolia`, `deploy-optimism-sepolia`
    - production: `production-mainnet`, `production-optimism`
 2. 各 Environment Secrets に、下表の network 固有名で RPC と学習用 private key を保存する。
-3. 4つすべてに exact `main` deployment branch rule を設定し、`production-*` には Required reviewers と Prevent self-review も設定する。
+3. 4つすべてに exact `main` deployment branch rule を設定し、`production-*` には Required reviewers と Prevent self-review を設定する。さらに **Allow administrators to bypass configured protection rules** を無効にする。
 4. Actions > `deploy` から、まず `sepolia` または `optimismSepolia` を選ぶ。
 5. `mainnet` / `optimism` の場合だけ、確認欄へ `DEPLOY_PRODUCTION` を正確に入力し、Environment approval を通す。
 
@@ -48,10 +48,11 @@ npm run check:all
 - action は監査済み commit SHA に固定
 - network 単位の concurrency で並行 deploy を抑止
 - deploy job は main branch 以外で起動せず、GitHub API で exact main branch policy、production reviewer、Prevent self-review を再確認してから secrets を step へ渡す
+- administrator bypass の無効化は Environment REST API の取得項目に含まれないため、`production-*` の **Allow administrators to bypass configured protection rules** が無効であることを管理者が UI で確認する
 
 ### 2.1 承認が出ない
 
-選択した network に対応する Environment 名を確認する。全 Environment に exact `main` branch policy、production には `production-mainnet` または `production-optimism` の Required reviewers と Prevent self-review が必要になる。設定が不足すると secret 使用前の preflight が fail closed する。
+選択した network に対応する Environment 名を確認する。全 Environment に exact `main` branch policy、production には `production-mainnet` または `production-optimism` の Required reviewers と Prevent self-review が必要になる。加えて **Allow administrators to bypass configured protection rules** を無効にする。API で取得できる設定が不足すると secret 使用前の preflight が fail closed するが、administrator bypass は API で検証できないため UI 監査を別途行う。
 
 ### 2.2 Secrets が読めない
 

@@ -11,10 +11,14 @@ const workflowPath = path.join(root, '.github/workflows/deploy.yml');
 const testWorkflowPath = path.join(root, '.github/workflows/test.yml');
 const configPath = path.join(root, 'hardhat.config.ts');
 const deployScriptPath = path.join(root, 'scripts/deploy-generic.ts');
+const day07Path = path.join(root, 'docs/curriculum/Day07_Deploy_CI.md');
+const ciAppendixPath = path.join(root, 'docs/appendix/ci-github-actions.md');
 const workflow = fs.readFileSync(workflowPath, 'utf8');
 const testWorkflow = fs.readFileSync(testWorkflowPath, 'utf8');
 const config = fs.readFileSync(configPath, 'utf8');
 const deployScript = fs.readFileSync(deployScriptPath, 'utf8');
+const day07 = fs.readFileSync(day07Path, 'utf8');
+const ciAppendix = fs.readFileSync(ciAppendixPath, 'utf8');
 const errors = [];
 let Etherscan;
 let ETHERSCAN_V2_API_URL;
@@ -129,6 +133,11 @@ check(
   /process\.env\.ARGS_JSON\s*\?\?\s*['"]\[\]['"]/u.test(deployScript),
   'deploy script must default ARGS_JSON only when the variable is absent'
 );
+const administratorBypassSetting = 'Allow administrators to bypass configured protection rules';
+check(
+  day07.includes(administratorBypassSetting) && ciAppendix.includes(administratorBypassSetting),
+  'production deployment guidance must require administrator bypass to be disabled'
+);
 
 for (const [name, yaml] of [['deploy', workflow], ['test', testWorkflow]]) {
   for (const match of yaml.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
@@ -199,6 +208,7 @@ const verify = spawnSync(hardhatExecutable, [
 ], {
   cwd: root,
   encoding: 'utf8',
+  shell: process.platform === 'win32',
   env: { ...process.env, HARDHAT_DISABLE_TELEMETRY_PROMPT: 'true' }
 });
 
