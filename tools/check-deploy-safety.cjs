@@ -51,7 +51,8 @@ check(/default:\s*sepolia(?:\s|$)/u.test(workflow), 'deploy default network must
 for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
   check(workflow.includes(`- ${network}`), `deploy network choices must include ${network}`);
 }
-check(/permissions:\s*\n\s+contents:\s*read/u.test(workflow), 'workflow must declare contents: read');
+check(/permissions:[\s\S]*?contents:\s*read/u.test(workflow), 'workflow must declare contents: read');
+check(/permissions:[\s\S]*?actions:\s*read[\s\S]*?contents:\s*read/u.test(workflow), 'Environment API preflight requires actions: read');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
 check(/production_confirmation:/u.test(workflow), 'production confirmation input is required');
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
