@@ -87,7 +87,7 @@ npm test
 >
 > `npm test` はローカルの Hardhat Network を使うため、この段階では `.env` や外部 RPC、秘密鍵は不要。
 
-#### 3.0.2 Sepolia / OP Sepolia / Mainnet / Optimism へ deploy・verify する場合
+#### 3.0.2 テストネットへdeploy、または外部networkをread / Verifyする場合
 
 1) `.env` を作る：
 ```bash
@@ -97,9 +97,11 @@ cp .env.example .env
 
 - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
 - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy
-- `MAINNET_RPC_URL` / `PRIVATE_KEY`: Mainnet deploy
-- `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
+- `MAINNET_RPC_URL`: Mainnet read / Verify（deploy signerは設定しない）
+- `OPTIMISM_RPC_URL`: Optimism read / Verify（deploy signerは設定しない）
 - `ETHERSCAN_API_KEY`: Etherscan V2 による Sepolia / OP Sepolia / Mainnet / Optimism verify
+
+このリポジトリでは`PRIVATE_KEY`をSepolia / OP Sepoliaの学習用deployにだけ使用する。Mainnet / Optimismは`hardhat.config.ts`で`accounts: []`に固定し、本番用private keyを読み込まない。
 
 2) Sepolia にデプロイする（例：MyToken）：
 ```bash

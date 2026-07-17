@@ -12,12 +12,14 @@ const testWorkflowPath = path.join(root, '.github/workflows/test.yml');
 const configPath = path.join(root, 'hardhat.config.ts');
 const deployScriptPath = path.join(root, 'scripts/deploy-generic.ts');
 const day07Path = path.join(root, 'docs/curriculum/Day07_Deploy_CI.md');
+const day08Path = path.join(root, 'docs/curriculum/Day08_L2_Rollups.md');
 const ciAppendixPath = path.join(root, 'docs/appendix/ci-github-actions.md');
 const workflow = fs.readFileSync(workflowPath, 'utf8');
 const testWorkflow = fs.readFileSync(testWorkflowPath, 'utf8');
 const config = fs.readFileSync(configPath, 'utf8');
 const deployScript = fs.readFileSync(deployScriptPath, 'utf8');
 const day07 = fs.readFileSync(day07Path, 'utf8');
+const day08 = fs.readFileSync(day08Path, 'utf8');
 const ciAppendix = fs.readFileSync(ciAppendixPath, 'utf8');
 const errors = [];
 let Etherscan;
@@ -96,9 +98,13 @@ for (const block of runBlocks(workflow)) {
 }
 
 check(/default:\s*sepolia(?:\s|$)/u.test(workflow), 'deploy default network must be sepolia');
-for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
-  check(workflow.includes(`- ${network}`), `deploy network choices must include ${network}`);
-}
+const networkInput = workflow.match(/^      network:\s*$[\s\S]*?(?=^      contract:\s*$)/mu)?.[0] || '';
+const networkChoices = [...networkInput.matchAll(/^\s+-\s+([A-Za-z0-9_-]+)\s*$/gmu)]
+  .map((match) => match[1]);
+check(
+  JSON.stringify(networkChoices) === JSON.stringify(['sepolia', 'optimismSepolia']),
+  `deploy network choices must be exactly sepolia, optimismSepolia; got ${networkChoices.join(', ')}`
+);
 const validateJob = workflow.match(/^  validate:\s*$([\s\S]*?)(?=^  deploy:\s*$)/mu)?.[1] || '';
 const deployJob = workflow.match(/^  deploy:\s*$([\s\S]*)/mu)?.[1] || '';
 check(hasExactPermissions(permissionBlock(workflow, 0), { contents: 'read' }), 'workflow default permissions must declare contents: read only');
@@ -108,13 +114,9 @@ check(hasExactPermissions(permissionBlock(deployJob, 4), {
   contents: 'read',
   deployments: 'write'
 }), 'deploy job requires exactly actions: read, contents: read, and deployments: write');
-check(/INPUT_PRODUCTION_CONFIRMATION:\s*\$\{\{\s*inputs\.production_confirmation\s*\}\}/u.test(deployJob), 'deploy job must revalidate the operator-provided production confirmation');
-check(!/INPUT_PRODUCTION_CONFIRMATION:\s*DEPLOY_PRODUCTION/u.test(deployJob), 'deploy job must not substitute a hard-coded production confirmation');
+check(!/production_confirmation/u.test(workflow), 'testnet-only deploy workflow must not declare a production confirmation input');
+check(!/DEPLOY_PRODUCTION/u.test(workflow), 'testnet-only deploy workflow must not contain a production confirmation bypass');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
-check(
-  /^      production_confirmation:\s*$/mu.test(workflow),
-  'production confirmation input must be declared'
-);
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
 check(/rpc_environment_variable:\s*\$\{\{\s*steps\.inputs\.outputs\.rpc_environment_variable\s*\}\}/u.test(workflow), 'validate job must expose the policy-derived RPC environment variable');
 check(/RPC_ENVIRONMENT_VARIABLE:\s*\$\{\{\s*needs\.validate\.outputs\.rpc_environment_variable\s*\}\}/u.test(workflow), 'deploy job must consume the policy-derived RPC environment variable');
@@ -133,11 +135,30 @@ check(
   /process\.env\.ARGS_JSON\s*\?\?\s*['"]\[\]['"]/u.test(deployScript),
   'deploy script must default ARGS_JSON only when the variable is absent'
 );
-const administratorBypassSetting = 'Allow administrators to bypass configured protection rules';
 check(
-  day07.includes(administratorBypassSetting) && ciAppendix.includes(administratorBypassSetting),
-  'production deployment guidance must require administrator bypass to be disabled'
+  day07.includes('GitHub Actions から本番 network へ deploy しない') &&
+    ciAppendix.includes('GitHub Actions から本番 network へ deploy しない'),
+  'deployment guidance must declare the testnet-only GitHub Actions boundary'
 );
+check(
+  day07.includes('本番用 private key を GitHub Secrets に保存しない') &&
+    ciAppendix.includes('本番用 private key を GitHub Secrets に保存しない'),
+  'deployment guidance must forbid production private keys in GitHub Secrets'
+);
+check(
+  !/(?:mainnet|optimism)\s*:\s*\{[^}\n]*accounts:\s*\[process\.env\.PRIVATE_KEY/u.test(day08),
+  'Day08 must not reconnect a production network to PRIVATE_KEY'
+);
+for (const [name, contents] of [
+  ['deploy workflow', workflow],
+  ['Day07', day07],
+  ['CI appendix', ciAppendix]
+]) {
+  check(
+    !/DEPLOY_(?:MAINNET|OPTIMISM)_(?:RPC_URL|PRIVATE_KEY)/u.test(contents),
+    `${name} must not declare production deployment secret names`
+  );
+}
 
 for (const [name, yaml] of [['deploy', workflow], ['test', testWorkflow]]) {
   for (const match of yaml.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
@@ -171,6 +192,16 @@ function walk(directory) {
       const relative = path.relative(root, absolute);
       check(!forbiddenV1EtherscanEndpoint.test(contents), `${relative}: legacy Etherscan V1 endpoint is forbidden`);
       check(!contents.includes(forbiddenKey), `${relative}: chain-specific Etherscan key name is forbidden`);
+      if (relative.endsWith('.md')) {
+        check(
+          !/npx\s+hardhat\s+run\s+scripts\/(?:deploy|measure)[^\n]*--network\s+(?:mainnet|optimism)(?:\s|$)/u.test(contents),
+          `${relative}: repository deploy/measure scripts must not target a production network`
+        );
+        check(
+          !/DEPLOY_(?:MAINNET|OPTIMISM)_(?:RPC_URL|PRIVATE_KEY)/u.test(contents),
+          `${relative}: production deployment secret names are forbidden`
+        );
+      }
     }
   }
 }
@@ -179,6 +210,11 @@ walk(root);
 
 check(/etherscan:\s*\{[\s\S]*?apiKey:\s*process\.env\.ETHERSCAN_API_KEY\s*\|\|\s*''/u.test(config), 'Hardhat must configure one Etherscan V2 API key string');
 check(!/apiKey:\s*\{/u.test(config), 'network-specific Etherscan key maps are forbidden');
+check(
+  /mainnet:\s*\{[^}]*accounts:\s*\[\]/u.test(config) &&
+    /optimism:\s*\{[^}]*accounts:\s*\[\]/u.test(config),
+  'production Hardhat networks must not load signer accounts'
+);
 
 try {
   assert.ok(Etherscan && ETHERSCAN_V2_API_URL, 'hardhat-verify V2 contract import is unavailable');

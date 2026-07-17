@@ -83,6 +83,8 @@ description: "初心者が迷わず進めるための、読む順序・環境の
 | Mainnet（注意） | `mainnet` | 1 | `MAINNET_RPC_URL` | `ETHERSCAN_API_KEY` | https://etherscan.io/ |
 
 > “Explorerは合っているのに表示が出ない”場合は、そもそもチェーンが違う（別ネットワークのTxHash/アドレスを見ている）ことが多い。
+>
+> このリポジトリでは`PRIVATE_KEY`をSepolia / OP Sepoliaだけに接続する。Mainnet / Optimismはread / Verify専用で、GitHub Actionsとrepository scriptからdeployしない。
 
 #### DApp（Vite / MetaMask）
 

@@ -4,7 +4,7 @@
 1. **汎用デプロイスクリプト** `scripts/deploy-generic.ts` を ethers v6 流儀に合わせて `waitForDeployment()` / `getAddress()` へ更新。
 2. **GitHub Actions ワークフロー** `.github/workflows/deploy.yml` を追加。
    - `workflow_dispatch` で allowlist 済み `network` / Solidity identifier / `args_json` を入力。
-   - testnet-first とし、本番だけ固定確認文字列と `production-*` Environment の承認を強制。
+   - `sepolia` / `optimismSepolia`だけをallowlistし、本番networkを入力・secret・signerから除外。
    - network 別 Environment Secrets の `RPC_URL` / `PRIVATE_KEY` だけを取得。
 3. **デプロイ履歴ファイル** [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) を作成し、Day04/05/07 で実行したローカルデプロイの記録を追記。
 4. **動作確認**：
@@ -22,5 +22,5 @@
   - `npx hardhat verify --network optimism <ADDR> <args...>`
 
 ## まとめ
-- 人手承認付きのCI/CD雛形とデプロイ記録ファイルを整備し、Day07 の要件（安全なデプロイ手順、Verifyへの導線、記録）をローカルで再現できる形にした。
-- 本番ネットで実行する際は network 別 protected Environment の `RPC_URL` / `PRIVATE_KEY`、固定確認文字列、Prevent self-review を有効にした別 reviewer の approval が必要になる。
+- testnet専用のCI/CD雛形とデプロイ記録ファイルを整備し、Day07の要件（安全なデプロイ手順、Verifyへの導線、記録）をローカルで再現できる形にした。
+- 単独運用では自己承認やAIレビューを独立統制とみなさず、GitHub Actionsとrepository signerをtestnet専用に制限する。本番deployは外部署名境界を持つ別runbookなしでは実行しない。

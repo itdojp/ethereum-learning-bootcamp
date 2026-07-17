@@ -132,12 +132,14 @@ Fusaka は Pectra 後のネットワークアップグレードで、PeerDAS（E
 
 `hardhat.config.ts`
 ```ts
+const testnetAccounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
+
 networks: {
-  sepolia: { url: process.env.SEPOLIA_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
-  optimismSepolia: { url: process.env.OPTIMISM_SEPOLIA_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
-  optimism: { url: process.env.OPTIMISM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
-  // 任意：Polygon zkEVM, zkSync（Hardhatプラグインや設定がチェーン毎に異なる）
-  // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
+  sepolia: { url: process.env.SEPOLIA_RPC_URL!, accounts: testnetAccounts },
+  optimismSepolia: { url: process.env.OPTIMISM_SEPOLIA_RPC_URL!, accounts: testnetAccounts },
+  optimism: { url: process.env.OPTIMISM_RPC_URL!, accounts: [] },
+  // 本番系はread / Verify専用。signerを設定しない。
+  // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [] },
 }
 ```
 `.env.example`（Day8で最低限見る項目）
@@ -177,7 +179,7 @@ npx hardhat verify --network optimismSepolia <DEPLOYED_ADDR> 1000000000000000000
 ```bash
 # 宛先を指定して計測（`TO` を省略した場合は自分宛になる）
 TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network sepolia
-TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optimism
+TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optimismSepolia
 ```
 出力JSONの `feeEth` と `latencyMs` を表に記録する。
 
@@ -188,7 +190,7 @@ TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optim
 - 任意：`TO`（宛先）、`AMOUNT_ETH`（送る量。デフォルト `0.01`）
 
 ```bash
-TOKEN=0x... TO=0x... AMOUNT_ETH=0.01 npx hardhat run scripts/measure-contract.ts --network optimism
+TOKEN=0x... TO=0x... AMOUNT_ETH=0.01 npx hardhat run scripts/measure-contract.ts --network optimismSepolia
 ```
 
 ### 4.3 CSV出力（任意）
@@ -200,8 +202,8 @@ jq -r '[.network,.txHash,.gasUsed,.feeEth,.latencyMs] | @csv'
 使用例：
 ```bash
 mkdir -p metrics
-npx hardhat run scripts/measure-fee.ts --network optimism | tee metrics/op.json
-cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
+npx hardhat run scripts/measure-fee.ts --network optimismSepolia | tee metrics/op-sepolia.json
+cat metrics/op-sepolia.json | tools/to-csv.sh >> metrics/metrics.csv
 ```
 
 ---
@@ -252,15 +254,15 @@ cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
 CONTRACT=Hello ARGS_JSON='[]' npx hardhat run scripts/deploy-generic.ts --network optimismSepolia
 
 # ETH転送の手数料を実測（feeEth / latencyMs が出る）
-npx hardhat run scripts/measure-fee.ts --network optimism
+npx hardhat run scripts/measure-fee.ts --network optimismSepolia
 
 # 任意（ERC-20 transfer の手数料を実測：TOKEN にデプロイ済みアドレス）
-TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimism
+TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimismSepolia
 ```
 
 ## 9. 提出物
 - [ ] `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics/metrics.csv`
-- [ ] Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク
+- [ ] OP Sepoliaでのデプロイアドレス、Verifyリンク
 - [ ] ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）
 
 ## 10. 実行例

@@ -78,8 +78,8 @@
       },
       {
         "id": "day07",
-        "title": "Day7：本番・L2デプロイ／Etherscan検証／手動承認付きCI",
-        "description": "デプロイと検証、CI導入の基本を押さえる"
+        "title": "Day7：テストネット・L2デプロイ／Etherscan検証／安全なCI",
+        "description": "testnet専用deployと検証、CIの安全境界を押さえる"
       },
       {
         "id": "part3",

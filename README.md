@@ -33,11 +33,11 @@ cp .env.example .env
 ```
 - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia へ deploy する場合に必要
 - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia へ deploy する場合に必要
-- `MAINNET_RPC_URL` / `PRIVATE_KEY`: Mainnet へ deploy する場合に必要
-- `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism へ deploy する場合に必要
+- `MAINNET_RPC_URL`: Mainnet の read / Verify にだけ使用（このリポジトリからは deploy しない）
+- `OPTIMISM_RPC_URL`: Optimism の read / Verify にだけ使用（このリポジトリからは deploy しない）
 - `ETHERSCAN_API_KEY`: Etherscan V2 で Sepolia / OP Sepolia / Mainnet / Optimism を verify する場合に共通で必要
 
-まず Sepolia または OP Sepolia で確認する。GitHub Actions から Mainnet / Optimism へ deploy する場合は、network 別の protected environment と固定確認文字列 `DEPLOY_PRODUCTION` が必要になる。
+GitHub Actions の deploy は Sepolia / OP Sepolia 専用とし、GitHub Actions から本番 network へ deploy しない。本番用 private key を GitHub Secrets に保存しない。Mainnet / Optimism の設定は read / Verify 用で、`hardhat.config.ts` は signer account を読み込まない。
 
 （まとめて確認する場合：`npm run check:all`）
 
@@ -69,6 +69,7 @@ npm run check:security
 
 ## 安全運用の注意
 - 学習用の秘密鍵とテストネットを使い、Mainnet や実資産を扱う鍵は使わないでください。
+- AIレビューは差分検査を補助するが、独立した人間承認や秘密鍵の分離を代替しません。単独運用では本番deploy自体をこのリポジトリの自動化対象外にします。
 - `.env` / `.env.local` はコミットせず、ログや画面共有にも秘密情報を残さないでください。
 - RPC、Explorer、IPFS、The Graph などの外部サービスは無料枠や課金条件、レート制限があるため、利用前に公式情報を確認してください。
 - アドレス、トランザクション、イベント、NFTメタデータは公開前提で扱ってください。

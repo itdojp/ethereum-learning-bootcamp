@@ -17,16 +17,6 @@ function validateEnvironmentConfiguration(environment, branchPolicies, networkPo
   if (branchPolicies.length !== 1 || branchPolicies[0]?.name !== 'main') {
     errors.push('exactly one main deployment branch policy is required');
   }
-  if (networkPolicy.production) {
-    const reviewerRule = (environment.protection_rules || []).find(
-      (rule) => rule.type === 'required_reviewers'
-    );
-    if (!reviewerRule || !Array.isArray(reviewerRule.reviewers) || reviewerRule.reviewers.length === 0) {
-      errors.push('production environment requires at least one required reviewer');
-    } else if (reviewerRule.prevent_self_review !== true) {
-      errors.push('production environment must prevent self-review');
-    }
-  }
   return errors;
 }
 
@@ -70,7 +60,7 @@ async function main() {
     );
   }
   console.log(
-    `GitHub Environment policy validated: network=${networkPolicy.network}, environment=${networkPolicy.environment}, production=${networkPolicy.production}`
+    `GitHub Environment policy validated: network=${networkPolicy.network}, environment=${networkPolicy.environment}, scope=testnet-only`
   );
 }
 

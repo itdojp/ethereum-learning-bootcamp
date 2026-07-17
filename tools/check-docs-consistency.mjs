@@ -83,8 +83,9 @@ const readme = read('README.md');
 const oldQuickStart = ['`npm ci` → `', '.env.example', '` をコピー → `npm test`'].join('');
 check(!readme.includes(oldQuickStart), 'README must not require copying .env before local npm test');
 check(
-  readme.includes('`MAINNET_RPC_URL` / `PRIVATE_KEY`'),
-  'README external-network setup must include the Mainnet RPC and private-key variables'
+  readme.includes('`MAINNET_RPC_URL`: Mainnet の read / Verify') &&
+    readme.includes('GitHub Actions から本番 network へ deploy しない'),
+  'README must keep production RPC read-only and deploy automation testnet-only'
 );
 
 const day08 = read('docs/curriculum/Day08_L2_Rollups.md');

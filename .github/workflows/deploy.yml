@@ -11,8 +11,6 @@ on:
         options:
           - sepolia
           - optimismSepolia
-          - mainnet
-          - optimism
       contract:
         description: "Solidity contract identifier"
         required: true
@@ -23,11 +21,6 @@ on:
         required: true
         type: string
         default: "[]"
-      production_confirmation:
-        description: "For mainnet/optimism only: enter DEPLOY_PRODUCTION exactly"
-        required: false
-        type: string
-        default: ""
 
 permissions:
   contents: read
@@ -66,7 +59,6 @@ jobs:
           INPUT_NETWORK: ${{ inputs.network }}
           INPUT_CONTRACT: ${{ inputs.contract }}
           INPUT_ARGS_JSON: ${{ inputs.args_json }}
-          INPUT_PRODUCTION_CONFIRMATION: ${{ inputs.production_confirmation }}
         run: node tools/validate-deploy-inputs.cjs
 
       - name: Test input boundary
@@ -123,7 +115,6 @@ jobs:
           INPUT_NETWORK: ${{ needs.validate.outputs.network }}
           INPUT_CONTRACT: ${{ needs.validate.outputs.contract }}
           INPUT_ARGS_JSON: ${{ needs.validate.outputs.args_json }}
-          INPUT_PRODUCTION_CONFIRMATION: ${{ inputs.production_confirmation }}
         run: node tools/validate-deploy-inputs.cjs
 
       - name: Compile contracts

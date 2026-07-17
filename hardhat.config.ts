@@ -26,7 +26,7 @@ subtask(TASK_COMPILE_SOLIDITY_GET_SOLC_BUILD).setAction(
   }
 );
 
-const accounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
+const testnetAccounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -35,15 +35,16 @@ const config: HardhatUserConfig = {
   },
   networks: {
     localhost: { url: 'http://127.0.0.1:8545' },
-    sepolia: { chainId: 11155111, url: process.env.SEPOLIA_RPC_URL || '', accounts },
+    sepolia: { chainId: 11155111, url: process.env.SEPOLIA_RPC_URL || '', accounts: testnetAccounts },
     optimismSepolia: {
       chainId: 11155420,
       url: process.env.OPTIMISM_SEPOLIA_RPC_URL || '',
-      accounts
+      accounts: testnetAccounts
     },
-    mainnet: { chainId: 1, url: process.env.MAINNET_RPC_URL || '', accounts },
-    optimism: { chainId: 10, url: process.env.OPTIMISM_RPC_URL || '', accounts },
-    polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL || '', accounts }
+    // Production networks are read/verify-only. Keep signer material out of repository automation.
+    mainnet: { chainId: 1, url: process.env.MAINNET_RPC_URL || '', accounts: [] },
+    optimism: { chainId: 10, url: process.env.OPTIMISM_RPC_URL || '', accounts: [] },
+    polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL || '', accounts: [] }
   },
   etherscan: {
     // hardhat-verify 2.1.3 selects Etherscan API V2 when apiKey is one string.

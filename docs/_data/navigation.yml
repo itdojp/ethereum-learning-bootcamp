@@ -37,7 +37,7 @@ chapters:
         path: "/curriculum/Part2/"
       - title: "Day6：ローカル検証・カバレッジ・ガス計測（Hardhat中心）"
         path: "/curriculum/Day06_Local_Testing/"
-      - title: "Day7：本番・L2 デプロイ／Etherscan検証／手動承認付きCI"
+      - title: "Day7：テストネット・L2デプロイ／Etherscan検証／安全なCI"
         path: "/curriculum/Day07_Deploy_CI/"
   - part: "Part 3：L2 / DApp / Indexing"
     items:

@@ -4,7 +4,6 @@ const NETWORK_POLICIES = Object.freeze({
   sepolia: Object.freeze({
     chainId: 11155111,
     environment: 'deploy-sepolia',
-    production: false,
     rpcEnvironmentVariable: 'SEPOLIA_RPC_URL',
     rpcSecretName: 'DEPLOY_SEPOLIA_RPC_URL',
     privateKeySecretName: 'DEPLOY_SEPOLIA_PRIVATE_KEY'
@@ -12,30 +11,12 @@ const NETWORK_POLICIES = Object.freeze({
   optimismSepolia: Object.freeze({
     chainId: 11155420,
     environment: 'deploy-optimism-sepolia',
-    production: false,
     rpcEnvironmentVariable: 'OPTIMISM_SEPOLIA_RPC_URL',
     rpcSecretName: 'DEPLOY_OPTIMISM_SEPOLIA_RPC_URL',
     privateKeySecretName: 'DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY'
-  }),
-  mainnet: Object.freeze({
-    chainId: 1,
-    environment: 'production-mainnet',
-    production: true,
-    rpcEnvironmentVariable: 'MAINNET_RPC_URL',
-    rpcSecretName: 'DEPLOY_MAINNET_RPC_URL',
-    privateKeySecretName: 'DEPLOY_MAINNET_PRIVATE_KEY'
-  }),
-  optimism: Object.freeze({
-    chainId: 10,
-    environment: 'production-optimism',
-    production: true,
-    rpcEnvironmentVariable: 'OPTIMISM_RPC_URL',
-    rpcSecretName: 'DEPLOY_OPTIMISM_RPC_URL',
-    privateKeySecretName: 'DEPLOY_OPTIMISM_PRIVATE_KEY'
   })
 });
 
-const PRODUCTION_CONFIRMATION = 'DEPLOY_PRODUCTION';
 // Solidity's lexer permits letters, `_`, or `$` first, followed by digits too.
 const SOLIDITY_IDENTIFIER = /^[A-Za-z_$][A-Za-z0-9_$]*$/u;
 const MAX_ARGS_JSON_BYTES = 8192;
@@ -124,24 +105,10 @@ function parseConstructorArgs(value) {
   return parsed;
 }
 
-function validateDeployInputs({
-  network,
-  contract,
-  argsJson = '[]',
-  productionConfirmation = ''
-}) {
+function validateDeployInputs({ network, contract, argsJson = '[]' }) {
   const networkPolicy = validateNetwork(network);
   const contractName = validateContractName(contract);
   const args = parseConstructorArgs(argsJson);
-
-  if (
-    networkPolicy.production &&
-    productionConfirmation !== PRODUCTION_CONFIRMATION
-  ) {
-    throw new Error(
-      `production network ${networkPolicy.network} requires the exact confirmation ${PRODUCTION_CONFIRMATION}`
-    );
-  }
 
   return Object.freeze({
     ...networkPolicy,
@@ -155,7 +122,6 @@ module.exports = {
   MAX_ARGS,
   MAX_ARGS_JSON_BYTES,
   NETWORK_POLICIES,
-  PRODUCTION_CONFIRMATION,
   parseConstructorArgs,
   validateContractName,
   validateDeployInputs,

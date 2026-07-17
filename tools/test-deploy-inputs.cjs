@@ -3,19 +3,14 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {
-  PRODUCTION_CONFIRMATION,
-  parseConstructorArgs,
-  validateDeployInputs
-} = require('./deploy-inputs.cjs');
+const { parseConstructorArgs, validateDeployInputs } = require('./deploy-inputs.cjs');
 
-test('Sepolia is accepted without a production confirmation', () => {
+test('Sepolia is accepted by the testnet-only policy', () => {
   const result = validateDeployInputs({
     network: 'sepolia',
     contract: 'Hello',
     argsJson: '[]'
   });
-  assert.equal(result.production, false);
   assert.equal(result.environment, 'deploy-sepolia');
   assert.equal(result.rpcSecretName, 'DEPLOY_SEPOLIA_RPC_URL');
   assert.equal(result.privateKeySecretName, 'DEPLOY_SEPOLIA_PRIVATE_KEY');
@@ -29,22 +24,13 @@ test('Optimism Sepolia is an allowed test network', () => {
     argsJson: '["1000000000000000000000000"]'
   });
   assert.equal(result.chainId, 11155420);
-  assert.equal(result.production, false);
 });
 
 for (const network of ['mainnet', 'optimism']) {
-  test(`${network} requires the exact production confirmation`, () => {
+  test(`${network} is rejected by the repository deploy automation`, () => {
     assert.throws(
       () => validateDeployInputs({ network, contract: 'Hello', argsJson: '[]' }),
-      /requires the exact confirmation/u
-    );
-    assert.doesNotThrow(() =>
-      validateDeployInputs({
-        network,
-        contract: 'Hello',
-        argsJson: '[]',
-        productionConfirmation: PRODUCTION_CONFIRMATION
-      })
+      /network must be one of: sepolia, optimismSepolia/u
     );
   });
 }

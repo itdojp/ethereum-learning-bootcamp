@@ -57,13 +57,15 @@ npm test
 - まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
 - まず手を動かしたい: `npm test` を通してから Day04 へ進む
 - デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
-- `.env` の作成と値の投入は、Sepolia / OP Sepolia / Mainnet / Optimism などの外部 network へ deploy・verify するときに行う
+- `.env` の作成と値の投入は、Sepolia / OP Sepoliaへのdeploy、または外部networkのread / Verifyを行うときに限る
 - deploy / verify 時に使う主な変数:
   - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
   - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy
-  - `MAINNET_RPC_URL` / `PRIVATE_KEY`: Mainnet deploy
+  - `MAINNET_RPC_URL`: Mainnet read / Verify（deploy signerは設定しない）
   - `ETHERSCAN_API_KEY`: Etherscan V2 による Sepolia / OP Sepolia / Mainnet / Optimism verify
-  - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
+  - `OPTIMISM_RPC_URL`: Optimism read / Verify（deploy signerは設定しない）
+
+GitHub Actions から本番 network へ deploy しない。本番用 private key をGitHub Secretsやルート`.env`へ保存しない。
 
 
 ## 前提知識

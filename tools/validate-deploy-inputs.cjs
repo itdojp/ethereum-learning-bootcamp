@@ -20,15 +20,13 @@ try {
   const result = validateDeployInputs({
     network: process.env.INPUT_NETWORK,
     contract: process.env.INPUT_CONTRACT,
-    argsJson: process.env.INPUT_ARGS_JSON,
-    productionConfirmation: process.env.INPUT_PRODUCTION_CONFIRMATION
+    argsJson: process.env.INPUT_ARGS_JSON
   });
 
   appendOutput('network', result.network);
   appendOutput('environment', result.environment);
   appendOutput('contract', result.contract);
   appendOutput('args_json', result.argsJson);
-  appendOutput('production', String(result.production));
   appendOutput('rpc_environment_variable', result.rpcEnvironmentVariable);
   appendOutput('rpc_secret_name', result.rpcSecretName);
   appendOutput('private_key_secret_name', result.privateKeySecretName);

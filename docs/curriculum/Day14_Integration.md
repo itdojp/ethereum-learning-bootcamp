@@ -44,7 +44,7 @@
 cp .env.example .env
 ```
 
-`.env` に、使うネットワークのRPCと `PRIVATE_KEY` を入れる（学習用の鍵を推奨）。
+`.env`に、使うtestnetのRPCと学習用`PRIVATE_KEY`を入れる。本番用private keyはこのリポジトリへ設定しない。
 
 ### 2.2 MyToken / EventToken をデプロイする
 例：Sepolia
@@ -58,10 +58,10 @@ MTK: 0x...
 EventToken: 0x...
 ```
 
-例：Optimism（任意）
+例：OP Sepolia（任意）
 ```bash
-npx hardhat run scripts/deploy-token.ts --network optimism
-npx hardhat run scripts/deploy-event-token.ts --network optimism
+npx hardhat run scripts/deploy-token.ts --network optimismSepolia
+npx hardhat run scripts/deploy-event-token.ts --network optimismSepolia
 ```
 
 出力されたアドレスを控える。
@@ -152,9 +152,9 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ---
 
-## 5. フェーズ4：CI / 手動デプロイ（任意）
+## 5. フェーズ4：CI / testnet手動デプロイ（任意）
 - テストCI：`.github/workflows/test.yml`（`npm test` を自動実行）
-- 手動承認付きデプロイ：`.github/workflows/deploy.yml`（workflow_dispatch + Environment）
+- testnet手動デプロイ：`.github/workflows/deploy.yml`（workflow_dispatch + Environment、Sepolia / OP Sepoliaのみ）
 
 運用・つまずきは [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と Day7 を参照する。
 
@@ -184,7 +184,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 |---|---|---|
 | DApp が動かない / 残高が出ない | chainId とアドレスが不一致 | `dapp/.env.local` と MetaMask のチェーンを揃え、アドレスを再確認する |
 | Verifyが通らない | API キー/引数/設定不一致、反映待ち | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と設定を合わせる |
-| 手動デプロイの承認が出ない | Environment設定・Secretsの場所違い | [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
+| testnet手動デプロイが停止する | Environment設定・Secretsの場所違い | [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を参照して確認する |
 | サブグラフが同期しない | `startBlock`/アドレス不一致 | [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照して確認する |
 
 ---
@@ -206,7 +206,7 @@ npx hardhat verify --network sepolia <EVENT_TOKEN_ADDR>
 
 ### 完走後の次アクション
 - [ ] `docs/DEPLOYMENTS.md` と `docs/reports/` を見返し、第三者が再現に必要な情報だけが残っているか確認する。
-- [ ] Day07 の手動承認付きデプロイを使う場合は、対象ブランチ / Environment / Secrets の責務分担を整理する。
+- [ ] Day07のtestnet deployを使う場合は、exact `main` branch / Environment / testnet Secretsの責務分担を整理する。
 - [ ] DApp とコントラクトの接続が安定したら、PR / CI / approval gate を含む運用設計の整理先として [AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) を参照する。
 
 ### 確認コマンド（最小）
