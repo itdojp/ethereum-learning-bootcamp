@@ -70,13 +70,10 @@ function validateJsonValue(value, path, depth) {
     return;
   }
   if (typeof value === 'object') {
-    for (const [key, item] of Object.entries(value)) {
-      if (key === '__proto__' || key === 'prototype' || key === 'constructor') {
-        throw new Error(`${path} contains a forbidden object key`);
-      }
-      validateJsonValue(item, `${path}.${key}`, depth + 1);
-    }
-    return;
+    // ethers treats a trailing object passed to ContractFactory.deploy() as
+    // transaction overrides. Keep workflow input limited to constructor data;
+    // tuples must use positional JSON arrays rather than named objects.
+    throw new Error(`${path} must not be an object; encode tuple values as positional arrays`);
   }
   throw new Error(`${path} contains an unsupported JSON value type`);
 }

@@ -42,7 +42,7 @@ npm run check:all
 - default network は `sepolia`
 - network は`sepolia` / `optimismSepolia`の2値allowlist
 - contract は Solidity identifier として検証
-- constructor 引数は `ARGS_JSON` の JSON 配列として検証
+- constructor 引数は `ARGS_JSON` の JSON 配列として検証し、transaction overrides になり得るobjectを拒否
 - production networkはworkflow inputとvalidatorの両方から除外
 - workflow input は `env:` 経由で渡し、`run:` の shell source へ直接展開しない
 - deploy 前に toolchain check、contract tests、compile を完了

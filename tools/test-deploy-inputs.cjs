@@ -77,10 +77,20 @@ test('unsafe numbers and null constructor values are rejected', () => {
   assert.throws(() => parseConstructorArgs('[null]'), /must not be null/u);
 });
 
-test('nested tuple-like JSON values are accepted within limits', () => {
-  const value = '[{"recipient":"0x0000000000000000000000000000000000000001","amount":"42"},[true,7]]';
+test('nested positional arrays are accepted within limits', () => {
+  const value = '[["0x0000000000000000000000000000000000000001","42"],[true,7]]';
   assert.deepEqual(parseConstructorArgs(value), [
-    { recipient: '0x0000000000000000000000000000000000000001', amount: '42' },
+    ['0x0000000000000000000000000000000000000001', '42'],
     [true, 7]
   ]);
+});
+
+test('objects are rejected so deploy transaction overrides cannot enter through args_json', () => {
+  for (const value of [
+    '[{"gasLimit":1000}]',
+    '[{"value":"1"}]',
+    '[{"recipient":"0x0000000000000000000000000000000000000001","amount":"42"}]'
+  ]) {
+    assert.throws(() => parseConstructorArgs(value), /must not be an object/u);
+  }
 });
