@@ -13,7 +13,7 @@
 1. Settings > Environments に次の network 別 Environment を作る。
    - testnet: `deploy-sepolia`, `deploy-optimism-sepolia`
    - production: `production-mainnet`, `production-optimism`
-2. 各 Environment Secrets に、その network 専用の `RPC_URL` と学習用 `PRIVATE_KEY` を保存する。
+2. 各 Environment Secrets に、下表の network 固有名で RPC と学習用 private key を保存する。
 3. 4つすべてに exact `main` deployment branch rule を設定し、`production-*` には Required reviewers も設定する。
 4. Actions > `deploy` から、まず `sepolia` または `optimismSepolia` を選ぶ。
 5. `mainnet` / `optimism` の場合だけ、確認欄へ `DEPLOY_PRODUCTION` を正確に入力し、Environment approval を通す。
@@ -55,12 +55,14 @@ npm run check:all
 
 ### 2.2 Secrets が読めない
 
-Repository Secrets ではなく、選択した Environment の Secrets に次の共通名で置く。
+Repository Secrets ではなく、選択した Environment の Secrets に次の network 固有名で置く。
 
-- `RPC_URL`: その Environment の network 専用 RPC
-- `PRIVATE_KEY`: その Environment 専用の学習用 deploy key
+- `deploy-sepolia`: `DEPLOY_SEPOLIA_RPC_URL` / `DEPLOY_SEPOLIA_PRIVATE_KEY`
+- `deploy-optimism-sepolia`: `DEPLOY_OPTIMISM_SEPOLIA_RPC_URL` / `DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY`
+- `production-mainnet`: `DEPLOY_MAINNET_RPC_URL` / `DEPLOY_MAINNET_PRIVATE_KEY`
+- `production-optimism`: `DEPLOY_OPTIMISM_RPC_URL` / `DEPLOY_OPTIMISM_PRIVATE_KEY`
 
-workflow が `RPC_URL` を `SEPOLIA_RPC_URL` 等へ allowlist に基づいて割り当てる。1つの Environment に複数 network の RPC や本番鍵を混在させない。
+validator が allowlist に基づいて secret 名を決め、workflow は選択された1組だけを deploy step に渡す。network 固有名により、Environment の設定漏れ時に別 network の同名 repository / organization secret へフォールバックする事故を防ぐ。1つの Environment に複数 network の secret を混在させない。
 
 ### 2.3 残高不足
 
@@ -73,7 +75,7 @@ workflow が `RPC_URL` を `SEPOLIA_RPC_URL` 等へ allowlist に基づいて割
 | `npm ci` が落ちる | lockfile 不整合 | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |
 | deploy input validation が落ちる | network / contract / JSON /確認文字列が不正 | validation job のエラー | allowlist と `ARGS_JSON` 例を確認 |
 | Environment approval が出ない | Environment名または保護設定不足 | Settings > Environments | 対応する `production-*` に reviewer を設定 |
-| Secrets が読めない | Environment / secret名の不一致 | 選択 network と `RPC_URL` / `PRIVATE_KEY` | network 別 Environment へ配置 |
+| Secrets が読めない | Environment / network固有secret名の不一致 | 選択 network と上記の対応表 | 対応 Environment へ固有名で配置 |
 | `insufficient funds` | deploy address の残高不足 | 対象 chain の残高 | testnet faucet または少額を用意 |
 | 公開鮮度チェックが落ちる | Pages が main より古い | `/build-info.json` の revision / version | Pages build 完了後に再確認し、継続する場合は build を調査 |
 

@@ -57,6 +57,8 @@ check(/production_confirmation:/u.test(workflow), 'production confirmation input
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
 check(/if:\s*github\.ref\s*==\s*'refs\/heads\/main'/u.test(workflow), 'deploy job must fail closed outside main');
 check(/check-deployment-environment\.cjs/u.test(workflow), 'deploy job must verify repository Environment protections before loading secrets');
+check(/secrets\[needs\.validate\.outputs\.rpc_secret_name\]/u.test(workflow), 'RPC secret must use a validated network-specific name');
+check(/secrets\[needs\.validate\.outputs\.private_key_secret_name\]/u.test(workflow), 'private-key secret must use a validated network-specific name');
 check(!/secrets\.[A-Za-z0-9_]*ETHERSCAN/u.test(workflow), 'deploy workflow must not load Explorer API keys');
 
 for (const match of workflow.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {

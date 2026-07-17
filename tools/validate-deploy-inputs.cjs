@@ -30,6 +30,8 @@ try {
   appendOutput('args_json', result.argsJson);
   appendOutput('production', String(result.production));
   appendOutput('rpc_environment_variable', result.rpcEnvironmentVariable);
+  appendOutput('rpc_secret_name', result.rpcSecretName);
+  appendOutput('private_key_secret_name', result.privateKeySecretName);
 
   console.log(
     `Deploy inputs validated: network=${result.network}, contract=${result.contract}, constructor_args=${result.args.length}, environment=${result.environment}`

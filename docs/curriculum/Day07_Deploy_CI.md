@@ -80,14 +80,14 @@ npx hardhat verify --network optimismSepolia \
 
 ### 4.1 network 別 Environment
 
-Settings > Environments に次を作り、各 Environment Secrets へその network 専用の `RPC_URL` と `PRIVATE_KEY` を保存する。4つすべてに exact `main` deployment branch rule を設定する。
+Settings > Environments に次を作り、各 Environment Secrets へ下表の network 固有名で RPC と private key を保存する。4つすべてに exact `main` deployment branch rule だけを設定する。
 
-| workflow network | Environment | 保護 |
-|---|---|---|
-| `sepolia` | `deploy-sepolia` | testnet。任意で reviewer |
-| `optimismSepolia` | `deploy-optimism-sepolia` | testnet。任意で reviewer |
-| `mainnet` | `production-mainnet` | Required reviewers と main branch rule 必須 |
-| `optimism` | `production-optimism` | Required reviewers と main branch rule 必須 |
+| workflow network | Environment | Environment Secrets | 保護 |
+|---|---|---|---|
+| `sepolia` | `deploy-sepolia` | `DEPLOY_SEPOLIA_RPC_URL` / `DEPLOY_SEPOLIA_PRIVATE_KEY` | testnet。任意で reviewer |
+| `optimismSepolia` | `deploy-optimism-sepolia` | `DEPLOY_OPTIMISM_SEPOLIA_RPC_URL` / `DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY` | testnet。任意で reviewer |
+| `mainnet` | `production-mainnet` | `DEPLOY_MAINNET_RPC_URL` / `DEPLOY_MAINNET_PRIVATE_KEY` | Required reviewers と main branch rule 必須 |
+| `optimism` | `production-optimism` | `DEPLOY_OPTIMISM_RPC_URL` / `DEPLOY_OPTIMISM_PRIVATE_KEY` | Required reviewers と main branch rule 必須 |
 
 network を分けることで、Sepolia job が Mainnet RPC / key を取得する状態を避ける。production では UI の確認欄へ `DEPLOY_PRODUCTION` を正確に入力し、さらに Environment approval を通す。workflow は GitHub API で branch policy と production reviewer を再確認し、不足していれば secrets を step へ渡す前に停止する。
 

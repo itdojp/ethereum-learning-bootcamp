@@ -55,3 +55,15 @@ test('rejects a missing main branch policy and wrong environment', () => {
   assert.match(errors.join('\n'), /expected environment/u);
   assert.match(errors.join('\n'), /main deployment branch/u);
 });
+
+test('rejects protected-branch mode and additional branch policies', () => {
+  const environment = configuredEnvironment('deploy-sepolia', false);
+  environment.deployment_branch_policy.protected_branches = true;
+  const errors = validateEnvironmentConfiguration(
+    environment,
+    [{ name: 'main' }, { name: 'release/*' }],
+    { network: 'sepolia', ...NETWORK_POLICIES.sepolia }
+  );
+  assert.match(errors.join('\n'), /protected_branches/u);
+  assert.match(errors.join('\n'), /exactly one main/u);
+});

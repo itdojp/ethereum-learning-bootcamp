@@ -17,6 +17,8 @@ test('Sepolia is accepted without a production confirmation', () => {
   });
   assert.equal(result.production, false);
   assert.equal(result.environment, 'deploy-sepolia');
+  assert.equal(result.rpcSecretName, 'DEPLOY_SEPOLIA_RPC_URL');
+  assert.equal(result.privateKeySecretName, 'DEPLOY_SEPOLIA_PRIVATE_KEY');
   assert.deepEqual(result.args, []);
 });
 

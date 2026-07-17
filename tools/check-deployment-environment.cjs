@@ -11,8 +11,11 @@ function validateEnvironmentConfiguration(environment, branchPolicies, networkPo
   if (!environment.deployment_branch_policy?.custom_branch_policies) {
     errors.push('custom deployment branch policies must be enabled');
   }
-  if (!branchPolicies.some((policy) => policy.name === 'main')) {
-    errors.push('an exact main deployment branch policy is required');
+  if (environment.deployment_branch_policy?.protected_branches !== false) {
+    errors.push('protected_branches must be disabled in favor of one explicit main policy');
+  }
+  if (branchPolicies.length !== 1 || branchPolicies[0]?.name !== 'main') {
+    errors.push('exactly one main deployment branch policy is required');
   }
   if (networkPolicy.production) {
     const reviewerRule = (environment.protection_rules || []).find(

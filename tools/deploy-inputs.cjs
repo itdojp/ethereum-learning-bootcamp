@@ -5,25 +5,33 @@ const NETWORK_POLICIES = Object.freeze({
     chainId: 11155111,
     environment: 'deploy-sepolia',
     production: false,
-    rpcEnvironmentVariable: 'SEPOLIA_RPC_URL'
+    rpcEnvironmentVariable: 'SEPOLIA_RPC_URL',
+    rpcSecretName: 'DEPLOY_SEPOLIA_RPC_URL',
+    privateKeySecretName: 'DEPLOY_SEPOLIA_PRIVATE_KEY'
   }),
   optimismSepolia: Object.freeze({
     chainId: 11155420,
     environment: 'deploy-optimism-sepolia',
     production: false,
-    rpcEnvironmentVariable: 'OPTIMISM_SEPOLIA_RPC_URL'
+    rpcEnvironmentVariable: 'OPTIMISM_SEPOLIA_RPC_URL',
+    rpcSecretName: 'DEPLOY_OPTIMISM_SEPOLIA_RPC_URL',
+    privateKeySecretName: 'DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY'
   }),
   mainnet: Object.freeze({
     chainId: 1,
     environment: 'production-mainnet',
     production: true,
-    rpcEnvironmentVariable: 'MAINNET_RPC_URL'
+    rpcEnvironmentVariable: 'MAINNET_RPC_URL',
+    rpcSecretName: 'DEPLOY_MAINNET_RPC_URL',
+    privateKeySecretName: 'DEPLOY_MAINNET_PRIVATE_KEY'
   }),
   optimism: Object.freeze({
     chainId: 10,
     environment: 'production-optimism',
     production: true,
-    rpcEnvironmentVariable: 'OPTIMISM_RPC_URL'
+    rpcEnvironmentVariable: 'OPTIMISM_RPC_URL',
+    rpcSecretName: 'DEPLOY_OPTIMISM_RPC_URL',
+    privateKeySecretName: 'DEPLOY_OPTIMISM_PRIVATE_KEY'
   })
 });
 

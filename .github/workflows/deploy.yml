@@ -45,6 +45,8 @@ jobs:
       environment: ${{ steps.inputs.outputs.environment }}
       contract: ${{ steps.inputs.outputs.contract }}
       args_json: ${{ steps.inputs.outputs.args_json }}
+      rpc_secret_name: ${{ steps.inputs.outputs.rpc_secret_name }}
+      private_key_secret_name: ${{ steps.inputs.outputs.private_key_secret_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -125,8 +127,8 @@ jobs:
       - name: Deploy
         shell: bash
         env:
-          RPC_URL: ${{ secrets.RPC_URL }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL: ${{ secrets[needs.validate.outputs.rpc_secret_name] }}
+          PRIVATE_KEY: ${{ secrets[needs.validate.outputs.private_key_secret_name] }}
         run: |
           set -euo pipefail
           [[ "$RPC_URL" =~ ^https://[^[:space:]]+$ ]] || { echo "RPC_URL must be a non-empty HTTPS URL in the selected GitHub Environment" >&2; exit 1; }
