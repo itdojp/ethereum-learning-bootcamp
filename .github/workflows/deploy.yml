@@ -30,9 +30,7 @@ on:
         default: ""
 
 permissions:
-  actions: read
   contents: read
-  deployments: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -46,6 +44,7 @@ jobs:
       environment: ${{ steps.inputs.outputs.environment }}
       contract: ${{ steps.inputs.outputs.contract }}
       args_json: ${{ steps.inputs.outputs.args_json }}
+      rpc_environment_variable: ${{ steps.inputs.outputs.rpc_environment_variable }}
       rpc_secret_name: ${{ steps.inputs.outputs.rpc_secret_name }}
       private_key_secret_name: ${{ steps.inputs.outputs.private_key_secret_name }}
     steps:
@@ -86,6 +85,10 @@ jobs:
     name: Deploy to validated network
     needs: validate
     if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+      contents: read
+      deployments: write
     runs-on: ubuntu-latest
     environment:
       name: ${{ needs.validate.outputs.environment }}
@@ -96,6 +99,7 @@ jobs:
       TARGET_NETWORK: ${{ needs.validate.outputs.network }}
       CONTRACT: ${{ needs.validate.outputs.contract }}
       ARGS_JSON: ${{ needs.validate.outputs.args_json }}
+      RPC_ENVIRONMENT_VARIABLE: ${{ needs.validate.outputs.rpc_environment_variable }}
     steps:
       - name: Checkout validated revision
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -134,13 +138,7 @@ jobs:
           set -euo pipefail
           [[ "$RPC_URL" =~ ^https://[^[:space:]]+$ ]] || { echo "RPC_URL must be a non-empty HTTPS URL in the selected GitHub Environment" >&2; exit 1; }
           [[ "$PRIVATE_KEY" =~ ^0x[0-9a-fA-F]{64}$ ]] || { echo "PRIVATE_KEY must be one 0x-prefixed 32-byte key in the selected GitHub Environment" >&2; exit 1; }
-          case "$TARGET_NETWORK" in
-            sepolia) rpc_name=SEPOLIA_RPC_URL ;;
-            optimismSepolia) rpc_name=OPTIMISM_SEPOLIA_RPC_URL ;;
-            mainnet) rpc_name=MAINNET_RPC_URL ;;
-            optimism) rpc_name=OPTIMISM_RPC_URL ;;
-            *) echo "Unexpected validated network" >&2; exit 1 ;;
-          esac
-          export "$rpc_name=$RPC_URL"
+          [[ "$RPC_ENVIRONMENT_VARIABLE" =~ ^[A-Z][A-Z0-9_]*_RPC_URL$ ]] || { echo "Unexpected validated RPC environment variable" >&2; exit 1; }
+          export "$RPC_ENVIRONMENT_VARIABLE=$RPC_URL"
           unset RPC_URL
           npx hardhat run scripts/deploy-generic.ts --network "$TARGET_NETWORK"

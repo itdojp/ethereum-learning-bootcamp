@@ -51,12 +51,18 @@ check(/default:\s*sepolia(?:\s|$)/u.test(workflow), 'deploy default network must
 for (const network of ['sepolia', 'optimismSepolia', 'mainnet', 'optimism']) {
   check(workflow.includes(`- ${network}`), `deploy network choices must include ${network}`);
 }
-check(/permissions:[\s\S]*?contents:\s*read/u.test(workflow), 'workflow must declare contents: read');
-check(/permissions:[\s\S]*?actions:\s*read[\s\S]*?contents:\s*read/u.test(workflow), 'Environment API preflight requires actions: read');
-check(/permissions:[\s\S]*?deployments:\s*write/u.test(workflow), 'jobs using environments require deployments: write');
+const validateJob = workflow.match(/^  validate:\s*$([\s\S]*?)(?=^  deploy:\s*$)/mu)?.[1] || '';
+const deployJob = workflow.match(/^  deploy:\s*$([\s\S]*)/mu)?.[1] || '';
+check(/^permissions:\s*\r?\n  contents:\s*read\s*$/mu.test(workflow), 'workflow default permissions must declare contents: read only');
+check(!/^\s{4}permissions:/mu.test(validateJob), 'validate job must inherit the contents-only workflow permission');
+check(/^\s{4}permissions:\s*\r?\n\s{6}actions:\s*read\s*\r?\n\s{6}contents:\s*read\s*\r?\n\s{6}deployments:\s*write\s*$/mu.test(deployJob), 'deploy job requires actions: read, contents: read, and deployments: write');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
 check(/production_confirmation:/u.test(workflow), 'production confirmation input is required');
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');
+check(/rpc_environment_variable:\s*\$\{\{\s*steps\.inputs\.outputs\.rpc_environment_variable\s*\}\}/u.test(workflow), 'validate job must expose the policy-derived RPC environment variable');
+check(/RPC_ENVIRONMENT_VARIABLE:\s*\$\{\{\s*needs\.validate\.outputs\.rpc_environment_variable\s*\}\}/u.test(workflow), 'deploy job must consume the policy-derived RPC environment variable');
+check(/export "\$RPC_ENVIRONMENT_VARIABLE=\$RPC_URL"/u.test(workflow), 'deploy step must export the policy-derived RPC environment variable');
+check(!/case\s+"\$TARGET_NETWORK"/u.test(workflow), 'deploy step must not duplicate the validator network-to-RPC mapping');
 check(/if:\s*github\.ref\s*==\s*'refs\/heads\/main'/u.test(workflow), 'deploy job must fail closed outside main');
 check(/check-deployment-environment\.cjs/u.test(workflow), 'deploy job must verify repository Environment protections before loading secrets');
 check(/secrets\[needs\.validate\.outputs\.rpc_secret_name\]/u.test(workflow), 'RPC secret must use a validated network-specific name');

@@ -67,6 +67,13 @@ test('contract shell injection and path traversal are rejected', () => {
   }
 });
 
+test('Solidity identifiers containing dollar signs are accepted', () => {
+  for (const contract of ['$Hello', '_$Token', 'Hello$2']) {
+    const result = validateDeployInputs({ network: 'sepolia', contract, argsJson: '[]' });
+    assert.equal(result.contract, contract);
+  }
+});
+
 test('constructor strings containing shell metacharacters remain inert data', () => {
   const marker = '$(touch should-not-exist); echo not-executed';
   const result = parseConstructorArgs(JSON.stringify([marker]));

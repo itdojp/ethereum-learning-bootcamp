@@ -36,6 +36,7 @@ const NETWORK_POLICIES = Object.freeze({
 });
 
 const PRODUCTION_CONFIRMATION = 'DEPLOY_PRODUCTION';
+// Solidity's lexer permits letters, `_`, or `$` first, followed by digits too.
 const SOLIDITY_IDENTIFIER = /^[A-Za-z_$][A-Za-z0-9_$]*$/u;
 const MAX_ARGS_JSON_BYTES = 8192;
 const MAX_ARGS = 32;
