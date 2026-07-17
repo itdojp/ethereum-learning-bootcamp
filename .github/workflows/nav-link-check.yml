@@ -132,16 +132,6 @@ jobs:
           PY
           echo "list=urls.txt" >> "$GITHUB_OUTPUT"
 
-      - name: Probe URLs
-        run: |
-          failures=0
-          while IFS=$'\t' read -r _ url; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -L "$url")
-            echo "$code $url"
-            if [ "$code" != "200" ]; then failures=$((failures+1)); fi
-          done < urls.txt
-          if [ "$failures" -gt 0 ]; then echo "Found $failures non-200 URLs" >&2; exit 1; fi
-
       - name: Verify deployed revision, version, and content markers
         env:
           EXPECTED_REVISION: ${{ github.sha }}
@@ -159,3 +149,13 @@ jobs:
           done
           echo "Published site did not converge to $EXPECTED_REVISION within the retry window." >&2
           exit 1
+
+      - name: Probe URLs
+        run: |
+          failures=0
+          while IFS=$'\t' read -r _ url; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L "$url")
+            echo "$code $url"
+            if [ "$code" != "200" ]; then failures=$((failures+1)); fi
+          done < urls.txt
+          if [ "$failures" -gt 0 ]; then echo "Found $failures non-200 URLs" >&2; exit 1; fi
