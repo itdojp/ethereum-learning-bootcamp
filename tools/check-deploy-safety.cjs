@@ -5,19 +5,25 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const {
-  Etherscan,
-  ETHERSCAN_V2_API_URL
-} = require('@nomicfoundation/hardhat-verify/internal/etherscan');
 
 const root = process.cwd();
 const workflowPath = path.join(root, '.github/workflows/deploy.yml');
+const testWorkflowPath = path.join(root, '.github/workflows/test.yml');
 const configPath = path.join(root, 'hardhat.config.ts');
 const deployScriptPath = path.join(root, 'scripts/deploy-generic.ts');
 const workflow = fs.readFileSync(workflowPath, 'utf8');
+const testWorkflow = fs.readFileSync(testWorkflowPath, 'utf8');
 const config = fs.readFileSync(configPath, 'utf8');
 const deployScript = fs.readFileSync(deployScriptPath, 'utf8');
 const errors = [];
+let Etherscan;
+let ETHERSCAN_V2_API_URL;
+
+try {
+  ({ Etherscan, ETHERSCAN_V2_API_URL } = require('@nomicfoundation/hardhat-verify/internal/etherscan'));
+} catch (error) {
+  errors.push(`hardhat-verify V2 contract import failed: ${error.message}`);
+}
 
 function check(condition, message) {
   if (!condition) errors.push(message);
@@ -124,11 +130,16 @@ check(
   'deploy script must default ARGS_JSON only when the variable is absent'
 );
 
-for (const match of workflow.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
-  const reference = match[1];
-  if (reference.startsWith('./')) continue;
-  const at = reference.lastIndexOf('@');
-  check(at > 0 && /^[0-9a-f]{40}$/u.test(reference.slice(at + 1)), `action must use a full commit SHA: ${reference}`);
+for (const [name, yaml] of [['deploy', workflow], ['test', testWorkflow]]) {
+  for (const match of yaml.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s+#.*)?$/gmu)) {
+    const reference = match[1];
+    if (reference.startsWith('./')) continue;
+    const at = reference.lastIndexOf('@');
+    check(
+      at > 0 && /^[0-9a-f]{40}$/u.test(reference.slice(at + 1)),
+      `${name} action must use a full commit SHA: ${reference}`
+    );
+  }
 }
 
 const forbiddenV1EtherscanEndpoint = /https?:\/\/api(?:-[a-z0-9-]+)?\.etherscan\.io\/api(?:\b|[/?#])/iu;
@@ -161,6 +172,7 @@ check(/etherscan:\s*\{[\s\S]*?apiKey:\s*process\.env\.ETHERSCAN_API_KEY\s*\|\|\s
 check(!/apiKey:\s*\{/u.test(config), 'network-specific Etherscan key maps are forbidden');
 
 try {
+  assert.ok(Etherscan && ETHERSCAN_V2_API_URL, 'hardhat-verify V2 contract import is unavailable');
   const instance = Etherscan.fromChainConfig('fixture-key', {
     network: 'optimisticEthereum',
     chainId: 10,
@@ -175,8 +187,13 @@ try {
   errors.push(`hardhat-verify V2 runtime contract failed: ${error.message}`);
 }
 
-const verify = spawnSync(process.execPath, [
-  require.resolve('hardhat/internal/cli/cli'),
+const hardhatExecutable = path.join(
+  root,
+  'node_modules',
+  '.bin',
+  process.platform === 'win32' ? 'hardhat.cmd' : 'hardhat'
+);
+const verify = spawnSync(hardhatExecutable, [
   'verify',
   '--list-networks'
 ], {
@@ -185,7 +202,9 @@ const verify = spawnSync(process.execPath, [
   env: { ...process.env, HARDHAT_DISABLE_TELEMETRY_PROMPT: 'true' }
 });
 
-if (verify.status !== 0) {
+if (verify.error) {
+  errors.push(`hardhat verify --list-networks could not start: ${verify.error.message}`);
+} else if (verify.status !== 0) {
   errors.push(`hardhat verify --list-networks failed: ${verify.stderr || verify.stdout}`);
 } else {
   check(/optimisticEthereum\s+│\s+10/u.test(verify.stdout), 'Hardhat verify must resolve Optimism mainnet chain id 10');
