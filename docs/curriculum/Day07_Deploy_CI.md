@@ -1,150 +1,134 @@
-# Day7：本番・L2 デプロイ／Etherscan検証／手動承認付きCI
+# Day7：テストネット・L2デプロイ／Etherscan検証／安全なCI
 
 [← 目次](./TOC.md) | [前: Day6](./Day06_Local_Testing.md) | [次: Day8](./Day08_L2_Rollups.md)
 
 ## 学習目的
-- 少額のテストネットまたはL2から始め、安全にデプロイする流れを手順として実行できるようになる。
-- ソース検証（[Verify](../appendix/glossary.md)）と成果の可観測性を確保し、Explorerで確認できるようになる。
-- GitHub Actionsに手動承認ゲートを設け、誤デプロイを防げるようになる。
-
-> まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
+- testnet-first の入力契約で安全にデプロイする流れを実行できるようになる。
+- Etherscan API V2 のソース検証（[Verify](../appendix/glossary.md)）と記録方法を理解する。
+- GitHub Actions を testnet 専用に制限し、単独運用でも本番鍵を自動化境界へ入れない理由を説明できるようになる。
 
 ---
 
 ## 0. 前提
-- Hardhat構成はDay3までに完了。
-- `.env`に鍵とRPCを設定し、**秘密情報はGitにコミットしない**。
-- 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md) / [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md)
-- 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `.github/workflows/deploy.yml` / `docs/DEPLOYMENTS.md` / `hardhat.config.ts`（任意）
-- 今回触らないこと：いきなり多額で本番デプロイ（まずは少額・段階的に進める）
-- 最短手順（迷ったらここ）：1章の `deploy-generic.ts` で少額デプロイ → 2章でVerify（任意）→ 4章で手動承認付きCIの要点を確認
+- Hardhat 構成は Day3 までに完了し、`npm run check:all` が成功している。
+- 外部 network では `.env` に必要な RPC、学習用 `PRIVATE_KEY`、Verify 時だけ `ETHERSCAN_API_KEY` を設定する。秘密情報は Git やログへ出さない。
+- GitHub Actions と本リポジトリの signer は Sepolia / OP Sepolia だけを対象にする。
+- 先に [`docs/appendix/verify.md`](../appendix/verify.md) と [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) を読む。
 
-### 0.1 このDayを始めてよい条件
-- `npm test` がローカルで通っている
-- `PRIVATE_KEY` に学習用の鍵だけを使っている
-- 最初の実行先を Mainnet ではなく Sepolia または Optimism にしている
-- デプロイ後に残す場所（[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) と `docs/reports/`）を決めている
+### 0.1 環境変数
 
-`.env.example`
 ```bash
 SEPOLIA_RPC_URL=
+OPTIMISM_SEPOLIA_RPC_URL=
 MAINNET_RPC_URL=
 OPTIMISM_RPC_URL=
-PRIVATE_KEY=0xYOUR_PRIVATE_KEY
-ETHERSCAN_API_KEY=YOUR_ETHERSCAN_API_KEY
-OPTIMISTIC_ETHERSCAN_API_KEY=YOUR_OPTIMISTIC_ETHERSCAN_API_KEY
+PRIVATE_KEY=0xYOUR_LEARNING_ONLY_PRIVATE_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_V2_API_KEY
 ```
+
+`MAINNET_RPC_URL` / `OPTIMISM_RPC_URL` は read / Verify 専用である。`PRIVATE_KEY` はテストネット専用とし、`hardhat.config.ts` は Mainnet / Optimism で `accounts: []` を使用する。
 
 ---
 
-## 1. デプロイスクリプトの汎用化
-`scripts/deploy-generic.ts`
-```ts
-import { ethers, network } from 'hardhat';
+## 1. デプロイ入力の安全な指定
 
-// デプロイ対象とコンストラクタ引数は環境変数で指定可能
-// 例: CONTRACT=MyToken ARGS=100000000000000000000 npx hardhat run ...
-async function main() {
-  const name = process.env.CONTRACT || 'Hello';
-  const args = (process.env.ARGS || '').split(' ').filter(Boolean);
-  console.log('network:', network.name, 'contract:', name, 'args:', args);
-  const F = await ethers.getContractFactory(name);
-  const c = await F.deploy(...(args as any));
-  await c.waitForDeployment();
-  console.log('deployed:', await c.getAddress());
-}
+`scripts/deploy-generic.ts` は contract name を Solidity identifier として検証し、constructor 引数を `ARGS_JSON` の JSON 配列として parse する。旧来の空白区切り `ARGS` は受け付けない。大きな整数は JavaScript の精度損失を避けるため文字列で書く。JSON object は ethers の transaction overrides と誤認され得るため拒否し、tuple は位置指定の入れ子配列で表す。
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
-```
-
-**実行例**（Sepolia に `Hello` をデプロイ：引数なし）
 ```bash
-npx hardhat run scripts/deploy-generic.ts --network sepolia
+# Hello: constructor 引数なし
+CONTRACT=Hello ARGS_JSON='[]' \
+  npx hardhat run scripts/deploy-generic.ts --network sepolia
+
+# MyToken: uint256 を10進文字列で渡す
+CONTRACT=MyToken ARGS_JSON='["1000000000000000000000000"]' \
+  npx hardhat run scripts/deploy-generic.ts --network optimismSepolia
 ```
-**実行例**（OptimismにERC20を供給量指定で）
-```bash
-CONTRACT=MyToken ARGS=1000000000000000000000000 \
-  npx hardhat run scripts/deploy-generic.ts --network optimism
-```
-> Mainnet に出す場合もコマンドは同じ形で `--network mainnet` を指定するが、実費になるため少額・鍵管理・承認フローを必ず確認する。
+
+workflow はnetworkを`sepolia` / `optimismSepolia`の2値allowlistで検証する。`mainnet` / `optimism`は入力候補にもvalidatorにも含めない。入力は`env:`に渡され、shell sourceへ直接展開されない。
 
 ---
 
-## 2. Verify（ソース検証）
-Hardhat Verifyプラグインを導入（Day5参照）。
+## 2. Etherscan API V2 で Verify
 
-**コマンド例（Sepolia：Hello）**
+Hardhat 2.x 互換版として `@nomicfoundation/hardhat-verify` 2.1.3 を固定する。`ETHERSCAN_API_KEY` は Sepolia / OP Sepolia / Mainnet / Optimism で共通であり、plugin は V2 endpoint に `chainid` を付ける。
+
 ```bash
-npx hardhat verify --network sepolia <DEPLOYED_ADDR>
+# 秘密情報なしで chain 解決を確認
+npx hardhat verify --list-networks
+
+# Sepolia: Hello
+npx hardhat verify --network sepolia <DEPLOYED_ADDRESS>
+
+# OP Sepolia: MyToken
+npx hardhat verify --network optimismSepolia \
+  <DEPLOYED_ADDRESS> 1000000000000000000000000
 ```
-**コマンド例（Optimism：MyToken）**
-```bash
-npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000000
-```
-> L2ごとに API キーが異なる。[Blockscout](../appendix/glossary.md)系エクスプローラを使うチェーンでは別途設定が必要。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) の「最短成功ルート」→「失敗時の切り分けルート」→「よくあるエラー表」を参照する。
+
+実際の Verify は deploy 時と同じ compiler 設定と constructor 引数を使う。詳細は [Verify付録](../appendix/verify.md) を参照する。
 
 ---
 
 ## 3. リスクを下げる運用チェックリスト
-- [ ] **少額デプロイ**で動作確認後に本量を配布。
-- [ ] `onlyOwner`や役割権限（`AccessControl`）を**最小権限**で発行。
-- [ ] 緊急停止（`Pausable`）や**引当金上限**などの**セーフティガード**を有効化。
-- [ ] **マルチシグ**（Safe等）で管理鍵を保管。単独鍵は避ける。
-- [ ] **ソース検証（[Verify](../appendix/glossary.md)）** を実施し、アドレス・ABI・TxHashをREADMEに残す。
-- [ ] すべての機能に**単体テストとカバレッジ**（Day6）を要求。
+- [ ] local tests と compile が成功している。
+- [ ] Sepolia / OP Sepolia で少額の動作確認を終えている。
+- [ ] deploy key は network /用途を限定し、長期保管用鍵や実資産を扱わない。
+- [ ] contract owner / role / pause /上限 / upgrade 権限をレビューしている。
+- [ ] address、chain ID、TxHash、compiler、constructor 引数を [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) に記録する。
+- [ ] Verify 後の source、ABI、owner を explorer で確認する。
 
 ---
 
-## 4. GitHub Actions：手動承認付きデプロイ
-### 4.1 環境（Environment）で承認者を設定
-GitHub > Settings > Environments > `production` を作成し、**Required reviewers** に承認者を登録。Secrets もここに保存。
+## 4. GitHub Actions の手動デプロイ
 
-- `PRODUCTION_MAINNET_RPC_URL`
-- `PRODUCTION_OPTIMISM_RPC_URL`
-- `PRODUCTION_PRIVATE_KEY`
-- `ETHERSCAN_API_KEY`
-- `OPTIMISTIC_ETHERSCAN_API_KEY`
+### 4.1 network 別 Environment
 
-### 4.2 ワークフロー（手動トリガ + 承認ゲート）
-このリポジトリでは `.github/workflows/deploy.yml` を同梱している。必要に応じて編集する。
+Settings > Environments に次の 2 件だけを作り、各 Environment Secrets へ network 固有の RPC と学習用 private key を保存する。両方に exact `main` deployment branch rule だけを設定する。
 
-`.github/workflows/deploy.yml` を開いて確認する。
+| workflow network | Environment | Environment Secrets | 保護 |
+|---|---|---|---|
+| `sepolia` | `deploy-sepolia` | `DEPLOY_SEPOLIA_RPC_URL` / `DEPLOY_SEPOLIA_PRIVATE_KEY` | testnet、exact `main` |
+| `optimismSepolia` | `deploy-optimism-sepolia` | `DEPLOY_OPTIMISM_SEPOLIA_RPC_URL` / `DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY` | testnet、exact `main` |
 
-ポイント：
-- `workflow_dispatch` で `network`/`contract`/`args` を受け取る。
-- `environment: production` により、実行前にGitHub上での**人間承認**が必須になる。
-- Secrets を `hardhat.config.ts` が参照する環境変数名（`MAINNET_RPC_URL` / `OPTIMISM_RPC_URL` など）に揃えて渡す。
+GitHub Actions から本番 network へ deploy しない。本番用 private key を GitHub Secrets に保存しない。AI エージェントのレビューは差分検査を補助できるが、独立した人間承認主体ではない。単独運用で Required reviewer を自己承認へ弱める代わりに、production network と production secret を自動化の到達可能集合から除外する。
 
-> 承認が出ない／Secretsが読めない等で詰まったら [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「最短成功ルート」→「失敗時の切り分け」→「よくあるエラー表」を参照する。
+### 4.2 workflow の実行順
+
+1. 秘密情報を持たない `validate` job が testnet network、contract、`ARGS_JSON` を検証する。
+2. toolchain check、input tests、contract tests、compile を実行する。
+3. 検証済み network に対応する Environment の gate を通る。
+4. environment-scoped `RPC_URL` / `PRIVATE_KEY` だけを読み、同一 network の同時 deploy を抑止して実行する。
+
+deploy workflow は Verify を行わないため `ETHERSCAN_API_KEY` を読み込まない。Verify を自動化する場合は別 workflow / job として、address artifact と承認境界を設計する。
 
 ---
 
-## 5. デプロイ前後のドキュメント化
-[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md)（同梱。追記して使う）
+## 5. デプロイ記録
+
+[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) には、最低限次を記録する。
+
 ```markdown
-# Deployments
-
-## 例：<YYYY-MM-DD> <network> MyToken v1.0.0
-- contract: MyToken
-- network: <network>
-- address: 0x....
-- txHash: 0x....
-- compiler: 0.8.24
-- verified: etherscan ✅
-- owner: Gnosis Safe(2/3) 0x....
-- notes: 初期供給 1,000,000 MTK
+## <YYYY-MM-DD> <network> MyToken
+- source commit: <40-character SHA>
+- chainId: <chain id>
+- address: 0x...
+- txHash: 0x...
+- compiler: 0.8.24 / optimizer runs 200
+- constructor args: ["1000000000000000000000000"]
+- verified: <explorer URL or not yet>
+- owner: <address / multisig policy>
 ```
 
 ---
 
-## 6. 本番デプロイ手順（最小）
-1. **少額**でL2（例：Optimism）へ先行デプロイ。
-2. Etherscan/BlockscoutでVerify。
-3. DApp・サブグラフ・モニタを接続して動作確認（Day10以降）。
-4. 必要な確認を終えたら、本番環境（例: Mainnet）へデプロイする。[`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) を更新し、リリースタグを付与する。
+## 6. 本番 network を自動化しない境界
+
+単独運用では、同じ人が変更・起動・承認を兼ねるため、Required reviewer を設定しても独立した承認にはならない。ChatGPT、Codex CLI、GitHub Copilot、Claude Code 等の AI レビューも、秘密鍵を分離して責任を負う別主体ではない。このリポジトリでは次を固定する。
+
+1. `.github/workflows/deploy.yml` は Sepolia / OP Sepolia だけを受け付ける。
+2. Mainnet / Optimism の Hardhat 設定は `accounts: []` とし、repository script へ本番 signer を渡さない。
+3. 本番用 private key を GitHub Secrets、repository `.env`、AI セッションへ入力しない。
+4. 将来 production deploy が必要になった場合は、この教材 workflow を拡張せず、hardware wallet / KMS 等の外部署名境界、dry-run、変更凍結、監査ログ、緊急停止を備えた別 runbook として設計・レビューする。
+5. 本番 read / Verify に RPC や Explorer API を使う場合も、署名能力と分離する。
 
 ---
 
@@ -152,48 +136,40 @@ GitHub > Settings > Environments > `production` を作成し、**Required review
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
-| `insufficient funds` | 手数料不足 | 少額 ETH を補充。maxFee確認 |
-| `nonce too low` | ノンス衝突 | `--network`とアカウントの送信履歴を確認 |
-| Verify失敗 | コンパイラ設定不一致/引数違い | `hardhat.config.ts`の設定と引数を合わせる。詰まったら [`docs/appendix/verify.md`](../appendix/verify.md) |
-| 承認が出ない | Environment reviewers未設定 | Settings > Environments を再確認。詰まったら [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) |
+| input validation が失敗 | network、contract名、JSONが不正 | testnet allowlist、Solidity identifier、JSON配列を確認 |
+| `insufficient funds` | 選択 network の手数料不足 | chain ID と deploy address の少額残高を確認 |
+| Verify失敗 | compiler / constructor 引数 / chain 不一致 | deploy記録と `hardhat.config.ts` を照合 |
+| Secrets が読めない | 選択したnetworkのEnvironmentに固有名のsecretがない | `DEPLOY_SEPOLIA_*` / `DEPLOY_OPTIMISM_SEPOLIA_*` を対応表どおりに設定 |
 
 ---
 
 ## 8. まとめ
-- デプロイをスクリプト化し、対象コントラクトと引数を環境変数で切り替えられる形にした。
-- Verify と `docs/DEPLOYMENTS.md` により、アドレスと根拠（TxHash/設定）を後から追える状態を作った。
-- GitHub Actions に手動承認ゲートを入れ、誤デプロイを防ぐ運用の入口を整えた。
+- testnet-only allowlist、JSON引数、production signer除外でdeployの信頼境界を明確にした。
+- Etherscan V2 の単一 API key と chain ID に基づく Verify を確認した。
+- source commit から deploy / Verify /記録を追跡できる運用を整理した。
 
 ### 理解チェック（3問）
-- Q1. デプロイスクリプトを「汎用化」する狙いは何か？（手動操作との比較で）
-- Q2. `docs/DEPLOYMENTS.md` に残すべき情報を3つ挙げる（Verify/再現の観点で）。
-- Q3. GitHub Actions の手動承認ゲートは、どんな事故を防ぐための仕組みか？
+- Q1. workflow input を shell source へ直接展開しない理由は何か？
+- Q2. 単独運用でAIレビューをRequired reviewerの代替とせず、production deployを自動化対象外にする理由は何か？
+- Q3. Verify の再現に必要な情報を3つ挙げる。
 
 ### 解答例（短く）
-- A1. 同じ手順を安全に繰り返せるようにし、引数や対象コントラクトの差し替えも明示できる。人手によるミス（ネットワーク違い、引数違い等）を減らす。
-- A2. 例：network/chainId、コントラクト名とアドレス、デプロイTxHash（加えてsolc/optimizer設定があるとさらに良い）。
-- A3. 誤ったブランチ/タイミングで本番やL2へデプロイしてしまう事故を減らす（人間の確認ポイントを作る）。
-
-### 次に進む前の確認
-- [ ] `docs/DEPLOYMENTS.md` に、確認に使ったネットワーク / アドレス / TxHash を残した。
-- [ ] 失敗時の切り分け先として、[`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) と [`docs/appendix/verify.md`](../appendix/verify.md) の位置を把握した。
-- [ ] Day09 / Day14 で使うアドレスや chainId を控えた。
-- CI 設計や approval gate をチーム運用へ広げる場合は、[AI開発のためのGitHubワークフロー実践ガイド](https://itdojp.github.io/github-workflow-book/) を参照すると整理しやすい。
+- A1. shell metacharacter や command substitution をコードとして解釈させず、入力をデータとして検証するため。
+- A2. AIは独立した鍵・責任主体ではなく、自己承認も独立統制にならないため。本番signerを到達不能にする方がfail-closedになる。
+- A3. source commit、compiler設定、constructor引数、chain ID、deployed address など。
 
 ### 確認コマンド（最小）
 ```bash
-# 要 .env（SEPOLIA_RPC_URL / PRIVATE_KEY）。少額で。
-npx hardhat run scripts/deploy-generic.ts --network sepolia
-
-# 任意（Verify：要 ETHERSCAN_API_KEY とデプロイ済みアドレス。Hello はコンストラクタ引数なし）
-npx hardhat verify --network sepolia <DEPLOYED_ADDR>
+npm run test:deploy-inputs
+npm run check:deploy-safety
+CONTRACT=Hello ARGS_JSON='[]' \
+  npx hardhat run scripts/deploy-generic.ts --network sepolia
 ```
 
 ## 9. 提出物
-- [ ] デプロイログ一式（ネットワーク、アドレス、TxHash）
-- [ ] Etherscan/BlockscoutのVerifyリンク
-- [ ] [`docs/DEPLOYMENTS.md`](../DEPLOYMENTS.md) の追記差分
-- [ ] GitHub Actions実行ページのスクリーンショット（承認→完了）
+- [ ] network、address、TxHash、source commit を含む deploy記録
+- [ ] Etherscan V2 の Verify URL または未実施理由
+- [ ] testnetのActions run、または秘密情報未設定で実行しなかった理由
 
 ## 10. 実行例
 - 実行ログ例：[`docs/reports/Day07.md`](../reports/Day07.md)

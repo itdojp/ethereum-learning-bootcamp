@@ -1,12 +1,31 @@
 import { ethers, network } from 'hardhat';
 
-async function main(){
-  const name = process.env.CONTRACT || 'Hello';
-  const args = (process.env.ARGS||'').split(' ').filter(Boolean);
-  console.log('network:', network.name, 'contract:', name, 'args:', args);
-  const F = await ethers.getContractFactory(name);
-  const c = await F.deploy(...(args as any));
-  await c.waitForDeployment();
-  console.log('deployed:', await c.getAddress());
+const {
+  parseConstructorArgs,
+  validateContractName
+}: {
+  parseConstructorArgs: (value: string) => unknown[];
+  validateContractName: (value: string) => string;
+} = require('../tools/deploy-inputs.cjs');
+
+async function main() {
+  if (process.env.ARGS !== undefined) {
+    throw new Error('ARGS is no longer accepted; use ARGS_JSON with a JSON array');
+  }
+
+  const contractName = validateContractName(process.env.CONTRACT ?? 'Hello');
+  const constructorArgs = parseConstructorArgs(process.env.ARGS_JSON ?? '[]');
+
+  console.log(
+    `Deploying contract=${contractName} to network=${network.name} with ${constructorArgs.length} constructor argument(s)`
+  );
+  const factory = await ethers.getContractFactory(contractName);
+  const contract = await factory.deploy(...constructorArgs);
+  await contract.waitForDeployment();
+  console.log('deployed:', await contract.getAddress());
 }
-main().catch((e)=>{ console.error(e); process.exit(1); });
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

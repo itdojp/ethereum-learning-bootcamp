@@ -13,10 +13,13 @@
 
 ## 0. 現行L2/Blobレビューゲート
 
-確認日: **2026-05-23（Asia/Tokyo）**。L2手数料や blob 供給枠はネットワークアップグレードとチェーン実装で変化するため、次を前提に進める。
+確認日: **2026-07-11（Asia/Tokyo）**。L2手数料や blob 供給枠はネットワークアップグレードとチェーン実装で変化するため、次を前提に進める。
+
+<span data-content-marker="ethereum-roadmap-reviewed-2026-07-11" hidden></span>
 
 - Dencun（EIP-4844）で blob が導入され、Pectra（EIP-7691）で mainnet の blob target/max は 6/9 に増えた。
-- Fusaka/PeerDAS と Blob Parameter Only fork により、mainnet の blob target/max は段階的に 10/15、14/21 へ引き上げるスケジュールが告知された。各L2やtestnetでの有効化・表示・課金方式はチェーンごとに確認する。
+- Fusaka は 2025-12-03 に mainnet で有効化済みである。BPO1（2025-12-09、10/15）と BPO2（2026-01-07、14/21）も有効化済みであり、「今後の予定」として扱わない。
+- 公式 roadmap 上、Glamsterdam と Hegotá は **In development / H2 2026** であり、確定済みの activation と混同しない。
 - L2費用は「L2実行コスト + L1データ可用性コスト + sequencer / bridge / RPC / Explorer 周辺条件」の影響を受ける。古いブログの単価やスクリーンショットを根拠にしない。
 - bridge は公式導線、contract address、domain、withdrawal/finality、trust assumption、手数料、replay/rescue 手順を確認する。初回は学習用アカウントで小額の test asset だけを扱う。
 
@@ -45,8 +48,14 @@
 
 ### 2.3 Dencun（EIP‑4844：Proto‑Danksharding / Blob）
 - L2データを **[Blob](../appendix/glossary.md)** として一時的にL1へ格納。calldataより安価。
-- Blobは一定期間で**非可用化**される（目安: 約18日程度）。ただしロールアップのDA要件は満たす。結果としてL2手数料が大幅に低減。
-  - EIP‑4844 は **blob-carrying transactions** を導入し、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっている。
+- consensus specification は Deneb blob sidecar の request window を 4096 epochs と定める。Fulu の data column sidecar も validator が 4096 epochs 保持・提供し、その後は prune /提供停止できる。
+- これは protocol が blob **本体**を永久取得可能にする保証ではない。一方、block、versioned hash、KZG commitment まで保持期間後に消えるという意味でもない。長期取得が必要な application は別の保存・索引方針を持つ。
+- EIP‑4844 の **blob-carrying transactions** は、ロールアップがL1へ投稿するデータの単価（DAコスト）を下げるための土台になっている。
+
+> 参考：
+> - https://eips.ethereum.org/EIPS/eip-4844
+> - https://github.com/ethereum/consensus-specs/blob/master/specs/deneb/p2p-interface.md
+> - https://github.com/ethereum/consensus-specs/blob/master/specs/fulu/validator.md
 
 ### 2.4 L2手数料の内訳（概念）
 ロールアップの手数料は、ざっくり次の2つに分かれる（表示名はL2やエクスプローラで異なる）。
@@ -58,7 +67,7 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 このため、L2上で同じ操作をしても **Blobの混雑**（base fee）次第で費用が変動する。
 
 ### 2.5 Pectra（EIP‑7691）：Blob throughput increase
-**EIP‑7691** は、2026-05-23（Asia/Tokyo）時点で Ethereum mainnet の Pectra upgrade により **有効化済み** で、Blob の供給枠を増やした Core EIP だ。
+**EIP‑7691** は、2026-07-11（Asia/Tokyo）時点で Ethereum mainnet の Pectra upgrade により **有効化済み** で、Blob の供給枠を増やした Core EIP だ。
 
 | パラメータ（1ブロックあたり） | EIP‑4844 初期値 | EIP‑7691（Pectra） |
 |---|---:|---:|
@@ -76,22 +85,34 @@ L2手数料 ≒ L2実行コスト + L1データ可用性（Blob）コスト
 > - https://eips.ethereum.org/EIPS/eip-7691
 
 ### 2.6 Fusaka / PeerDAS / Blob Parameter Only fork
-Fusaka は Pectra 後のネットワークアップグレードで、PeerDAS（EIP-7594）により blob data availability をサンプリングで扱う方向へ進めた。Ethereum Foundation の mainnet announcement では、Fusaka activation 後に Blob Parameter Only（BPO）fork で blob target/max を段階的に増やす方針が示されている。
+Fusaka は Pectra 後のネットワークアップグレードで、PeerDAS（EIP-7594）を導入し、2025-12-03 21:49:11 UTC（mainnet epoch 411392）に有効化された。BPO は EIP-7892 に基づき blob 関連パラメータだけを変更する config-only hardfork である。
 
 | 段階 | target blobs | max blobs | 備考 |
 |---|---:|---:|---|
 | Pectra 後 | 6 | 9 | EIP-7691 の前提 |
-| BPO1 | 10 | 15 | 2025-12-09 UTC の予定として告知 |
-| BPO2 | 14 | 21 | 2026-01-07 UTC の予定として告知 |
+| BPO1 | 10 | 15 | 2025-12-09 14:21:11 UTC、epoch 412672 に有効化済み |
+| BPO2 | 14 | 21 | 2026-01-07 01:01:11 UTC、epoch 419072 に有効化済み |
 
-> 注：この表は mainnet announcement と ethereum.org の記載をもとにした時点情報である。学習時は `eth_blobBaseFee`、Explorer、L2 docs、rollup status、RPC の返す値を優先して確認する。
+> 注：この表は mainnet consensus config と hardfork meta EIP に基づく。各L2の blob 利用、上限、課金は mainnet と同一とは限らないため、学習時は `eth_blobBaseFee`、L2 docs、status page、RPC の返す値を確認する。
 >
 > 参考：
 > - https://blog.ethereum.org/2025/11/06/fusaka-mainnet-announcement
 > - https://ethereum.org/roadmap/fusaka/peerdas/
 > - https://eips.ethereum.org/EIPS/eip-7594
+> - https://eips.ethereum.org/EIPS/eip-7892
+> - https://eips.ethereum.org/EIPS/eip-8134
+> - https://eips.ethereum.org/EIPS/eip-8135
 
-### 2.7 比較観点
+### 2.7 2026年後半のroadmap状態
+
+2026-07-11 時点の公式 roadmap では、Glamsterdam と Hegotá はともに **In development / H2 2026** である。Glamsterdam は BALs と ePBS、Hegotá は FOCIL を主な機能として開発中だが、将来計画は変更され得る。production である Fusaka / BPO と、開発中の upgrade を文書上で区別する。
+
+> 参考：
+> - https://ethereum.org/roadmap/
+> - https://ethereum.org/roadmap/glamsterdam/
+> - https://blog.ethereum.org/2026/04/10/checkpoint-9
+
+### 2.8 比較観点
 
 | 観点 | Optimistic | ZK |
 |---|---|---|
@@ -105,41 +126,47 @@ Fusaka は Pectra 後のネットワークアップグレードで、PeerDAS（E
 ## 3. ハンズオン：L2追加と再デプロイ
 
 ### 3.1 HardhatにL2を追加（参考）
-このリポジトリでは `sepolia` / `optimism` / `polygonZk` のネットワーク設定は同梱済みだ（`hardhat.config.ts` を確認する）。  
+このリポジトリでは `sepolia` / `optimismSepolia` / `optimism` / `polygonZk` のネットワーク設定は同梱済みだ（`hardhat.config.ts` を確認する）。
 自分のプロジェクトに追加する場合は、次を参考にする。  
-環境変数は **ルートの `.env.example` をベースに管理**し、この章で最低限必要なのは `OPTIMISM_RPC_URL` / `PRIVATE_KEY` / `OPTIMISTIC_ETHERSCAN_API_KEY` だ。
+環境変数は **ルートの `.env.example` をベースに管理**する。最初は `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY` を使い、Verify 時だけ `ETHERSCAN_API_KEY` を追加する。
 
 `hardhat.config.ts`
 ```ts
+const testnetAccounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
+
 networks: {
-  sepolia: { url: process.env.SEPOLIA_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
-  optimism: { url: process.env.OPTIMISM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
-  // 任意：Polygon zkEVM, zkSync（Hardhatプラグインや設定がチェーン毎に異なる）
-  // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [process.env.PRIVATE_KEY!] },
+  sepolia: { url: process.env.SEPOLIA_RPC_URL!, accounts: testnetAccounts },
+  optimismSepolia: { url: process.env.OPTIMISM_SEPOLIA_RPC_URL!, accounts: testnetAccounts },
+  optimism: { url: process.env.OPTIMISM_RPC_URL!, accounts: [] },
+  // 本番系はread / Verify専用。signerを設定しない。
+  // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [] },
 }
 ```
 `.env.example`（Day8で最低限見る項目）
 ```bash
-OPTIMISM_RPC_URL=
+OPTIMISM_SEPOLIA_RPC_URL=
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY
-OPTIMISTIC_ETHERSCAN_API_KEY=YOUR_OPTIMISTIC_ETHERSCAN_API_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_V2_API_KEY
 
-# 任意：Polygon zkEVM も試す場合
+# production /実費を伴うため、testnet確認後だけ設定
+OPTIMISM_RPC_URL=
+
+# 任意：Polygon zkEVMを試す場合
 POLYGON_ZKEVM_RPC_URL=
 ```
 
 ### 3.2 既存ERC‑20の再デプロイ
 ```bash
-CONTRACT=MyToken ARGS=1000000000000000000000 \
-  npx hardhat run scripts/deploy-generic.ts --network optimism
+CONTRACT=MyToken ARGS_JSON='["1000000000000000000000"]' \
+  npx hardhat run scripts/deploy-generic.ts --network optimismSepolia
 ```
 出力されたアドレスを控える。
 
 ### 3.3 Verify（可能な場合）
 ```bash
-npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000
+npx hardhat verify --network optimismSepolia <DEPLOYED_ADDR> 1000000000000000000000
 ```
-> Optimism の Verify には `OPTIMISTIC_ETHERSCAN_API_KEY` が必要。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する。
+> Etherscan V2 の `ETHERSCAN_API_KEY` を使う。つまずいたら [`docs/appendix/verify.md`](../appendix/verify.md) を参照する。
 
 ---
 
@@ -152,21 +179,21 @@ npx hardhat verify --network optimism <DEPLOYED_ADDR> 1000000000000000000000
 ```bash
 # 宛先を指定して計測（`TO` を省略した場合は自分宛になる）
 TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network sepolia
-TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optimism
+TO=0x... VALUE_ETH=0.0001 npx hardhat run scripts/measure-fee.ts --network optimismSepolia
 ```
 出力JSONの `feeEth` と `latencyMs` を表に記録する。
 
-### 3.2 コントラクト関数の計測
+### 4.2 コントラクト関数の計測
 このリポジトリの `scripts/measure-contract.ts` を使う（環境変数 `TOKEN` が必須）。
 
 - `TOKEN`：計測したいERC‑20アドレス
 - 任意：`TO`（宛先）、`AMOUNT_ETH`（送る量。デフォルト `0.01`）
 
 ```bash
-TOKEN=0x... TO=0x... AMOUNT_ETH=0.01 npx hardhat run scripts/measure-contract.ts --network optimism
+TOKEN=0x... TO=0x... AMOUNT_ETH=0.01 npx hardhat run scripts/measure-contract.ts --network optimismSepolia
 ```
 
-### 3.3 CSV出力（任意）
+### 4.3 CSV出力（任意）
 `tools/to-csv.sh`
 ```bash
 #!/usr/bin/env bash
@@ -175,8 +202,8 @@ jq -r '[.network,.txHash,.gasUsed,.feeEth,.latencyMs] | @csv'
 使用例：
 ```bash
 mkdir -p metrics
-npx hardhat run scripts/measure-fee.ts --network optimism | tee metrics/op.json
-cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
+npx hardhat run scripts/measure-fee.ts --network optimismSepolia | tee metrics/op-sepolia.json
+cat metrics/op-sepolia.json | tools/to-csv.sh >> metrics/metrics.csv
 ```
 
 ---
@@ -223,20 +250,20 @@ cat metrics/op.json | tools/to-csv.sh >> metrics/metrics.csv
 
 ### 確認コマンド（最小）
 ```bash
-# 要 .env（OPTIMISM_RPC_URL / PRIVATE_KEY）と、Optimism 側の手数料分ETH
-npx hardhat run scripts/deploy-generic.ts --network optimism
+# 要 .env（OPTIMISM_SEPOLIA_RPC_URL / PRIVATE_KEY）と、OP Sepolia 側のtest ETH
+CONTRACT=Hello ARGS_JSON='[]' npx hardhat run scripts/deploy-generic.ts --network optimismSepolia
 
 # ETH転送の手数料を実測（feeEth / latencyMs が出る）
-npx hardhat run scripts/measure-fee.ts --network optimism
+npx hardhat run scripts/measure-fee.ts --network optimismSepolia
 
 # 任意（ERC-20 transfer の手数料を実測：TOKEN にデプロイ済みアドレス）
-TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimism
+TOKEN=0x... npx hardhat run scripts/measure-contract.ts --network optimismSepolia
 ```
 
-## 8. 提出物
+## 9. 提出物
 - [ ] `measure-fee.ts` と `measure-contract.ts` の実行JSONと `metrics/metrics.csv`
-- [ ] Optimism（任意でzkEVM）でのデプロイアドレス、Verifyリンク
+- [ ] OP Sepoliaでのデプロイアドレス、Verifyリンク
 - [ ] ブリッジで得たL2残高のスクリーンショット（鍵・残高は秘匿）
 
-## 9. 実行例
+## 10. 実行例
 - 実行ログ例：[`docs/reports/Day08.md`](../reports/Day08.md)

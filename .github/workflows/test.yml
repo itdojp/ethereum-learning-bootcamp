@@ -13,8 +13,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 20
           cache: npm
@@ -22,6 +22,11 @@ jobs:
       - run: npm run check:metadata
       - run: npm run check:toolchain
       - run: npm run check:dependency-compat
+      - run: npm run test:deploy-inputs
+      - run: npm run test:deployment-environment
+      - run: npm run test:public-site
+      - run: npm run check:deploy-safety
+      - run: npm run check:docs-consistency
       - run: npm test
       - run: npm run check:links
       - run: npm run check:md-style
@@ -30,8 +35,8 @@ jobs:
   dapp-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 20
           cache: npm

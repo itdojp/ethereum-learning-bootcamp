@@ -1,75 +1,100 @@
 # GitHub Actions / CI メモ（つまずきポイント集）
 
-このメモは、Day6/Day7 の CI を動かすときに詰まりやすい点をまとめる。
+このメモは、Day6/Day7 の CI と手動 deploy を安全に動かすための確認事項をまとめる。
 
 ## 0. 最短成功ルート（迷ったらここ）
+
 ### 0.1 テストCI（PRで自動実行）
-1) ローカルで `npm run check:all` を通す（テスト + リンクチェック + dapp build）。
-2) ブランチを push して PR を作る。
-3) GitHub の Checks / Actions で `test` ワークフローが成功していることを確認する。
+1. ローカルで `npm run check:all` を通す。
+2. ブランチを push して PR を作る。
+3. GitHub の Checks / Actions で `test` と Book QA が成功していることを確認する。
 
-### 0.2 手動承認付きデプロイ（workflow_dispatch + Environment）
-1) Settings > Environments に `production` を作り、Required reviewers を設定する。
-2) `production` の Environment Secrets に、RPC/鍵/API キーを入れる（鍵はコミットしない）。
-3) Actions タブから `deploy` を `Run workflow` で起動し、承認して完了させる。
+### 0.2 手動デプロイ（workflow_dispatch + Environment）
+1. Settings > Environments に次の network 別 Environment を作る。
+   - `deploy-sepolia`
+   - `deploy-optimism-sepolia`
+2. 各 Environment Secrets に、下表の network 固有名で RPC と学習用 private key を保存する。
+3. 両方に exact `main` deployment branch rule を設定する。
+4. Actions > `deploy` から、まず `sepolia` または `optimismSepolia` を選ぶ。
 
-## 1. テストCI（PRで自動実行）
-目的：Pull Requestで `npm test` が自動で走り、手元との差分を早期に検出する。
+deploy workflow は Verify を実行しないため、Explorer API key を読み込まない。Verify は deploy 後に別の信頼境界で行う。
 
-このリポジトリでは `.github/workflows/test.yml` を使う。
+GitHub Actions から本番 network へ deploy しない。本番用 private key を GitHub Secrets に保存しない。単独運用では自己承認を独立統制とみなさず、AIエージェントのレビューもRequired reviewerの代替にはしない。
 
-### このリポジトリの実行内容（要点）
-- ルート：`npm ci` → `npm test` → `npm run check:links`
-- `dapp/`：`npm ci` → `npm run build`（フロントのビルド確認）
+## 1. テストCI
 
-### よくある失敗
-- Node.js のバージョン違い：ローカルとCIで `node -v` が違うと落ちやすい。
-- `npm install` ではなく `npm ci`：CIは `npm ci` 前提のほうが再現性が高い。
+このリポジトリでは `.github/workflows/test.yml` を使い、metadata、toolchain、依存互換性、deploy 入力境界、本文整合、contract tests、link、Markdown、dependency audit、DApp build を検証する。
 
-### 失敗時の切り分け（最短）
-1) GitHub の Actions タブ → 該当 Run → **落ちた Step のログ**を開く。
-2) ローカルで **CIと同じ手順**を再現する（このrepoは Node.js 20 前提）：
+失敗時は Actions の該当 step と同じコマンドを Node.js 20 で再現する。
+
 ```bash
 node -v
 npm ci
-npm test
+npm run check:all
 ```
-3) `npm ci` が落ちる場合は、まず `package-lock.json` と `package.json` の差分（依存追加/更新漏れ）を疑う。
 
-## 2. 手動承認付きデプロイ（workflow_dispatch + Environment）
-目的：誤デプロイを避けるため、**手動トリガ**＋**人間承認**でデプロイする。
+`npm ci` が落ちる場合は、`package.json` と `package-lock.json` の不一致を先に確認する。
 
-このリポジトリでは `.github/workflows/deploy.yml` を使う。
+## 2. 手動デプロイの安全境界
 
-### 2.0 どこから実行するか
-- GitHub の Actions タブ → `deploy` → `Run workflow`（手動実行）から起動する。
+`.github/workflows/deploy.yml` は、秘密情報を使わない `validate` job と、Environment Secrets を使う `deploy` job を分離している。
 
-### 2.1 つまずき：承認が出ない
-- GitHub の Settings > Environments で `production` を作り、Required reviewers を設定する。
+- default network は `sepolia`
+- network は`sepolia` / `optimismSepolia`の2値allowlist
+- contract は Solidity identifier として検証
+- constructor 引数は `ARGS_JSON` の JSON 配列として検証し、transaction overrides になり得るobjectを拒否
+- production networkはworkflow inputとvalidatorの両方から除外
+- workflow input は `env:` 経由で渡し、`run:` の shell source へ直接展開しない
+- deploy 前に toolchain check、contract tests、compile を完了
+- action は監査済み commit SHA に固定
+- network 単位の concurrency で並行 deploy を抑止
+- deploy job はmain branch以外で起動せず、GitHub APIでexact main branch policyを再確認してからtestnet secretsをstepへ渡す
+- `hardhat.config.ts`はMainnet / Optimismの`accounts`を空配列に固定し、repository内のdeploy scriptへ本番signerを供給しない
 
-### 2.2 つまずき：Secretsの場所が違う
-- Repository Secrets と Environment Secrets は別枠。
-- Day7 の例は Environment Secrets に置く前提。
+### 2.1 Environment policyで停止する
 
-### 2.3 つまずき：HardhatがRPCを読めない
-- `hardhat.config.ts` が参照する環境変数名と、Workflowで渡す変数名が一致している必要がある。
-  - 例：`OPTIMISM_RPC_URL` を使うなら Workflow でも `OPTIMISM_RPC_URL` を渡す。
+選択したtestnetに対応するEnvironment名とexact `main` branch policyを確認する。branch policyが不足するとsecret使用前のpreflightがfail closedする。
 
-### 2.4 つまずき：残高不足
-- CIからのデプロイでも、デプロイ用アドレスの残高が必要。
-- `insufficient funds` の場合は、対象チェーンにETH を用意する。
+### 2.2 Secrets が読めない
 
-## 3. よくあるエラー（症状→原因候補→確認→解決）
+Repository Secrets ではなく、選択した Environment の Secrets に次の network 固有名で置く。
+
+- `deploy-sepolia`: `DEPLOY_SEPOLIA_RPC_URL` / `DEPLOY_SEPOLIA_PRIVATE_KEY`
+- `deploy-optimism-sepolia`: `DEPLOY_OPTIMISM_SEPOLIA_RPC_URL` / `DEPLOY_OPTIMISM_SEPOLIA_PRIVATE_KEY`
+
+validatorがallowlistに基づいてsecret名を決め、workflowは選択された1組だけをdeploy stepに渡す。network固有名は別networkのsecret名を取り違える事故を防ぐ。同名secretのscope fallbackは後述の設定監査で防ぎ、1つのEnvironmentに複数networkのsecretを混在させない。
+
+GitHubは同名secretが複数scopeにある場合にEnvironmentを優先するが、Environment側が欠けたときのfallbackを避けるため、管理者は設定時と定期監査時にsecret名だけを確認する。値は出力しない。
+
+```bash
+REPO=itdojp/ethereum-learning-bootcamp
+gh secret list --repo "$REPO"
+gh api "repos/$REPO/actions/organization-secrets" --jq '[.secrets[].name]'
+gh secret list --repo "$REPO" --env deploy-sepolia
+gh secret list --repo "$REPO" --env deploy-optimism-sepolia
+```
+
+- repository / organization scopeに`DEPLOY_*`を置かない。
+- Environment scopeには対応する2件だけを置く。
+- secret値をIssue、PR、ログ、AIセッションへ渡さない。
+
+### 2.3 残高不足
+
+`insufficient funds`の場合は選択中のtestnet chain ID、deploy address、faucet由来のtest ETH残高を確認する。Mainnetの実資産や長期保管用鍵を使わない。
+
+## 3. よくあるエラー
 
 | 症状 | 原因候補 | 確認 | 解決 |
 |---|---|---|---|
-| `npm ci` が落ちる | lockfile不整合 / 依存更新漏れ | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |
-| `check:links` が落ちる | 相対リンク切れ | ログに出た `file:line` のリンクを確認 | Markdownのリンク先を修正 |
-| `dapp-build` が落ちる | `dapp/` 側の依存・型・ビルドエラー | `npm --prefix dapp ci && npm --prefix dapp run build` | エラー箇所を修正して再実行 |
-| ローカルは通るがCIだけ落ちる | Node.js差分 / 実行手順差分 | CIログの `node -v` とローカルを比較 | Node.js 20 に揃え、CIと同じ手順で再現する |
-| 承認が出ない | Environment設定不足 | Settings > Environments の `production` | Required reviewers を設定する |
-| Secretsが読めない | Secretsの置き場所/名前不一致 | Environment Secrets と変数名 | `hardhat.config.ts` と同じ名前でSecretsを置く |
-| `insufficient funds` | デプロイ用残高不足 | 対象チェーンで残高確認 | 少額 ETH を用意して再実行 |
+| `npm ci` が落ちる | lockfile 不整合 | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |
+| deploy input validation が落ちる | network / contract / JSONが不正 | validation jobのエラー | testnet allowlistと`ARGS_JSON`例を確認 |
+| Environment policy checkが落ちる | Environment名またはexact `main` rule不足 | Settings > Environments | 対応するtestnet Environmentを修正 |
+| Secrets が読めない | Environment / network固有secret名の不一致 | 選択 network と上記の対応表 | 対応 Environment へ固有名で配置 |
+| `insufficient funds` | deploy address の残高不足 | 対象 chain の残高 | testnet faucet または少額を用意 |
+| 公開鮮度チェックが落ちる | Pages が main より古い | `/build-info.json` の revision / version | Pages build 完了後に再確認し、継続する場合は build を調査 |
 
-## 4. Verifyは別メモへ
-- Verify周りは [`docs/appendix/verify.md`](./verify.md) を参照する。
+公開鮮度チェックは毎週の定期実行に加えて `main` 更新時にも起動し、live marker が更新 SHA へ収束するまで再試行してから全 URL を検査する。
+
+## 4. Verify は別メモへ
+
+Etherscan V2 と constructor 引数を含む Verify は [`docs/appendix/verify.md`](./verify.md) を参照する。

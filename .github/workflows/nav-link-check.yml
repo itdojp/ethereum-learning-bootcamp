@@ -1,6 +1,9 @@
 name: Nav + Pages Link Check
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '13 3 * * 1'
   workflow_dispatch: {}
@@ -8,12 +11,21 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
+permissions:
+  contents: read
+
 jobs:
   nav-link-check:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '20'
 
       - name: Install PyYAML
         run: python3 -m pip install --user pyyaml
@@ -118,14 +130,32 @@ jobs:
           urls = [ (p, f"{base}{p}") for p in paths ]
           Path('urls.txt').write_text('\n'.join([f"{p}\t{u}" for p,u in urls]), encoding='utf-8')
           PY
-          echo "list=urls.txt" >> $GITHUB_OUTPUT
+          echo "list=urls.txt" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deployed revision, version, and content markers
+        env:
+          EXPECTED_REVISION: ${{ github.sha }}
+          EXPECTED_VERSION: '2026.07'
+        run: |
+          # A main push can start before legacy Pages finishes publishing. Retry
+          # the live marker instead of accepting the previously published SHA.
+          delays=(0 15 30 60 120 180)
+          for delay in "${delays[@]}"; do
+            sleep "$delay"
+            if node tools/check-public-site.mjs; then
+              exit 0
+            fi
+            echo "Published revision is not current yet; retrying after the next delay." >&2
+          done
+          echo "Published site did not converge to $EXPECTED_REVISION within the retry window." >&2
+          exit 1
 
       - name: Probe URLs
         run: |
           failures=0
-          while IFS=$'\t' read -r path url; do
+          while IFS=$'\t' read -r _ url; do
             code=$(curl -s -o /dev/null -w "%{http_code}" -L "$url")
             echo "$code $url"
             if [ "$code" != "200" ]; then failures=$((failures+1)); fi
           done < urls.txt
-          if [ $failures -gt 0 ]; then echo "Found $failures non-200 URLs" >&2; exit 1; fi
+          if [ "$failures" -gt 0 ]; then echo "Found $failures non-200 URLs" >&2; exit 1; fi

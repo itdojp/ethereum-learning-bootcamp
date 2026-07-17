@@ -48,13 +48,10 @@ npx hardhat node
 Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/
 ```
 
-#### 3.1.2 `.env` を用意してデプロイする（Terminal B）
-```bash
-cp .env.example .env
-```
-`npx hardhat node` の出力にある「テスト用の秘密鍵」を `.env` の `PRIVATE_KEY` に入れる（学習用。鍵はコミットしない）。
+#### 3.1.2 unlocked account でデプロイする（Terminal B）
 
-デプロイ：
+localhost は Hardhat node の unlocked account を使うため、ルート `.env` と `PRIVATE_KEY` は不要。node が表示する公開済みの開発用秘密鍵をコピーしない。
+
 ```bash
 npx hardhat run scripts/deploy-token.ts --network localhost
 npx hardhat run scripts/deploy-event-token.ts --network localhost
@@ -63,6 +60,12 @@ npx hardhat run scripts/deploy-event-token.ts --network localhost
 ```text
 MTK: 0x...
 EventToken: 0x...
+```
+
+ブラウザの専用学習用 account で操作する場合は、その公開 address と MTK address を指定して localhost の test asset を送る。
+
+```bash
+LOCAL_WALLET_ADDRESS=0x... TOKEN_ADDRESS=0x... npm run fund:localhost
 ```
 
 #### 3.1.3 DApp を起動して接続する（Terminal C）

@@ -3,7 +3,7 @@ layout: book
 title: "Ethereum Learning Bootcamp"
 description: "14日間でEthereum開発の基礎から応用まで学ぶ完全教材"
 author: "ITDO Inc."
-version: "2026.05"
+version: "2026.07"
 permalink: /
 ---
 
@@ -26,7 +26,7 @@ permalink: /
 
 ## Phase 5 現行仕様レビューゲート
 
-確認日: **2026-05-23（Asia/Tokyo）**。Ethereum / Solidity / L2 / 開発ツールチェーンは変更頻度が高いため、読者は次のゲートを通してから実運用へ転用する。
+確認日: **2026-07-11（Asia/Tokyo）**。Ethereum / Solidity / L2 / 開発ツールチェーンは変更頻度が高いため、読者は次のゲートを通してから実運用へ転用する。
 
 - **再現対象**: 本リポジトリの `package.json` / `package-lock.json` を優先し、Hardhat 2.x、Solidity 0.8.24、OpenZeppelin Contracts 5.0.2 の学習用構成として扱う。
 - **現行公式確認**: 新規プロジェクトでは Hardhat 3、Solidity 最新リリース、OpenZeppelin Contracts 5.x、Foundry、The Graph、各L2/Explorer/RPCの公式ドキュメントを確認し、教材のコマンドを盲目的に転用しない。
@@ -57,12 +57,15 @@ npm test
 - まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
 - まず手を動かしたい: `npm test` を通してから Day04 へ進む
 - デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
-- `.env` の作成と値の投入は、Sepolia / Optimism へ deploy・verify するときに行う
+- `.env` の作成と値の投入は、Sepolia / OP Sepoliaへのdeploy、または外部networkのread / Verifyを行うときに限る
 - deploy / verify 時に使う主な変数:
   - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
-  - `ETHERSCAN_API_KEY`: Sepolia verify
-  - `OPTIMISM_RPC_URL` / `PRIVATE_KEY`: Optimism deploy
-  - `OPTIMISTIC_ETHERSCAN_API_KEY`: Optimism verify
+  - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy
+  - `MAINNET_RPC_URL`: Mainnet read / Verify（deploy signerは設定しない）
+  - `ETHERSCAN_API_KEY`: Etherscan V2 による Sepolia / OP Sepolia / Mainnet / Optimism verify
+  - `OPTIMISM_RPC_URL`: Optimism read / Verify（deploy signerは設定しない）
+
+GitHub Actions から本番 network へ deploy しない。本番用 private key をGitHub Secretsやルート`.env`へ保存しない。
 
 
 ## 前提知識
