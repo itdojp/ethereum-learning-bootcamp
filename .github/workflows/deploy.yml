@@ -123,7 +123,7 @@ jobs:
           INPUT_NETWORK: ${{ needs.validate.outputs.network }}
           INPUT_CONTRACT: ${{ needs.validate.outputs.contract }}
           INPUT_ARGS_JSON: ${{ needs.validate.outputs.args_json }}
-          INPUT_PRODUCTION_CONFIRMATION: DEPLOY_PRODUCTION
+          INPUT_PRODUCTION_CONFIRMATION: ${{ inputs.production_confirmation }}
         run: node tools/validate-deploy-inputs.cjs
 
       - name: Compile contracts

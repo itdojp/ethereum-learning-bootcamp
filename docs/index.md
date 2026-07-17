@@ -57,7 +57,7 @@ npm test
 - まず全体像を掴みたい: 「進め方（最短ルート）」の 1 → 2 → 6
 - まず手を動かしたい: `npm test` を通してから Day04 へ進む
 - デプロイや Verify で詰まりやすい: Day07 の前に付録の Verify / CI を読む
-- `.env` の作成と値の投入は、Sepolia / Optimism へ deploy・verify するときに行う
+- `.env` の作成と値の投入は、Sepolia / OP Sepolia / Mainnet / Optimism などの外部 network へ deploy・verify するときに行う
 - deploy / verify 時に使う主な変数:
   - `SEPOLIA_RPC_URL` / `PRIVATE_KEY`: Sepolia deploy
   - `OPTIMISM_SEPOLIA_RPC_URL` / `PRIVATE_KEY`: OP Sepolia deploy

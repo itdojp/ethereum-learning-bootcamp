@@ -89,6 +89,8 @@ check(hasExactPermissions(permissionBlock(deployJob, 4), {
   contents: 'read',
   deployments: 'write'
 }), 'deploy job requires exactly actions: read, contents: read, and deployments: write');
+check(/INPUT_PRODUCTION_CONFIRMATION:\s*\$\{\{\s*inputs\.production_confirmation\s*\}\}/u.test(deployJob), 'deploy job must revalidate the operator-provided production confirmation');
+check(!/INPUT_PRODUCTION_CONFIRMATION:\s*DEPLOY_PRODUCTION/u.test(deployJob), 'deploy job must not substitute a hard-coded production confirmation');
 check(/concurrency:/u.test(workflow), 'deploy job must define concurrency');
 check(/production_confirmation:/u.test(workflow), 'production confirmation input is required');
 check(/needs\.validate\.outputs\.environment/u.test(workflow), 'deploy environment must come from validated output');

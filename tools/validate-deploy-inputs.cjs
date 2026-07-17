@@ -37,6 +37,7 @@ try {
     `Deploy inputs validated: network=${result.network}, contract=${result.contract}, constructor_args=${result.args.length}, environment=${result.environment}`
   );
 } catch (error) {
-  console.error(`Deploy input validation failed: ${error.message}`);
+  const detail = error instanceof Error ? error.message : String(error);
+  console.error(`Deploy input validation failed: ${detail}`);
   process.exitCode = 1;
 }
