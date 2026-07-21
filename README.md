@@ -57,7 +57,7 @@ npm run check:metadata
 npm run check:toolchain
 ```
 
-`npm run check:toolchain` は、Hardhat 3.11.0、Node.js 22.13.0以上、公式Ethers/Mocha plugin群、Solidity 0.8.24のexact pinを検証します。`hardhat.config.ts` はlockfile内のローカル `solc-js` を使うため、clean environmentでもコンパイラ取得先に依存しません。`npm run check:install-scripts` はルートと`dapp/`のlockfileにあるinstall scriptをallowlistと照合します。CIは照合前の実行を防ぐため、`npm ci --ignore-scripts`の後に監査済み`esbuild`だけをrebuildします。
+`npm run check:toolchain` は、Hardhat 3.11.0、Node.js 22.13.0 以上、公式 Ethers / Mocha plugin 群、Solidity 0.8.24 の exact pin を検証します。`hardhat.config.ts` は lockfile 内のローカル `solc-js` を使うため、clean environment でもコンパイラ取得先に依存しません。`npm run check:install-scripts` はルートと `dapp/` の lockfile にある install script を allowlist と照合します。CI は照合前の実行を防ぐため、`npm ci --ignore-scripts` の後に監査済み `esbuild` だけを rebuild します。
 
 ### 依存関係のセキュリティチェック
 
@@ -65,7 +65,7 @@ npm run check:toolchain
 npm run check:security
 ```
 
-`npm run check:security` はルートと `dapp/` のdevelopment dependencyを含む `npm audit` を実行し、moderate以上で失敗します。`contracts/*.sol` に取り込まれるOpenZeppelin Contractsはルートの `dependencies` に配置しています。2026-07-22時点でroot/dappともhigh・criticalは0件です。Hardhat Verify 3の旧Ethers ABI経路など、upstreamに修正版がないlow advisoryは件数を記録し、gateを弱めず継続監視します。
+`npm run check:security` はルートと `dapp/` の development dependency を含む `npm audit` を実行し、moderate 以上で失敗します。`contracts/*.sol` に取り込まれる OpenZeppelin Contracts はルートの `dependencies` に配置しています。2026-07-22 時点で root / dapp とも high・critical は 0 件です。Hardhat Verify 3 の旧 Ethers ABI 経路など、upstream に修正版がない low advisory は件数を記録し、gate を弱めず継続監視します。
 
 ## 安全運用の注意
 - 学習用の秘密鍵とテストネットを使い、Mainnet や実資産を扱う鍵は使わないでください。
