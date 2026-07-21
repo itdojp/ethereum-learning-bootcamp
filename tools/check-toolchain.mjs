@@ -40,7 +40,7 @@ const exactDevDependencies = {
 };
 
 check(pkg.type === 'module', 'package.json must declare type=module for Hardhat 3');
-check(pkg.engines?.node === '>=22.12.0', 'package.json must require Node.js >=22.12.0');
+check(pkg.engines?.node === '>=22.13.0', 'package.json must require Node.js >=22.13.0');
 
 for (const [name, version] of Object.entries(exactDevDependencies)) {
   check(pkg.devDependencies?.[name] === version, `${name} must be exact ${version} in package.json`);
@@ -90,7 +90,7 @@ check(
   'Polygon zkEVM must match Hardhat chain 1101 with chainType=generic'
 );
 check(readme.includes('Hardhat 3.11.0'), 'README must state the audited Hardhat version');
-check(readme.includes('Node.js 22.12.0'), 'README must state the minimum Node.js version');
+check(readme.includes('Node.js 22.13.0'), 'README must state the minimum Node.js version');
 check(readme.includes('Solidity 0.8.24'), 'README must state the Solidity version');
 
 if (errors.length > 0) {
@@ -100,7 +100,7 @@ if (errors.length > 0) {
 }
 
 console.log('Toolchain consistency check passed.');
-console.log('Node.js: >=22.12.0');
+console.log('Node.js: >=22.13.0');
 console.log('Hardhat: 3.11.0');
 console.log('Solidity compiler: 0.8.24 (locked local solc-js)');
 console.log('OpenZeppelin Contracts: 5.0.2');

@@ -11,7 +11,7 @@
 ## 開始前チェック
 
 ### 必須
-- Node.js 22.12.0以上とnpmを使えること（本リポジトリのHardhat 3.11.0再現用）
+- Node.js 22.13.0以上とnpmを使えること（本リポジトリのHardhat 3.11.0再現用）
 - Git とターミナル操作の基本が分かること
 - リポジトリルートで `npm run install:reviewed` と `npm test` を実行できること
 - 学習用の `.env` を自分で作成し、秘密情報をコミットしない前提を理解していること
@@ -41,7 +41,7 @@
 - `dapp/` は別のプロジェクト（別 `package.json`）なので、リポジトリルートで `npm run dapp:ci:safe` を実行する。
 
 ## 2. Node.js / npm
-- 必須：Node.js 22.12.0以上
+- 必須：Node.js 22.13.0以上
 - ルートで依存を入れる：
   - `npm run install:reviewed`
 - `dapp/` 側の依存を入れる（必要な場合）：
@@ -51,7 +51,7 @@
 
 この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm run install:reviewed` が使用するlockfileに従う。
 
-- Node.js: 22.12.0以上（本リポジトリのHardhat 3.11.0再現用）
+- Node.js: 22.13.0以上（本リポジトリのHardhat 3.11.0再現用）
 - Hardhat: 3.11.0（公式pluginを個別にexact pin）
 - Solidity: 0.8.24
 - ethers: 6.17.0（`@nomicfoundation/hardhat-ethers` 4.0.15経由）
@@ -65,7 +65,7 @@
 - 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
 
 ### 2.3 現行仕様レビューゲート
-- 本リポジトリを学習用に進める場合は、lockfileによる再現性を優先し、Hardhat 3.11.0 / Node.js 22.12.0以上 / Solidity 0.8.24の組み合わせを無検証で変更しない。
+- 本リポジトリを学習用に進める場合は、lockfileによる再現性を優先し、Hardhat 3.11.0 / Node.js 22.13.0以上 / Solidity 0.8.24の組み合わせを無検証で変更しない。
 - 新規プロジェクトを作る場合は、Hardhat 3の公式ドキュメント、Node.jsサポート条件、plugin互換性、`hardhat.config`の形式を確認してから作業する。
 - Solidity は公式ドキュメントが「デプロイ時は最新リリースを使う」ことを推奨しているため、本番転用時は pragma、compiler、known bugs、optimizer、EVM version を確認する。
 - OpenZeppelin Contracts は 5.x の `latest` / `dev` tag と監査済み release の扱い、upgradeable 版との storage 互換性を確認する。

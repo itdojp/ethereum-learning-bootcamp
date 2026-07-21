@@ -1,11 +1,11 @@
 # ethereum-learning-bootcamp
 
 14日間でEthereum開発の基礎から応用まで学ぶ完全教材。
-Node.js 22.12.0 以上（npm 10+）を前提としています。
+Node.js 22.13.0 以上（npm 10+）を前提としています。
 
 ## 3分で把握する
 - 想定読者: JavaScript/TypeScript と Git の基礎がある初学者〜初級エンジニア
-- 前提: Node.js 22.12.0+、npm、ターミナル操作、ローカルで `npm run install:reviewed` と `npm test` を実行できること
+- 前提: Node.js 22.13.0+、npm、ターミナル操作、ローカルで `npm run install:reviewed` と `npm test` を実行できること
 - 完走後にできること: Hardhat を使ったコントラクト開発、ERC-20/ERC-721 の基本操作、DApp 接続、テスト/Verify/CI の基礎理解
 - 最短開始: `npm run install:reviewed` → `npm test` → Pages の Day01 から順に読む
 - 完走条件: Day01〜Day14 の要点を追い、ローカルテストと最小プロジェクトの流れを説明できること
@@ -57,7 +57,7 @@ npm run check:metadata
 npm run check:toolchain
 ```
 
-`npm run check:toolchain` は、Hardhat 3.11.0、Node.js 22.12.0以上、公式Ethers/Mocha plugin群、Solidity 0.8.24のexact pinを検証します。`hardhat.config.ts` はlockfile内のローカル `solc-js` を使うため、clean environmentでもコンパイラ取得先に依存しません。`npm run check:install-scripts` はルートと`dapp/`のlockfileにあるinstall scriptをallowlistと照合します。CIは照合前の実行を防ぐため、`npm ci --ignore-scripts`の後に監査済み`esbuild`だけをrebuildします。
+`npm run check:toolchain` は、Hardhat 3.11.0、Node.js 22.13.0以上、公式Ethers/Mocha plugin群、Solidity 0.8.24のexact pinを検証します。`hardhat.config.ts` はlockfile内のローカル `solc-js` を使うため、clean environmentでもコンパイラ取得先に依存しません。`npm run check:install-scripts` はルートと`dapp/`のlockfileにあるinstall scriptをallowlistと照合します。CIは照合前の実行を防ぐため、`npm ci --ignore-scripts`の後に監査済み`esbuild`だけをrebuildします。
 
 ### 依存関係のセキュリティチェック
 

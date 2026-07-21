@@ -110,14 +110,14 @@ check(buildInfo.includes('site.github.build_revision'), 'build-info must expose 
 check(jekyllConfig.includes('jekyll-github-metadata'), 'Jekyll must load GitHub metadata for build_revision');
 check(bookLayout.includes('name="book-version"'), 'book layout must expose book-version meta');
 check(bookLayout.includes('name="build-revision"'), 'book layout must expose build-revision meta');
-check(packageJson.engines?.node === '>=22.12.0', 'package.json Node.js minimum must be >=22.12.0');
+check(packageJson.engines?.node === '>=22.13.0', 'package.json Node.js minimum must be >=22.13.0');
 for (const [relative, content] of [
   ['README.md', readme],
   ['docs/index.md', home],
   ['docs/curriculum/index.md', curriculumIndex],
   ['docs/curriculum/Day03_Env_Setup.md', day03]
 ]) {
-  check(content.includes('Node.js 22.12.0'), `${relative}: Node.js minimum must be 22.12.0`);
+  check(content.includes('Node.js 22.13.0'), `${relative}: Node.js minimum must be 22.13.0`);
   check(content.includes('Hardhat 3.11.0'), `${relative}: audited Hardhat version must be 3.11.0`);
 }
 check(
@@ -147,12 +147,12 @@ check(
   'test workflow must keep GITHUB_TOKEN contents read-only'
 );
 check(
-  testWorkflow.includes("node-version: ['22.12.0', '24']") &&
+  testWorkflow.includes("node-version: ['22.13.0', '24']") &&
     testWorkflow.includes('node-version: ${{ matrix.node-version }}'),
   'test workflow must exercise both the exact minimum Node.js version and Node.js 24'
 );
 check(
-  (deployWorkflow.match(/node-version:\s*['"]22\.12\.0['"]/gu) ?? []).length === 2,
+  (deployWorkflow.match(/node-version:\s*['"]22\.13\.0['"]/gu) ?? []).length === 2,
   'deploy workflow must use the audited minimum Node.js version in both jobs'
 );
 for (const [relative, content] of [

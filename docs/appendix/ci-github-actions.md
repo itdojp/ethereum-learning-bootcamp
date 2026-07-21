@@ -25,7 +25,7 @@ GitHub Actions から本番 network へ deploy しない。本番用 private key
 
 このリポジトリでは `.github/workflows/test.yml` を使い、metadata、toolchain、依存互換性、deploy 入力境界、本文整合、contract tests、link、Markdown、dependency audit、DApp build を検証する。
 
-失敗時はActionsの該当stepと同じコマンドをNode.js 22.12.0以上で再現する。
+失敗時はActionsの該当stepと同じコマンドをNode.js 22.13.0以上で再現する。
 
 ```bash
 node -v

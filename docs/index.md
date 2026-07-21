@@ -28,7 +28,7 @@ permalink: /
 
 確認日: **2026-07-22（Asia/Tokyo）**。Ethereum / Solidity / L2 / 開発ツールチェーンは変更頻度が高いため、読者は次のゲートを通してから実運用へ転用する。
 
-- **再現対象**: 本リポジトリの `package.json` / `package-lock.json` を優先し、Hardhat 3.11.0、Node.js 22.12.0以上、Solidity 0.8.24、OpenZeppelin Contracts 5.0.2の学習用構成として扱う。
+- **再現対象**: 本リポジトリの `package.json` / `package-lock.json` を優先し、Hardhat 3.11.0、Node.js 22.13.0以上、Solidity 0.8.24、OpenZeppelin Contracts 5.0.2の学習用構成として扱う。
 - **現行公式確認**: 新規プロジェクトではHardhat 3の最新minor、Solidity最新リリース、OpenZeppelin Contracts 5.x、Foundry、The Graph、各L2/Explorer/RPCの公式ドキュメントを確認し、教材の固定versionを盲目的に転用しない。
 - **L2/Blob前提**: Dencun / Pectra / Fusaka・PeerDAS / Blob Parameter Only fork により、blob target/max、手数料、データ可用性の前提は変化する。Day08 の数値は実測と公式情報で更新する。
 - **安全境界**: 秘密鍵、リカバリーフレーズ、RPC/API キー、署名リクエスト、token approval、ブリッジ操作は学習用アカウントに限定し、Mainnet や実資産を使わない。

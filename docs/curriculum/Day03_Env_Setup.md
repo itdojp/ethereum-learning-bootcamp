@@ -14,7 +14,7 @@
 
 確認日: **2026-07-22（Asia/Tokyo）**。この章は学習再現性を優先しているため、次の境界を明示する。
 
-- 本リポジトリで進める場合は `npm run install:reviewed` によるlockfile再現を優先し、Hardhat 3.11.0 / Node.js 22.12.0以上 / Solidity 0.8.24の組み合わせで確認する。
+- 本リポジトリで進める場合は `npm run install:reviewed` によるlockfile再現を優先し、Hardhat 3.11.0 / Node.js 22.13.0以上 / Solidity 0.8.24の組み合わせで確認する。
 - Hardhat 3のESM、declarative config、明示的network connectionを前提にする。Hardhat 2の記事にあるglobal `ethers` importやplugin side-effect importを混在させない。
 - plugin、ethers、Mocha、TypeScriptは `package.json` とlockfileのexact versionを正本にする。更新時は `npm run check:all` で互換性とauditを再確認する。
 - Foundry は `foundryup` で安定版を導入できるが、インストールスクリプトや binary attestation、nightly / specific version の扱いは公式ドキュメントで確認する。
@@ -23,7 +23,7 @@
 ---
 
 ## 1. 前提
-- 必須：Node.js 22.12.0以上
+- 必須：Node.js 22.13.0以上
 - テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテスト ETH を入れておく
   - メイン資産の鍵は使わない（流出時の被害が大きい）
 - 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
@@ -120,7 +120,7 @@ MTK: 0x...
 > 注意：以降の章は **本リポジトリの構成（`package.json` / lockfile で依存固定）** を前提にしている。3.1 の手順で作った別プロジェクトに、教材のコードをそのまま混ぜないこと（依存差分で再現性が落ちやすい）。教材を進める場合は、本リポジトリに戻って 3.0 の `npm run install:reviewed` を実行する。
 
 #### 3.1.0 この節のゴール（成功判定）
-- `node -v` がv22.12.0以上になっている
+- `node -v` がv22.13.0以上になっている
 - `npx hardhat` で TypeScript プロジェクトを作成できる
 - ローカル `npm test` を外部 RPC / 秘密鍵なしで実行できる
 - テストネットへ出す場合に `.env` を作成し、必要な値を設定できる
@@ -131,7 +131,7 @@ MTK: 0x...
 - `.env` を設定したのにネットワーク接続で落ちる：`SEPOLIA_RPC_URL` が空、または `PRIVATE_KEY` が空でないかを確認する（鍵はコミットしない）。
 
 #### (1) Node.jsと依存パッケージ
-> 必須：**Node.js 22.12.0以上**。Ubuntuの `apt` で入るNodeが古い場合があるため、初心者は `nvm` を使うと躓きにくい。
+> 必須：**Node.js 22.13.0以上**。Ubuntuの `apt` で入るNodeが古い場合があるため、初心者は `nvm` を使うと躓きにくい。
 
 **A. nvm（推奨）**
 ```bash

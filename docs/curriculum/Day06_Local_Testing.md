@@ -176,7 +176,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: 22.12.0
+          node-version: 22.13.0
           cache: npm
       - run: node tools/check-install-scripts.mjs
       - run: npm ci --ignore-scripts
@@ -202,7 +202,7 @@ jobs:
 | 症状 | 原因 | 対処 |
 |---|---|---|
 | gas statisticsに出ない / 差が見えない | `pure/view` がcall扱いになり、Txとして計測されていない | 章中の `bench*` のようにTx化して測る |
-| coverageが落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | `npm run install:reviewed` で揃え、Node.js 22.12.0以上で再実行する |
+| coverageが落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | `npm run install:reviewed` で揃え、Node.js 22.13.0以上で再実行する |
 | CIでだけ落ちる | ローカルとCIの差分 | 付録 [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「失敗時の切り分け（最短）」を参照する |
 
 ---
