@@ -3,6 +3,7 @@
 このページでは、本教材の「大きな変更」をまとめます。細かな修正は GitHub のコミット履歴を参照してください。
 
 ## 2026.07
+- Hardhat 2 toolchainをHardhat 3.11.0、Node.js 22.12.0以上、明示plugin/network connectionへ移行し、組み込みcoverage/gas statistics、install-script policy、high/critical 0のaudit gateを追加
 - deploy workflow を testnet-first に変更し、入力検証、production 確認、network 別 GitHub Environment、最小権限、同時実行制御、action SHA pin を追加
 - constructor 引数を `ARGS_JSON` の JSON 配列に統一し、workflow と deploy script の双方で network、contract identifier、引数型を検証
 - Hardhat 2.x を維持したまま `@nomicfoundation/hardhat-verify` 2.1.3 と Etherscan API V2 の単一 API key 契約へ移行し、OP Sepolia を追加

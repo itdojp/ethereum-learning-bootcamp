@@ -1,4 +1,6 @@
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 async function main() {
   const base = process.env.NFT_BASE || 'ipfs://example/';

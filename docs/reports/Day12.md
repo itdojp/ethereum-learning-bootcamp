@@ -8,7 +8,7 @@
 ## コマンド
 ```bash
 # 依存を復元（OZ v5）
-npm ci
+npm run install:reviewed
 
 # 再入テストのみ
 npx hardhat test test/reentrancy.ts

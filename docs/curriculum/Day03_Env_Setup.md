@@ -12,24 +12,24 @@
 
 ## 0. 現行ツールチェーン確認ゲート
 
-確認日: **2026-07-11（Asia/Tokyo）**。この章は学習再現性を優先しているため、次の境界を明示する。
+確認日: **2026-07-22（Asia/Tokyo）**。この章は学習再現性を優先しているため、次の境界を明示する。
 
-- 本リポジトリで進める場合は `npm ci` による lock file 再現を優先し、Hardhat 2.x / Node.js 20 / Solidity 0.8.24 の組み合わせで確認する。
-- Hardhat 公式ドキュメントの既定導線は Hardhat 3 へ移行している。Hardhat 3 は Node.js サポート条件や設定形式が異なるため、Hardhat 2 の教材コードへ Hardhat 3 手順を混在させない。
-- ゼロから新規プロジェクトを作る場合は、Hardhat 3 を採用するか、Hardhat 2 を互換性維持目的で使うかを先に決め、plugin、Node.js、ethers、TypeScript の組み合わせを lock file に固定する。
+- 本リポジトリで進める場合は `npm run install:reviewed` によるlockfile再現を優先し、Hardhat 3.11.0 / Node.js 22.12.0以上 / Solidity 0.8.24の組み合わせで確認する。
+- Hardhat 3のESM、declarative config、明示的network connectionを前提にする。Hardhat 2の記事にあるglobal `ethers` importやplugin side-effect importを混在させない。
+- plugin、ethers、Mocha、TypeScriptは `package.json` とlockfileのexact versionを正本にする。更新時は `npm run check:all` で互換性とauditを再確認する。
 - Foundry は `foundryup` で安定版を導入できるが、インストールスクリプトや binary attestation、nightly / specific version の扱いは公式ドキュメントで確認する。
 - Sepolia、Holesky、Hoodi などの testnet、faucet、Explorer、RPC URL、Verify API は変更され得る。デプロイ前に公式情報と chainId を確認し、Mainnet や実資産の鍵は使わない。
 
 ---
 
 ## 1. 前提
-- 推奨：Node.js 20（LTS）
+- 必須：Node.js 22.12.0以上
 - テストネットへデプロイする場合は、学習用の鍵を用意し、少額のテスト ETH を入れておく
   - メイン資産の鍵は使わない（流出時の被害が大きい）
 - 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（テストネットへ出す/検証する場合）
 - 触るファイル（主なもの）：`.env` / `hardhat.config.ts` / `scripts/deploy-token.ts`（例）
 - 今回触らないこと：いきなりMainnetへデプロイ（Day7で“安全な流れ”として扱う）
-- 最短手順（迷ったらここ）：3.0 の手順で `npm ci` → `npm test`。`.env` は deploy / verify を行うときだけ作成する。
+- 最短手順（迷ったらここ）：3.0 の手順で `npm run install:reviewed` → `npm test`。`.env` は deploy / verify を行うときだけ作成する。
 
 ---
 
@@ -72,7 +72,7 @@
 
 1) 依存を入れる（リポジトリルート）：
 ```bash
-npm ci
+npm run install:reviewed
 ```
 
 2) テストを実行する（ローカルで一通り動くことを確認）：
@@ -117,10 +117,10 @@ MTK: 0x...
 ### 3.1 環境構築（参考：ゼロから作る場合）
 この節は「本リポジトリを使わず、ゼロから Hardhat プロジェクトを作る」場合の参考だ。迷ったら 3.0 を優先する。
 
-> 注意：以降の章は **本リポジトリの構成（`package.json` / lockfile で依存固定）** を前提にしている。3.1 の手順で作った別プロジェクトに、教材のコードをそのまま混ぜないこと（依存差分で再現性が落ちやすい）。教材を進める場合は、本リポジトリに戻って 3.0 の `npm ci` を実行する。
+> 注意：以降の章は **本リポジトリの構成（`package.json` / lockfile で依存固定）** を前提にしている。3.1 の手順で作った別プロジェクトに、教材のコードをそのまま混ぜないこと（依存差分で再現性が落ちやすい）。教材を進める場合は、本リポジトリに戻って 3.0 の `npm run install:reviewed` を実行する。
 
 #### 3.1.0 この節のゴール（成功判定）
-- `node -v` が v20 系になっている
+- `node -v` がv22.12.0以上になっている
 - `npx hardhat` で TypeScript プロジェクトを作成できる
 - ローカル `npm test` を外部 RPC / 秘密鍵なしで実行できる
 - テストネットへ出す場合に `.env` を作成し、必要な値を設定できる
@@ -131,7 +131,7 @@ MTK: 0x...
 - `.env` を設定したのにネットワーク接続で落ちる：`SEPOLIA_RPC_URL` が空、または `PRIVATE_KEY` が空でないかを確認する（鍵はコミットしない）。
 
 #### (1) Node.jsと依存パッケージ
-> 推奨：**Node.js 20（LTS）**。Ubuntu の `apt` で入る Node が古い場合があるため、初心者は `nvm` を使うと躓きにくい。
+> 必須：**Node.js 22.12.0以上**。Ubuntuの `apt` で入るNodeが古い場合があるため、初心者は `nvm` を使うと躓きにくい。
 
 **A. nvm（推奨）**
 ```bash
@@ -145,8 +145,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 command -v nvm && nvm --version
 
-nvm install 20
-nvm use 20
+nvm install 22
+nvm use 22
 node -v
 npm -v
 ```
@@ -162,15 +162,20 @@ npm -v
 ```bash
 mkdir eth-bootcamp && cd eth-bootcamp
 npm init -y
-# 本教材互換で Hardhat 2 を使う場合。Hardhat 3 を採用する場合は公式 Getting Started に従う。
-npm install --save-dev hardhat@2.27.0
-npx hardhat
+npm pkg set type=module
+npm install --save-dev --save-exact hardhat@3.11.0
+npx hardhat --init
 ```
-プロンプトで「Create a TypeScript project」を選択。ここでは本教材と同じ Hardhat 2.x 系を固定しているが、表示されるテンプレートや質問は Hardhat の version で変わるため、手元の `npx hardhat --version` を記録する。
+プロンプトでMocha + ethersのTypeScript projectを選択する。表示されるテンプレートや質問はHardhatのversionで変わるため、`npx hardhat --version` を記録する。本教材を再現する場合は新規生成せず、このrepositoryのlockfileを使用する。
 
 #### (3) 推奨プラグインの追加
 ```bash
-npm install --save-dev @nomicfoundation/hardhat-toolbox@6.1.0 dotenv@16.6.1
+npm install --save-dev --save-exact \
+  @nomicfoundation/hardhat-ethers@4.0.15 \
+  @nomicfoundation/hardhat-ethers-chai-matchers@3.0.11 \
+  @nomicfoundation/hardhat-mocha@3.0.21 \
+  @nomicfoundation/hardhat-verify@3.0.21 \
+  ethers@6.17.0 chai@6.2.2 mocha@11.7.6
 ```
 
 #### (4) .envファイルを準備（deploy / verify を行う場合）
@@ -193,24 +198,27 @@ cp .env.example .env && nano .env
 ### 3.2 Hardhat 設定
 `hardhat.config.ts` を編集：
 ```ts
-import * as dotenv from 'dotenv';
-dotenv.config();
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import 'dotenv/config';
+import hardhatEthers from '@nomicfoundation/hardhat-ethers';
+import hardhatEthersChaiMatchers from '@nomicfoundation/hardhat-ethers-chai-matchers';
+import hardhatMocha from '@nomicfoundation/hardhat-mocha';
+import hardhatVerify from '@nomicfoundation/hardhat-verify';
+import { configVariable, defineConfig } from 'hardhat/config';
 
-const config: HardhatUserConfig = {
-  solidity: "0.8.24",
+export default defineConfig({
+  plugins: [hardhatEthers, hardhatEthersChaiMatchers, hardhatMocha, hardhatVerify],
+  solidity: { version: '0.8.24' },
   networks: {
     sepolia: {
-      url: process.env.SEPOLIA_RPC_URL || "",
-      accounts: [process.env.PRIVATE_KEY || ""],
-    },
+      type: 'http',
+      chainType: 'l1',
+      chainId: 11155111,
+      url: configVariable('SEPOLIA_RPC_URL'),
+      accounts: [configVariable('PRIVATE_KEY')]
+    }
   },
-  etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  },
-};
-export default config;
+  verify: { etherscan: { apiKey: configVariable('ETHERSCAN_API_KEY') } }
+});
 ```
 
 > メモ：このテキストの TypeScript サンプルコードは **ethers v6** を前提とする。古い記事などにある `ethers.utils.parseEther` や `contract.deployed()` という表記は、v6 では `ethers.parseEther` や `waitForDeployment()` に対応する。
@@ -224,7 +232,9 @@ export default config;
 #### (1) デプロイスクリプト作成
 ```bash
 cat > scripts/deploy.ts <<'TS'
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 async function main() {
   const Lock = await ethers.getContractFactory("Lock");
@@ -298,7 +308,7 @@ cast block-number --rpc-url $SEPOLIA_RPC_URL
 ---
 
 ## 6. まとめ
-- ルートで `npm ci` し、外部 RPC や秘密鍵なしで `npm test` を実行できる状態を確認した。
+- ルートで `npm run install:reviewed` を実行し、外部 RPC や秘密鍵なしで `npm test` を実行できる状態を確認した。
 - deploy / verify を行う場合にだけ `.env` を作成し、必要な値を設定する運用を押さえた。
 - `--network sepolia` でデプロイできることを確認し、任意で Foundry / cast にも触れた。
 

@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
+    "lib": ["ES2023"],
+    "module": "Node20",
+    "target": "ES2023",
     "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "skipLibCheck": true,
     "outDir": "dist",
-    "types": [
-      "node",
-      "chai"
-    ]
+    "types": ["node", "mocha", "chai"],
+    "verbatimModuleSyntax": true
   },
   "include": [
     "./scripts",
     "./test",
+    "./types",
     "./hardhat.config.ts"
   ]
 }

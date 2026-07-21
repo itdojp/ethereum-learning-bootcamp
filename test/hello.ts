@@ -1,5 +1,7 @@
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 describe('Hello', ()=>{
   it('sets and emits', async ()=>{

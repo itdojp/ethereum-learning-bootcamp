@@ -37,7 +37,7 @@
 ### 2.1 手順（コマンド）
 ```bash
 # 例：依存導入
-npm ci
+npm run install:reviewed
 ```
 
 ### 2.2 期待される出力

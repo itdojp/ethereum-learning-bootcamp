@@ -20,7 +20,7 @@
 4) Day3：環境構築：[`Day03_Env_Setup.md`](./Day03_Env_Setup.md)
 
 ## チェックリスト（ここまでできれば次へ進める）
-- [ ] `npm ci` が通る（ルート）
+- [ ] `npm run install:reviewed` が通る（ルート）
 - [ ] `npm test` が通る（ルート）
 - [ ] Day1のRPC例が動き、ブロック番号を10進数で読める
 

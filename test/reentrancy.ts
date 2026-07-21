@@ -1,5 +1,7 @@
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 describe('Reentrancy scenario', () => {
   it('VulnBank is drainable', async () => {
@@ -31,6 +33,6 @@ describe('Reentrancy scenario', () => {
     await attacker.waitForDeployment();
 
     await expect(attacker.connect(attackerSigner).attack({ value: ethers.parseEther('1') }))
-      .to.be.reverted;
+      .to.revert(ethers);
   });
 });

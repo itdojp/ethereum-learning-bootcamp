@@ -1,4 +1,6 @@
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 describe('GasEvent', () => {
   it('logs gas difference', async () => {

@@ -1,12 +1,14 @@
-import { ethers, network } from 'hardhat';
+import { network } from 'hardhat';
+import { createRequire } from 'node:module';
 
-const {
-  parseConstructorArgs,
-  validateContractName
-}: {
+const connection = await network.create();
+const { ethers } = connection;
+
+const require = createRequire(import.meta.url);
+const { parseConstructorArgs, validateContractName } = require('../tools/deploy-inputs.cjs') as {
   parseConstructorArgs: (value: string) => unknown[];
   validateContractName: (value: string) => string;
-} = require('../tools/deploy-inputs.cjs');
+};
 
 async function main() {
   if (process.env.ARGS !== undefined) {
@@ -17,7 +19,7 @@ async function main() {
   const constructorArgs = parseConstructorArgs(process.env.ARGS_JSON ?? '[]');
 
   console.log(
-    `Deploying contract=${contractName} to network=${network.name} with ${constructorArgs.length} constructor argument(s)`
+    `Deploying contract=${contractName} to network=${connection.networkName} with ${constructorArgs.length} constructor argument(s)`
   );
   const factory = await ethers.getContractFactory(contractName);
   const contract = await factory.deploy(...constructorArgs);

@@ -6,7 +6,7 @@
   "author": "ITDO Inc.",
   "license": "CC-BY-NC-SA-4.0",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.12.0"
   },
   "repository": {
     "type": "git",
@@ -19,13 +19,13 @@
   "scripts": {
     "build": "hardhat compile",
     "test": "hardhat test",
-    "coverage": "hardhat coverage",
+    "coverage": "hardhat test --coverage",
     "check:links": "node tools/check-links.mjs",
     "check:md-style": "node tools/check-md-style.mjs",
     "check:toolchain": "node tools/check-toolchain.mjs",
     "check:dependency-compat": "node tools/check-dependency-compat.cjs",
     "check:security": "npm audit --include=dev --audit-level=moderate && npm --prefix dapp audit --include=dev --audit-level=moderate",
-    "check:all": "npm run check:metadata && npm run check:toolchain && npm run check:dependency-compat && npm run test:deploy-inputs && npm run test:deployment-environment && npm run test:public-site && npm run check:deploy-safety && npm run check:docs-consistency && npm test && npm run check:links && npm run check:md-style && npm run check:security && npm --prefix dapp ci && npm --prefix dapp run build",
+    "check:all": "npm run check:metadata && npm run check:toolchain && npm run check:dependency-compat && npm run check:install-scripts && npm run check:type && npm run test:deploy-inputs && npm run test:deployment-environment && npm run test:public-site && npm run check:deploy-safety && npm run check:docs-consistency && npm test && npm run coverage && npm run gas && npm run check:links && npm run check:md-style && npm run check:security && npm run dapp:ci:safe && npm --prefix dapp run build",
     "dapp:build": "npm --prefix dapp run build",
     "lint": "echo 'add linter if needed'",
     "deploy:sepolia": "hardhat run scripts/deploy-generic.ts --network sepolia",
@@ -36,43 +36,37 @@
     "check:docs-consistency": "node tools/check-docs-consistency.mjs",
     "check:public-site": "node tools/check-public-site.mjs",
     "fund:localhost": "hardhat run scripts/fund-local-wallet.ts --network localhost",
-    "test:deployment-environment": "node --test tools/test-deployment-environment.cjs"
+    "test:deployment-environment": "node --test tools/test-deployment-environment.cjs",
+    "gas": "hardhat --gas-stats test",
+    "check:type": "hardhat compile && tsc --noEmit",
+    "check:install-scripts": "node tools/check-install-scripts.mjs",
+    "install:reviewed": "node tools/check-install-scripts.mjs && npm ci --ignore-scripts && npm rebuild esbuild",
+    "dapp:ci:safe": "node tools/check-install-scripts.mjs && npm --prefix dapp ci --ignore-scripts && npm --prefix dapp rebuild esbuild"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "~5.0.2"
+    "@openzeppelin/contracts": "5.0.2"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
-    "@nomicfoundation/hardhat-verify": "2.1.3",
-    "@types/chai": "^4.3.11",
-    "@types/node": "^20.12.7",
-    "chai": "^4.4.1",
-    "dotenv": "^16.4.5",
-    "hardhat": "^2.22.1",
-    "hardhat-gas-reporter": "^2.3.0",
+    "@nomicfoundation/hardhat-ethers": "4.0.15",
+    "@nomicfoundation/hardhat-ethers-chai-matchers": "3.0.11",
+    "@nomicfoundation/hardhat-mocha": "3.0.21",
+    "@nomicfoundation/hardhat-typechain": "3.1.1",
+    "@nomicfoundation/hardhat-verify": "3.0.21",
+    "@types/chai": "5.2.3",
+    "@types/mocha": "10.0.10",
+    "@types/node": "22.16.5",
+    "chai": "6.2.2",
+    "dotenv": "17.2.0",
+    "ethers": "6.17.0",
+    "hardhat": "3.11.0",
+    "mocha": "11.7.6",
     "solc": "0.8.24",
-    "solidity-coverage": "^0.8.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.0"
+    "typescript": "5.9.3"
   },
   "overrides": {
-    "ethers": {
-      "ws": "8.21.0"
-    },
-    "ethjs-unit": {
-      "bn.js": "4.12.5"
-    },
-    "lodash": "4.18.1",
-    "number-to-bn": {
-      "bn.js": "4.12.5"
-    },
-    "qs": "6.14.1",
+    "adm-zip": "0.6.0",
     "serialize-javascript": "7.0.7",
-    "tmp": "0.2.7",
-    "undici": "6.27.0",
-    "uuid": "11.1.1",
-    "viem": {
-      "ws": "8.21.0"
-    }
-  }
+    "tmp": "0.2.7"
+  },
+  "type": "module"
 }
