@@ -105,6 +105,7 @@ const navWorkflow = read('.github/workflows/nav-link-check.yml');
 const day10 = read('docs/curriculum/Day10_Events_TheGraph.md');
 const subgraphReadme = read('docs/subgraph/README.md');
 const graphAppendix = read('docs/appendix/the-graph.md');
+const day11 = read('docs/curriculum/Day11_NFT_Metadata.md');
 check(day08.includes('ethereum-roadmap-reviewed-2026-07-11'), 'Day08 current-review marker is missing');
 check(changelog.includes('## 2026.07'), 'CHANGELOG latest 2026.07 section is missing');
 check(home.includes('version: "2026.07"'), 'Home front matter version must be 2026.07');
@@ -217,6 +218,36 @@ check(
   'The Graph appendix must preserve the dated upstream dependency risk boundary'
 );
 
+const ipfsContract = [
+  'CID、pinning、Gateway',
+  'Pinata Public IPFS',
+  'ipfs://<IMAGE_ROOT_CID>/1.png',
+  'NFT_BASE=ipfs://<METADATA_ROOT_CID>/',
+  'https://gateway.pinata.cloud/ipfs/${METADATA_ROOT_CID}/1.json',
+  'https://dweb.link/ipfs/${METADATA_ROOT_CID}/1.json',
+  '短命のsigned upload URL',
+  '新規IPFS key作成を全userで停止',
+  '2026-07-23（Asia/Tokyo）',
+  'https://docs.ipfs.tech/quickstart/pin/',
+  'https://docs.pinata.cloud/files/uploading-files',
+  'https://docs.infura.io/reference/ipfs/quickstart/'
+];
+for (const marker of ipfsContract) {
+  check(day11.includes(marker), `Day11 current IPFS onboarding contract is missing ${marker}`);
+}
+check(
+  !day11.includes('PinataまたはInfura IPFS（Project ID/Secret）を用意'),
+  'Day11 must not present Infura legacy IPFS access as a new-reader prerequisite'
+);
+check(
+  day11.includes('admin JWT／API secretはserver-sideのsecret store') &&
+    day11.includes('`.env.example`') &&
+    day11.includes('`VITE_*`') &&
+    day11.includes('browser bundle') &&
+    day11.includes('shell history'),
+  'Day11 must keep the upload credential exposure boundary'
+);
+
 if (errors.length) {
   console.error('Documentation consistency check failed:');
   for (const error of errors) console.error(`- ${error}`);
@@ -224,4 +255,4 @@ if (errors.length) {
 }
 
 console.log('Documentation consistency check passed.');
-console.log('Checked numbered headings, publication markers, and The Graph CLI 0.98.1 contract.');
+console.log('Checked numbered headings, publication markers, The Graph CLI, and IPFS onboarding contracts.');

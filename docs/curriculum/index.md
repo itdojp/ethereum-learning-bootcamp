@@ -21,7 +21,7 @@
 - テスト ETH を受け取れるウォレット（Sepolia / Optimism など）
 - MetaMask 等のウォレット拡張（Day09 以降）
 - The Graph のアカウント（Day10 を実際に試す場合）
-- IPFS / NFT メタデータ配信用のサービスアカウント（Day11 を実際に試す場合）
+- 新規登録可能なIPFS pinning serviceのアカウント、またはself-hosted IPFS node（Day11 を実際に試す場合）
 
 ### 安全運用の前提
 - 学習にはテストネット用またはローカル開発用の秘密鍵だけを使う。Mainnet や実資産を扱う鍵は使わない。
@@ -60,7 +60,7 @@
 
 ### 2.2 確認時点と再確認ポイント
 - このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-07-22（Asia/Tokyo）時点**で確認した内容を基準としている。
-- 特に変わりやすいのは、Hardhat 3のminor versionとNode.jsサポート、Solidity最新リリース、OpenZeppelin Contracts 5.x、RPC提供者のUI/APIキー取得手順、ExplorerのVerify画面、GitHub Actionsの画面導線、The Graphの管理画面である。
+- 特に変わりやすいのは、Hardhat 3のminor versionとNode.jsサポート、Solidity最新リリース、OpenZeppelin Contracts 5.x、RPC提供者のUI/APIキー取得手順、IPFS pinning serviceの新規登録・upload・Gateway、ExplorerのVerify画面、GitHub Actionsの画面導線、The Graphの管理画面である。
 - 本文どおりに進まない場合は、まず `npm run install:reviewed` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
 - 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
 
