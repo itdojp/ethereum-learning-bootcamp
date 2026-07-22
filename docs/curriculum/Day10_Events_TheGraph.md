@@ -89,34 +89,72 @@ The Graph の手順は更新されやすい。ここでは [Subgraph](../appendi
 - 生成物はこのリポジトリでは同梱しない。
 - `subgraph/` 配下に生成する運用を推奨する（参照：[`docs/subgraph/README.md`](../subgraph/README.md)）。
 
-### 4.1 ひな形生成（例：Sepolia）
+### 4.1 StudioとCLIの役割を分ける
+
+2026-07-22に動作確認した対象は `@graphprotocol/graph-cli@0.98.1`（Node.js 20.18.1以上）である。Subgraph Studioで先にSubgraphを作成し、詳細画面に表示されるslugを確認する。
+
+| 値 | 役割 | 例 |
+|---|---|---|
+| Subgraph Studio | 生成物のdeploy先（product） | Studio上で作成したSubgraph |
+| `SUBGRAPH_SLUG` | Studio上のSubgraph ID | `event-token-sepolia` |
+| local directory | scaffoldを生成するローカルパス | `subgraph/event-token` |
+| `network` | index対象コントラクトのchain | `sepolia` |
+
+公式install pageには `--product subgraph-studio` の例も残っているが、配布中のCLI 0.98.1はこのflagを定義せず、deploy先はSubgraph Studioがdefaultである。公式ページだけでなく、実行するversionの `--version` と `init --help` を確認する。
+
+### 4.2 ひな形生成（例：Sepolia）
+
+リポジトリルートで、Studioのslug、デプロイ済みEventTokenのaddressとblock、Hardhat artifactを明示する。
+
 ```bash
-graph init \
-  --from-contract <EVENT_TOKEN_ADDR> \
+export SUBGRAPH_SLUG=event-token-sepolia
+export EVENT_TOKEN_ADDR=0x...
+export EVENT_TOKEN_START_BLOCK=12345678
+export EVENT_TOKEN_ABI=artifacts/contracts/EventToken.sol/EventToken.json
+
+npx hardhat compile
+npx --yes @graphprotocol/graph-cli@0.98.1 --version
+npx --yes @graphprotocol/graph-cli@0.98.1 init \
+  "$SUBGRAPH_SLUG" \
+  subgraph/event-token \
+  --protocol ethereum \
+  --from-contract "$EVENT_TOKEN_ADDR" \
   --network sepolia \
-  subgraph/event-token
+  --abi "$EVENT_TOKEN_ABI" \
+  --contract-name EventToken \
+  --start-block "$EVENT_TOKEN_START_BLOCK" \
+  --index-events \
+  --skip-install \
+  --skip-git
 ```
 
-### 4.2 startBlock を入れる
-`startBlock` は「このブロック以降だけを見る」という範囲指定。**デプロイTxのブロック番号** を入れるのが基本。
+`--skip-install` は生成された `package.json` を確認してから依存関係を入れるため、`--skip-git` は親repositoryをCLIが自動stage/commitしないために指定する。後者は0.98.1でdeprecation warningが出るため、将来versionでは `init --help` でdefaultを再確認する。
+
+### 4.3 startBlock を入れる
+`startBlock` は「このブロック以降だけを見る」という範囲指定。**デプロイTxのブロック番号**を入れるのが基本で、address、network、blockの3点を同じdeploy記録から取得する。
 
 取得例やつまずきは [`docs/appendix/the-graph.md`](../appendix/the-graph.md) を参照する。
 
-### 4.3 codegen / build
+### 4.4 dependency確認 / codegen / build
 ```bash
 cd subgraph/event-token
-npm i
-graph codegen
-graph build
+npm install --ignore-scripts
+npm audit --omit=dev --omit=optional
+npm run codegen
+npm run build
 ```
 
-デプロイは The Graph Studio の手順に従う（Authトークンが必要）。
+`npm audit` はbuild成功と別の判定である。2026-07-22のclean scaffoldではcodegen/buildは成功した一方、Graph CLI 0.98.1の生成依存にproduction vulnerability（moderate 4 / high 9 / critical 2）が残った。`npm audit fix --force`で旧CLIへ自動downgradeせず、deploy keyを入力する前に最新releaseとadvisoryを再監査する。
+
+Studio deploy keyの準備、`graph auth`、`graph deploy`、平文credential fileの扱いは [`docs/appendix/the-graph.md`](../appendix/the-graph.md) に分離する。slugはdeploy先IDであり、local directoryやdeploy keyではない。
 
 ---
 
 ## 5. つまずきポイント
 - startBlock が分からない / 遅すぎる：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 - build が落ちる（ABI/スキーマ不一致）：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
+- `--product` がunknown flagになる：CLI 0.98.1では指定せず、`--version` / `init --help` とStudio defaultを確認する
+- `npm audit` が失敗する：build結果と分離し、最新CLI release・advisory・影響経路を確認する。`--force`で自動downgradeしない
 - ブラウザ購読が発火しない：チェーン ID、コントラクトアドレス、イベント定義（`TransferLogged`）を確認する
 
 ---
@@ -124,17 +162,17 @@ graph build
 ## 6. まとめ
 - `indexed` を含むイベント設計と、購読が「履歴取得・UI更新」の土台になることを押さえた。
 - EventToken のイベント発火 → dapp での購読表示、までの一連の流れを確認した。
-- The Graph は更新頻度が高いため、生成場所・`startBlock` といった“詰まりどころ”を付録に寄せる構成にした。
+- The GraphはStudioのslug、local directory、network、deploy keyを別の役割として扱い、CLI version・`startBlock`・dependency監査を再現条件に含める。
 
 ### 理解チェック（3問）
 - Q1. イベント引数に `indexed` を付けると何が変わるか？デメリットは何か？
 - Q2. ブラウザ購読（dapp）と The Graph でのIndexingは、何が得意で何が苦手か？
-- Q3. `startBlock` を入れる理由は何か？
+- Q3. Studioのslugとlocal directoryは何が違い、`startBlock` を入れる理由は何か？
 
 ### 解答例（短く）
 - A1. topicとして検索しやすくなり、フィルタが高速になる。増やしすぎるとログサイズが増え、設計変更もしにくい。
 - A2. ブラウザ購読はリアルタイム表示に向くが、長期履歴の集計は苦手になりやすい。The Graphは履歴/集計に向くが、セットアップや更新追従が必要になる。
-- A3. 走査範囲を絞り、不要な過去ブロックを読まないため（基本はデプロイTxのブロック以降）。
+- A3. slugはStudio上のSubgraph ID、local directoryはscaffoldの保存先である。`startBlock`は走査範囲を絞り、不要な過去ブロックを読まないために、基本はデプロイTxのblockを指定する。
 
 ### 確認コマンド（最小）
 ```bash
