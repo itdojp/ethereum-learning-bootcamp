@@ -102,6 +102,9 @@ const testWorkflow = read('.github/workflows/test.yml');
 const deployWorkflow = read('.github/workflows/deploy.yml');
 const bookQaWorkflow = read('.github/workflows/book-qa.yml');
 const navWorkflow = read('.github/workflows/nav-link-check.yml');
+const day10 = read('docs/curriculum/Day10_Events_TheGraph.md');
+const subgraphReadme = read('docs/subgraph/README.md');
+const graphAppendix = read('docs/appendix/the-graph.md');
 check(day08.includes('ethereum-roadmap-reviewed-2026-07-11'), 'Day08 current-review marker is missing');
 check(changelog.includes('## 2026.07'), 'CHANGELOG latest 2026.07 section is missing');
 check(home.includes('version: "2026.07"'), 'Home front matter version must be 2026.07');
@@ -164,6 +167,55 @@ for (const [relative, content] of [
   check(!/node-version:\s*['"]?20['"]?/u.test(content), `${relative}: Node.js 20 setup remains`);
 }
 
+const graphInitContract = [
+  'npx --yes @graphprotocol/graph-cli@0.98.1 init',
+  '"$SUBGRAPH_SLUG" \\',
+  'subgraph/event-token \\',
+  '--protocol ethereum',
+  '--from-contract "$EVENT_TOKEN_ADDR"',
+  '--network sepolia',
+  '--abi "$EVENT_TOKEN_ABI"',
+  '--contract-name EventToken',
+  '--start-block "$EVENT_TOKEN_START_BLOCK"',
+  '--index-events',
+  '--skip-install',
+  '--skip-git'
+];
+for (const [relative, content] of [
+  ['docs/curriculum/Day10_Events_TheGraph.md', day10],
+  ['docs/subgraph/README.md', subgraphReadme],
+  ['docs/appendix/the-graph.md', graphAppendix]
+]) {
+  for (const marker of graphInitContract) {
+    check(content.includes(marker), `${relative}: current Graph CLI init contract is missing ${marker}`);
+  }
+  check(
+    content.includes('npm audit --omit=dev --omit=optional'),
+    `${relative}: generated Subgraph dependency audit is missing`
+  );
+  check(
+    content.includes('`--product') && content.includes('0.98.1'),
+    `${relative}: official --product / CLI 0.98.1 discrepancy is not documented`
+  );
+  check(
+    !content.includes('--network sepolia \\\n  subgraph/event-token'),
+    `${relative}: legacy slug/directory-confused graph init command remains`
+  );
+}
+check(
+  graphAppendix.includes('npx --yes @graphprotocol/graph-cli@0.98.1 auth "$GRAPH_DEPLOY_KEY"') &&
+    graphAppendix.includes('npx --yes @graphprotocol/graph-cli@0.98.1 deploy \\') &&
+    graphAppendix.includes('chmod 600 "$HOME/.graph-cli.json"'),
+  'The Graph appendix must keep exact-version auth/deploy and plaintext credential protection'
+);
+check(
+  graphAppendix.includes('moderate: 4') &&
+    graphAppendix.includes('high: 9') &&
+    graphAppendix.includes('critical: 2') &&
+    graphAppendix.includes('`npm audit fix --force`'),
+  'The Graph appendix must preserve the dated upstream dependency risk boundary'
+);
+
 if (errors.length) {
   console.error('Documentation consistency check failed:');
   for (const error of errors) console.error(`- ${error}`);
@@ -171,4 +223,4 @@ if (errors.length) {
 }
 
 console.log('Documentation consistency check passed.');
-console.log('Checked numbered headings for Day01-Day14 and publication markers for version 2026.07.');
+console.log('Checked numbered headings, publication markers, and The Graph CLI 0.98.1 contract.');
