@@ -17,8 +17,8 @@ test('active workflows use full commit SHA pins', async () => {
     'nav-link-check.yml',
     'test.yml',
   ]);
-  assert.equal(result.references.length, 18);
-  assert.equal(result.references.filter(({ kind }) => kind === 'external-action').length, 18);
+  assert.equal(result.references.length, 21);
+  assert.equal(result.references.filter(({ kind }) => kind === 'external-action').length, 21);
 });
 
 test('mutable tag fixture fails closed', async () => {

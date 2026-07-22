@@ -48,20 +48,50 @@ jobs:
       - run: npm run check:md-style
       - run: npm run check:security
 
+  foundry-invariant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22.13.0'
+          cache: npm
+      - name: Check locked install scripts before execution
+        run: node tools/check-install-scripts.mjs
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Rebuild the reviewed esbuild binary
+        run: npm rebuild esbuild
+      - name: Install Foundry v1.7.1
+        uses: foundry-rs/foundry-toolchain@b00af27efadbc7b4ca8b82abbd903b17cc874d2a # v1.9.0
+        with:
+          version: v1.7.1
+          cache: false
+      - name: Verify executable invariant and negative mutation
+        run: npm run test:foundry
+
   # Keep this job name stable. Classic branch protection requires `test`.
   required-test:
     name: test
-    needs: [test]
+    needs: [test, foundry-invariant]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Require successful test matrix
         env:
           MATRIX_RESULT: ${{ needs.test.result }}
+          FOUNDRY_RESULT: ${{ needs['foundry-invariant'].result }}
         run: |
           echo "test matrix result: ${MATRIX_RESULT}"
+          echo "foundry invariant result: ${FOUNDRY_RESULT}"
           if [ "${MATRIX_RESULT}" != "success" ]; then
             echo "::error::test matrix did not succeed: ${MATRIX_RESULT}"
+            exit 1
+          fi
+          if [ "${FOUNDRY_RESULT}" != "success" ]; then
+            echo "::error::foundry invariant did not succeed: ${FOUNDRY_RESULT}"
             exit 1
           fi
 

@@ -19,6 +19,7 @@
   "scripts": {
     "build": "hardhat compile",
     "test": "hardhat test",
+    "test:foundry": "bash tools/test-foundry-invariant.sh",
     "coverage": "hardhat test --coverage",
     "check:links": "node tools/check-links.mjs",
     "check:md-style": "node tools/check-md-style.mjs",

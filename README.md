@@ -59,6 +59,8 @@ npm run check:toolchain
 
 `npm run check:toolchain` は、Hardhat 3.11.0、Node.js 22.13.0 以上、公式 Ethers / Mocha plugin 群、Solidity 0.8.24 の exact pin を検証します。`hardhat.config.ts` は lockfile 内のローカル `solc-js` を使うため、clean environment でもコンパイラ取得先に依存しません。`npm run check:install-scripts` はルートと `dapp/` の lockfile にある install script を allowlist と照合します。CI は照合前の実行を防ぐため、`npm ci --ignore-scripts` の後に監査済み `esbuild` だけを rebuild します。
 
+Day12のstateful security testはFoundry v1.7.1へ固定し、`npm run test:foundry`で実行します。`SafeBank`のhandler-based invariantに加え、意図的な1 wei accounting mutationが同じpropertyを破ることを期待された非0終了として確認します。CIのstable `test` contextはNode.js matrixとFoundry invariantの両方を集約します。
+
 ### 依存関係のセキュリティチェック
 
 ```bash
