@@ -3,31 +3,10 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { load } from 'js-yaml';
 
 const FULL_COMMIT_SHA = /^[0-9a-f]{40}$/;
 const WORKFLOW_EXTENSIONS = new Set(['.yml', '.yaml']);
-
-function parseUsesScalar(rawValue, file, lineNumber) {
-  const raw = rawValue.trim();
-  if (!raw) {
-    throw new Error(`${file}:${lineNumber}: uses must not be empty`);
-  }
-
-  if (raw.startsWith("'") || raw.startsWith('"')) {
-    const quote = raw[0];
-    const closing = raw.indexOf(quote, 1);
-    if (closing === -1) {
-      throw new Error(`${file}:${lineNumber}: unterminated quoted uses value`);
-    }
-    const remainder = raw.slice(closing + 1).trim();
-    if (remainder && !remainder.startsWith('#')) {
-      throw new Error(`${file}:${lineNumber}: unsupported content after uses value`);
-    }
-    return raw.slice(1, closing);
-  }
-
-  return raw.replace(/\s+#.*$/, '').trim();
-}
 
 export function classifyUsesReference(reference) {
   if (reference.startsWith('./')) {
@@ -59,19 +38,44 @@ export function classifyUsesReference(reference) {
 }
 
 export function extractUsesReferences(content, file) {
-  const references = [];
-  for (const [index, line] of content.split(/\r?\n/).entries()) {
-    const match = line.match(/^\s*(?:-\s*)?uses\s*:\s*(.*)$/);
-    if (!match) continue;
-
-    const lineNumber = index + 1;
-    const reference = parseUsesScalar(match[1], file, lineNumber);
-    try {
-      references.push({ file, line: lineNumber, ...classifyUsesReference(reference) });
-    } catch (error) {
-      throw new Error(`${file}:${lineNumber}: ${error.message}`);
-    }
+  let document;
+  try {
+    document = load(content);
+  } catch (error) {
+    throw new Error(`${file}: invalid workflow YAML: ${error.message}`);
   }
+  if (!document || typeof document !== 'object' || Array.isArray(document)) {
+    throw new Error(`${file}: workflow YAML root must be a mapping`);
+  }
+
+  const references = [];
+  const walk = (value, path, ancestors) => {
+    if (!value || typeof value !== 'object') return;
+    if (ancestors.has(value)) {
+      throw new Error(`${file}:${path.join('.')}: cyclic YAML alias is not supported`);
+    }
+
+    const nextAncestors = new Set(ancestors).add(value);
+    for (const [key, child] of Object.entries(value)) {
+      const childPath = [...path, key];
+      if (key === 'uses') {
+        if (typeof child !== 'string' || child.length === 0) {
+          throw new Error(`${file}:${childPath.join('.')}: uses must be a non-empty string`);
+        }
+        try {
+          references.push({
+            file,
+            yamlPath: childPath.join('.'),
+            ...classifyUsesReference(child),
+          });
+        } catch (error) {
+          throw new Error(`${file}:${childPath.join('.')}: ${error.message}`);
+        }
+      }
+      walk(child, childPath, nextAncestors);
+    }
+  };
+  walk(document, [], new Set());
   return references;
 }
 
@@ -108,7 +112,7 @@ async function main() {
   const counts = new Map();
   for (const item of result.references) {
     counts.set(item.kind, (counts.get(item.kind) || 0) + 1);
-    console.log(`${item.file}:${item.line}: ${item.kind}: ${item.reference}`);
+    console.log(`${item.file}:${item.yamlPath}: ${item.kind}: ${item.reference}`);
   }
   const summary = [...counts.entries()]
     .sort(([left], [right]) => left.localeCompare(right))

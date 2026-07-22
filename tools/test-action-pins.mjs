@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { auditWorkflowDirectory, classifyUsesReference } from './check-action-pins.mjs';
+import {
+  auditWorkflowDirectory,
+  classifyUsesReference,
+  extractUsesReferences,
+} from './check-action-pins.mjs';
 
 test('active workflows use full commit SHA pins', async () => {
   const result = await auditWorkflowDirectory('.github/workflows');
@@ -21,6 +25,13 @@ test('mutable tag fixture fails closed', async () => {
   await assert.rejects(
     auditWorkflowDirectory('tools/fixtures/action-pins/mutable-tag'),
     /not pinned to a full commit SHA: actions\/checkout@v6/,
+  );
+});
+
+test('quoted uses keys are parsed as workflow data', () => {
+  assert.throws(
+    () => extractUsesReferences('jobs:\n  audit:\n    "uses": example/repository@main\n', 'quoted.yml'),
+    /not pinned to a full commit SHA: example\/repository@main/,
   );
 });
 

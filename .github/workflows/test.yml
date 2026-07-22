@@ -38,6 +38,7 @@ jobs:
       - run: npm run test:deploy-inputs
       - run: npm run test:deployment-environment
       - run: npm run test:public-site
+      - run: npm run check:actions
       - run: npm run check:deploy-safety
       - run: npm run check:docs-consistency
       - run: npm test
