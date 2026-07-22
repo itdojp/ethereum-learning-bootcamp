@@ -25,15 +25,15 @@ GitHub Actions から本番 network へ deploy しない。本番用 private key
 
 このリポジトリでは `.github/workflows/test.yml` を使い、metadata、toolchain、依存互換性、deploy 入力境界、本文整合、contract tests、link、Markdown、dependency audit、DApp build を検証する。
 
-失敗時は Actions の該当 step と同じコマンドを Node.js 20 で再現する。
+失敗時はActionsの該当stepと同じコマンドをNode.js 22.13.0以上で再現する。
 
 ```bash
 node -v
-npm ci
+npm run install:reviewed
 npm run check:all
 ```
 
-`npm ci` が落ちる場合は、`package.json` と `package-lock.json` の不一致を先に確認する。
+`npm run install:reviewed` が落ちる場合は、install-script inventory、`package.json` と `package-lock.json` の不一致を先に確認する。
 
 ## 2. 手動デプロイの安全境界
 
@@ -86,7 +86,7 @@ gh secret list --repo "$REPO" --env deploy-optimism-sepolia
 
 | 症状 | 原因候補 | 確認 | 解決 |
 |---|---|---|---|
-| `npm ci` が落ちる | lockfile 不整合 | `package.json` と `package-lock.json` の差分 | lockfile を更新してコミット |
+| `npm run install:reviewed` が落ちる | install-script inventoryまたはlockfile不整合 | policy出力、`package.json` と `package-lock.json` の差分 | dependency artifactをレビューし、lockfileを更新してコミット |
 | deploy input validation が落ちる | network / contract / JSONが不正 | validation jobのエラー | testnet allowlistと`ARGS_JSON`例を確認 |
 | Environment policy checkが落ちる | Environment名またはexact `main` rule不足 | Settings > Environments | 対応するtestnet Environmentを修正 |
 | Secrets が読めない | Environment / network固有secret名の不一致 | 選択 network と上記の対応表 | 対応 Environment へ固有名で配置 |

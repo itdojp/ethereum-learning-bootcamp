@@ -4,7 +4,7 @@
 
 ## 学習目的
 - ローカルノード（Hardhat Network）で、再現可能なテストを書いて実行できるようになる。
-- `solidity-coverage` と `hardhat-gas-reporter` を使い、品質とコストを数値で把握できるようになる。
+- Hardhat 3組み込みのcoverageとgas statisticsを使い、品質とコストを数値で把握できるようになる。
 - `storage`/`memory`/`calldata` とイベント量の違いを実測し、差分を説明できるようになる。
 
 > まず [`docs/curriculum/index.md`](./index.md) の「共通の前提（動作確認済みバージョン含む）」を確認してから進める。
@@ -12,39 +12,24 @@
 ---
 
 ## 0. 前提
-- ルートで `npm ci` 済み（依存が入っている）
+- ルートで `npm run install:reviewed` 済み（依存が入っている）
 - 以降の手順は、このリポジトリ直下で実行する
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`hardhat.config.ts` / `contracts/GasBench.sol` / `test/gasbench.ts` / `.github/workflows/test.yml`（任意）
 - 今回触らないこと：テストネット/本番へのデプロイ（Day7以降）
-- 最短手順（迷ったらここ）：4章のコマンドで `npm test` を実行 → gasReporter出力を見て差分を確認（coverageは任意）
+- 最短手順（迷ったらここ）：4章のコマンドで `npm test` → `npm run gas` を実行して差分を確認する（coverageは任意）
 
 ---
 
 ## 1. 事前準備
-このリポジトリでは `solidity-coverage` と `hardhat-gas-reporter` は導入済みだ（`npm ci` で入る）。  
-ゼロから追加する場合は、プロジェクト直下で以下を実行する。
-```bash
-npm i -D solidity-coverage hardhat-gas-reporter
-```
-`hardhat.config.ts` を編集：
-```ts
-import "solidity-coverage";
-import "hardhat-gas-reporter";
+Hardhat 3.11.0はcoverageとgas statisticsを組み込んでいる。Hardhat 2向けの `solidity-coverage` と `hardhat-gas-reporter` は導入しない。CLIのglobal optionを使うため、追加pluginやAPI keyは不要である。
 
-const config: HardhatUserConfig = {
-  solidity: "0.8.24",
-  gasReporter: {
-    enabled: true,
-    currency: "USD",           // 単位（任意）
-    excludeContracts: [],       // 除外する場合に指定
-    src: "./contracts",        // 対象ディレクトリ
-    showTimeSpent: true,
-  },
-  mocha: { timeout: 60_000 },   // テストが重い場合
-};
-export default config;
+```bash
+npx hardhat test --coverage
+npx hardhat --gas-stats test
 ```
+
+本リポジトリではそれぞれ `npm run coverage` と `npm run gas` に固定している。
 
 ---
 
@@ -70,7 +55,7 @@ contract GasBench {
         for (uint i=0; i<a.length; i++) r += a[i];
     }
 
-    // Tx化してgasReporterに載せるベンチ関数
+    // Tx化してHardhat gas statisticsに載せるベンチ関数
     function benchSumCalldata(uint256[] calldata a) external { uint256 r = sumCalldata(a); s = r; }
     function benchSumMemory(uint256[] memory a) external { uint256 r = sumMemory(a); s = r; }
 
@@ -88,7 +73,9 @@ contract GasBench {
 `test/gasbench.ts`
 ```ts
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 function arr(n:number){ return Array.from({length:n},(_,i)=>i+1); }
 
@@ -120,25 +107,29 @@ describe("GasBench", () => {
   });
 });
 ```
-> 注：`pure/view`は本来call扱いのためgasReporterに出ない。`bench*`関数のようにストレージ書込みを伴うTxへ変換するか、Foundryの`gas-snapshot`等を併用する。
+> 注：`pure/view`は本来call扱いのためTxのgas statisticsに出ない。`bench*`関数のようにストレージ書込みを伴うTxへ変換するか、Foundryのgas snapshot等を併用する。
 
 ---
 
 ## 4. 実行コマンド
 ```bash
 # 単体テスト（ローカル）
-npx hardhat test
+npm test
 
-# カバレッジ
-npx hardhat coverage --temp artifacts-coverage --network hardhat
+# Hardhat 3組み込みカバレッジ
+npm run coverage
+
+# Hardhat 3組み込みgas statistics
+npm run gas
 ```
 
 期待される出力（最小例）：
 ```text
 16 passing
-Toolchain: hardhat
+Coverage Report
+Function name / Min / Average / Median / Max
 ```
-> `passing` の件数は追加テストで増減する。gasReporter を有効化しているため、テスト完了時に関数単位のgas表（`Contracts / Methods`）が出力される。
+> `passing` の件数は追加テストで増減する。`npm run coverage` は行・statement coverageを、`npm run gas` は関数単位のgas統計を出力する。
 
 ---
 
@@ -152,7 +143,8 @@ Mochaの前に NYC 等のJSカバレッジではなく、Solidity行網羅率を
 {
   "scripts": {
     "test": "hardhat test",
-    "coverage": "hardhat coverage"
+    "coverage": "hardhat test --coverage",
+    "gas": "hardhat --gas-stats test"
   }
 }
 ```
@@ -184,10 +176,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22.13.0
           cache: npm
-      - run: npm ci
+      - run: node tools/check-install-scripts.mjs
+      - run: npm ci --ignore-scripts
+      - run: npm rebuild esbuild
       - run: npm test
+      - run: npm run coverage
+      - run: npm run gas
       - run: npm run check:links
 ```
 > カバレッジ（`npm run coverage`）は時間がかかりやすい。必要なら別workflow（手動実行や夜間）に分けると運用しやすい。
@@ -205,8 +201,8 @@ jobs:
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
-| gasReporter に出ない / 差が見えない | `pure/view` が call 扱いになり、Txとして計測されていない | 章中の `bench*` のように Tx 化して測る |
-| `hardhat coverage` が落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | まず `npm ci` で揃え、Node.js 20 で再実行する |
+| gas statisticsに出ない / 差が見えない | `pure/view` がcall扱いになり、Txとして計測されていない | 章中の `bench*` のようにTx化して測る |
+| coverageが落ちる/遅い | 依存不整合、または環境依存（Node.js差分等） | `npm run install:reviewed` で揃え、Node.js 22.13.0以上で再実行する |
 | CIでだけ落ちる | ローカルとCIの差分 | 付録 [`docs/appendix/ci-github-actions.md`](../appendix/ci-github-actions.md) の「失敗時の切り分け（最短）」を参照する |
 
 ---
@@ -217,7 +213,7 @@ jobs:
 - [CI](../appendix/glossary.md) で `npm test` を回すことで、手元との差分を早期に検出できる構成にした。
 
 ### 理解チェック（3問）
-- Q1. `pure/view` が gasReporter に出にくいのはなぜか？（call と Tx の違い）
+- Q1. `pure/view` がgas statisticsに出にくいのはなぜか？（callとTxの違い）
 - Q2. ガス計測は「1回の数値」だけ見ても判断を誤りやすい。比較するときの方針は何か？
 - Q3. CIで `npm test` を回すことが、チーム開発でどんな事故を減らすか？
 

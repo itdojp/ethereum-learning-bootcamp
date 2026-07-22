@@ -19,8 +19,8 @@
 | Ethereum Foundation protocol announcements | https://blog.ethereum.org/category/protocol | mainnet / testnet upgrade announcement |
 | Solidity Docs | https://docs.soliditylang.org/ | 言語仕様・リリースノート・security considerations |
 | OpenZeppelin Contracts 5.x | https://docs.openzeppelin.com/contracts/5.x | 監査済み release / dev tag / upgradeable 境界 |
-| Hardhat 3 Docs | https://hardhat.org/docs/getting-started | 新規プロジェクト向けの現行導線 |
-| Hardhat 2 Docs | https://v2.hardhat.org/hardhat-runner/docs/getting-started | 本リポジトリの Hardhat 2.x 互換確認 |
+| Hardhat 3 Docs | https://hardhat.org/docs/getting-started | 本リポジトリと新規プロジェクトの現行導線 |
+| Hardhat 3 Migration | https://hardhat.org/docs/migrate-from-hardhat2 | ESM、config、network、test移行の確認 |
 | Foundry | https://www.getfoundry.sh/ | 高速テストツールセット |
 | The Graph | https://thegraph.com/docs/en/ | Subgraph / Substreams / Token API と対応チェーン |
 | Optimism Docs | https://docs.optimism.io/ | L2アーキテクチャとブリッジ |

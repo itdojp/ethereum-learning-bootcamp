@@ -11,9 +11,9 @@
 ## 開始前チェック
 
 ### 必須
-- Node.js 20 系と npm を使えること（本リポジトリの Hardhat 2.x 再現用）
+- Node.js 22.13.0以上とnpmを使えること（本リポジトリのHardhat 3.11.0再現用）
 - Git とターミナル操作の基本が分かること
-- リポジトリルートで `npm ci` と `npm test` を実行できること
+- リポジトリルートで `npm run install:reviewed` と `npm test` を実行できること
 - 学習用の `.env` を自分で作成し、秘密情報をコミットしない前提を理解していること
 
 ### 任意だが後半で必要になりやすいもの
@@ -38,35 +38,35 @@
 
 ## 1. 作業ディレクトリ
 - ルートの `package.json` がある場所（このリポジトリ直下）で作業する。
-- `dapp/` は別のプロジェクト（別 `package.json`）なので、必要に応じて `cd dapp` してから `npm ci` を実行する。
+- `dapp/` は別のプロジェクト（別 `package.json`）なので、リポジトリルートで `npm run dapp:ci:safe` を実行する。
 
 ## 2. Node.js / npm
-- 推奨：Node.js 20（LTS）
+- 必須：Node.js 22.13.0以上
 - ルートで依存を入れる：
-  - `npm ci`
+  - `npm run install:reviewed`
 - `dapp/` 側の依存を入れる（必要な場合）：
-  - `cd dapp && npm ci`
+  - `npm run dapp:ci:safe`
 
 ### 2.1 動作確認済みバージョン（目安）
 
-この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm ci` の lock に従う。
+この教材は「本リポジトリの `package.json` をそのまま使う」前提のため、依存関係の実体は `npm run install:reviewed` が使用するlockfileに従う。
 
-- Node.js: 20.x（本リポジトリの Hardhat 2.x 再現用）
-- Hardhat: 2.x（`package.json` は `^2.22.1`、現行 lock file は 2.28.6 を解決）
+- Node.js: 22.13.0以上（本リポジトリのHardhat 3.11.0再現用）
+- Hardhat: 3.11.0（公式pluginを個別にexact pin）
 - Solidity: 0.8.24
-- ethers: v6（Hardhat toolbox 経由）
+- ethers: 6.17.0（`@nomicfoundation/hardhat-ethers` 4.0.15経由）
 - OpenZeppelin Contracts: 5.0.2
-- TypeScript: 5.4.x
+- TypeScript: 5.9.3
 
 ### 2.2 確認時点と再確認ポイント
-- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-07-11（Asia/Tokyo）時点**で確認した内容を基準としている。
-- 特に変わりやすいのは、Hardhat 2 / Hardhat 3 のドキュメント差分、Node.js サポート、Solidity 最新リリース、OpenZeppelin Contracts 5.x、RPC 提供者の UI / API キー取得手順、Explorer の Verify 画面、GitHub Actions の画面導線、The Graph の管理画面である。
-- 本文どおりに進まない場合は、まず `npm ci` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
+- このカリキュラムは、`package.json` / lock file / `docs/reports/` を **2026-07-22（Asia/Tokyo）時点**で確認した内容を基準としている。
+- 特に変わりやすいのは、Hardhat 3のminor versionとNode.jsサポート、Solidity最新リリース、OpenZeppelin Contracts 5.x、RPC提供者のUI/APIキー取得手順、ExplorerのVerify画面、GitHub Actionsの画面導線、The Graphの管理画面である。
+- 本文どおりに進まない場合は、まず `npm run install:reviewed` と `npm test` が通ることを確認し、そのうえで付録の切り分け手順と各サービスの公式ドキュメントを参照する。
 - 章末の「確認コマンド」と `docs/reports/` が再現できれば、本教材の主要手順は概ね追従できていると判断してよい。
 
 ### 2.3 現行仕様レビューゲート
-- 本リポジトリを学習用に進める場合は、lock file による再現性を優先し、Hardhat 2.x / Node.js 20 / Solidity 0.8.24 の組み合わせを変更しない。
-- 新規プロジェクトを作る場合は、Hardhat 3 の公式ドキュメント、Node.js サポート条件、plugin 互換性、`hardhat.config` の形式を確認してから作業する。
+- 本リポジトリを学習用に進める場合は、lockfileによる再現性を優先し、Hardhat 3.11.0 / Node.js 22.13.0以上 / Solidity 0.8.24の組み合わせを無検証で変更しない。
+- 新規プロジェクトを作る場合は、Hardhat 3の公式ドキュメント、Node.jsサポート条件、plugin互換性、`hardhat.config`の形式を確認してから作業する。
 - Solidity は公式ドキュメントが「デプロイ時は最新リリースを使う」ことを推奨しているため、本番転用時は pragma、compiler、known bugs、optimizer、EVM version を確認する。
 - OpenZeppelin Contracts は 5.x の `latest` / `dev` tag と監査済み release の扱い、upgradeable 版との storage 互換性を確認する。
 - Sepolia、Holesky、Hoodi、Optimism、Arbitrum などの testnet / L2 名、faucet、Explorer、RPC、Verify API は固定前提にしない。各チェーンの公式情報を確認し、学習用の鍵だけを使う。

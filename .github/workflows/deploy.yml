@@ -47,11 +47,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '20'
+          node-version: '22.13.0'
           cache: npm
 
-      - name: Install locked dependencies
-        run: npm ci
+      - name: Check locked install scripts before execution
+        run: node tools/check-install-scripts.mjs
+
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Rebuild the reviewed esbuild binary
+        run: npm rebuild esbuild
 
       - name: Validate untrusted workflow inputs
         id: inputs
@@ -99,11 +105,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: '20'
+          node-version: '22.13.0'
           cache: npm
 
-      - name: Install locked dependencies
-        run: npm ci
+      - name: Check locked install scripts before execution
+        run: node tools/check-install-scripts.mjs
+
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Rebuild the reviewed esbuild binary
+        run: npm rebuild esbuild
 
       - name: Verify GitHub Environment protection
         env:

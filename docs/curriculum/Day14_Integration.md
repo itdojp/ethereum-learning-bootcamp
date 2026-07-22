@@ -106,8 +106,8 @@ VITE_EVENT_TOKEN=0x...     # EventToken
 
 ### 3.2 起動
 ```bash
+npm run dapp:ci:safe
 cd dapp
-npm ci
 npm run dev
 ```
 期待される出力（最小例）：

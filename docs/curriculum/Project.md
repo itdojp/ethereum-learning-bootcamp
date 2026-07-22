@@ -81,7 +81,7 @@ VITE_EVENT_TOKEN=0x...     # deploy-event-token.ts の出力（EventToken）
 
 起動：
 ```bash
-npm --prefix dapp ci
+npm run dapp:ci:safe
 npm --prefix dapp run dev
 ```
 期待される出力（最小例）：

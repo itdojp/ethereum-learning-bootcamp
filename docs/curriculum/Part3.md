@@ -22,7 +22,7 @@
 - The Graph：[`docs/appendix/the-graph.md`](../appendix/the-graph.md)
 
 ## チェックリスト（ここまでできれば次へ進める）
-- [ ] Day9の `dapp/` をビルドできる（`npm --prefix dapp ci` → `npm --prefix dapp run build`）
+- [ ] Day9の `dapp/` をビルドできる（`npm run dapp:ci:safe` → `npm --prefix dapp run build`）
 - [ ] Day10でイベントを読める（購読できているかを確認できる）
 
 ## 復習問題（理解チェック）

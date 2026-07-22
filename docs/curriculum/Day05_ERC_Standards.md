@@ -12,7 +12,7 @@
 ---
 
 ## 0. 前提
-- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- Day3 までの環境構築が完了している（`npm run install:reviewed` / `.env`）
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテスト ETH を入れておく
 - Verify（任意）をやる場合は `ETHERSCAN_API_KEY` も必要
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md) / [`docs/appendix/verify.md`](../appendix/verify.md)（任意）
@@ -45,7 +45,7 @@
 ## 2. ハンズオン（ERC‑20）
 
 ### 2.1 依存導入
-このリポジトリでは `@openzeppelin/contracts` は導入済み（ルートで `npm ci` 済みならスキップ可）。ゼロから作る場合は次を実行する。
+このリポジトリでは `@openzeppelin/contracts` は導入済み（ルートで `npm run install:reviewed` 済みならスキップ可）。ゼロから作る場合は次を実行する。
 ```bash
 npm i @openzeppelin/contracts
 ```
@@ -68,7 +68,9 @@ contract MyToken is ERC20, Ownable {
 ### 2.3 デプロイ
 `scripts/deploy-token.ts`
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 async function main(){
   const F = await ethers.getContractFactory("MyToken");
   const c = await F.deploy(ethers.parseEther("1000000"));
@@ -91,7 +93,9 @@ TOKEN=0x... TO=0x... npx hardhat run scripts/token-transfer.ts --network sepolia
 ### 2.5 委任送金フロー（approve→transferFrom）
 `scripts/token-approve.ts`
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 const ADDR = process.env.TOKEN!;
 async function main(){
   const [owner, spender, to] = await ethers.getSigners();
@@ -119,7 +123,10 @@ main().catch(console.error);
 ### 2.6 テスト（最小）
 `test/erc20.ts`
 ```ts
-import { expect } from "chai"; import { ethers } from "hardhat";
+import { expect } from "chai";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 describe("MyToken",()=>{
   it("approve/transferFrom flow", async()=>{
     const [owner, sp, to] = await ethers.getSigners();
@@ -151,7 +158,9 @@ npx hardhat test test/erc20.ts
 ### 3.3 デプロイと表示
 `scripts/deploy-nft.ts`
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 async function main(){
   const [owner] = await ethers.getSigners();
   const F = await ethers.getContractFactory("MyNFT");
@@ -195,7 +204,7 @@ npx hardhat verify --network sepolia <NFT_ADDRESS> "ipfs://<CID>/" <ROYALTY_RECE
 
 | 症状 | 原因 | 対処 |
 |---|---|---|
-| `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm ci`（または `npm i @openzeppelin/contracts`）を実行する |
+| `import \"@openzeppelin/...\"` が解決できない | 依存が入っていない | ルートで `npm run install:reviewed`（または `npm i @openzeppelin/contracts`）を実行する |
 | スクリプトが落ちる（`TOKEN` など） | 環境変数未設定 / `--network` 不一致 | `TOKEN`/`NFT_ADDRESS` 等の値と、`--network` を見直す |
 | Verifyが失敗する | API キー/引数/コンパイラ設定不一致 | [`docs/appendix/verify.md`](../appendix/verify.md) を参照し、引数と optimizer 等を合わせる |
 

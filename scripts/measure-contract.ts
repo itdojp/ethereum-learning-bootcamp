@@ -1,4 +1,6 @@
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 type RpcTxReceipt = {
   effectiveGasPrice?: string;
@@ -18,7 +20,7 @@ async function getGasPriceFromRpc(txHash: string): Promise<bigint> {
 async function main() {
   const tokenAddress = process.env.TOKEN;
   if (!tokenAddress) throw new Error('TOKEN env var required');
-  const network = await ethers.provider.getNetwork();
+  const networkInfo = await ethers.provider.getNetwork();
   const signers = await ethers.getSigners();
   const owner = signers[0];
   if (!owner) throw new Error('no signer available');
@@ -40,8 +42,8 @@ async function main() {
   console.log(
     JSON.stringify(
       {
-        network: network.name,
-        chainId: Number(network.chainId),
+        network: networkInfo.name,
+        chainId: Number(networkInfo.chainId),
         txHash: tx.hash,
         to,
         amount: amount.toString(),

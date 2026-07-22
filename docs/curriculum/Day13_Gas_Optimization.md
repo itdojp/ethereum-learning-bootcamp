@@ -12,7 +12,7 @@
 ---
 
 ## 0. 前提
-- Day6で `hardhat-gas-reporter` を導入済み。
+- Day6で Hardhat 3組み込みgas statistics を導入済み。
 - 任意でFoundryの `gas-snapshot` を併用可。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/GasPack.sol` / `test/gas-pack.ts` / `contracts/GasArgs.sol` / `test/gas-args.ts` / `metrics/gas_day13.md`
@@ -77,8 +77,10 @@ contract GasPacked {
 
 ### 2.3 テスト（`test/gas-pack.ts`）
 ```ts
-import { ethers } from "hardhat";
 import { expect } from "chai";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 describe("GasPack", ()=>{
   it("compare add() gas", async()=>{
@@ -132,7 +134,7 @@ contract GasArgs {
         for(uint256 i; i<n;){ unchecked { r+=a[i]; i++; } }
     }
 
-    // Tx化してgasReporterに載せる（Day6と同じ考え方）
+    // Tx化してgas statisticsに載せる（Day6と同じ考え方）
     function sumCalldataTx(uint256[] calldata a) external { last = sumCalldata(a); }
     function sumMemoryTx(uint256[] memory a) external { last = sumMemory(a); }
 }
@@ -140,7 +142,9 @@ contract GasArgs {
 
 ### 3.3 テスト（`test/gas-args.ts`）
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 describe("GasArgs", ()=>{
   it("compare calldata vs memory", async()=>{
@@ -158,7 +162,7 @@ npx hardhat test test/gas-args.ts
 ```
 
 ### 3.4 結果の見方（どの数字を見るか）
-- Day6 と同様に、Txとして実行する関数（`*Tx`）を用意しているため、gasReporter に載りやすい。
+- Day6 と同様に、Txとして実行する関数（`*Tx`）を用意しているため、gas statistics に載りやすい。
 - `sumCalldataTx(1k)` と `sumMemoryTx(1k)` の差を `metrics/gas_day13.md` に転記する。
 
 ### 3.5 よくある失敗

@@ -1,17 +1,23 @@
-# Dependency overrides
+# Dependency overrides and install-script policy
 
-The root project keeps Hardhat 2 and Solidity 0.8.24 for the published exercises.
-Some upstream packages still pin vulnerable transitive versions, so `package.json` applies narrowly reviewed overrides until the upstream toolchain can remove them.
+The root project uses Hardhat 3.11.0 and Solidity 0.8.24. Direct development dependencies are exact-pinned. Three transitive packages are overridden because their upstream parents still declare vulnerable ranges.
 
 | Override | Affected path | Compatibility evidence | Removal condition |
 | --- | --- | --- | --- |
-| `bn.js` 4.12.5 | `ethjs-unit`, `number-to-bn` | Same 4.x API line; compile and tests pass | Upstream packages resolve a remediated 4.x release |
-| `ws` 8.21.0 | `ethers`, `viem` | Same 8.x API line; dependency resolution and DApp build pass. Live WebSocket traffic is not covered | Upstream ranges resolve a remediated release |
-| `lodash` 4.18.1 | Hardhat, TypeChain, coverage tools | Same 4.x API line; compile, tests, and coverage pass | Upstream packages stop pinning the affected release |
-| `serialize-javascript` 7.0.7 | Mocha worker path | Serialization smoke and tests pass on Node 20+ | Mocha resolves a remediated supported release |
-| `tmp` 0.2.7 | Solidity compiler helper | `fileSync` create/remove smoke and compile pass | Solc removes its legacy pin |
-| `uuid` 11.1.1 | Hardhat analytics identifier | CommonJS `v4()` smoke and Hardhat commands pass | Hardhat resolves a remediated supported release |
-| `undici` 6.27.0 | Hardhat JSON-RPC and verify HTTP wrappers | Mock JSON-RPC success/error/redirect/timeout and verify GET/POST checks pass | Hardhat 2 or its verify plugin supports a remediated release without an override |
+| `adm-zip` 0.6.0 | Hardhat Windows compiler extraction | Exercises the same `new AdmZip(path)` and `extractAllTo(path)` calls used by Hardhat; compile, 16 tests, coverage, and gas statistics pass | Hardhat declares a range containing 0.6.0 or later |
+| `serialize-javascript` 7.0.7 | Mocha serialization | Exercises escaping and executable round-trip behavior; TypeScript tests, coverage, and gas statistics pass | Mocha resolves a non-vulnerable version without an override |
+| `tmp` 0.2.7 | `solc` helper path | Exercises synchronous create/write/read/cleanup behavior; locked local solc-js compilation and the full test suite pass | `solc` removes its legacy exact dependency |
 
-`npm run check:dependency-compat` exercises the high-risk range-crossing paths.
-Issue #121 remains responsible for real testnet deployment, Etherscan V2, and secret-handling changes; it must be rebased on this dependency baseline and rerun its network/verify acceptance checks.
+`adm-zip` 0.6.0 is outside Hardhat 3.11.0's declared `^0.4.16` range. The override is therefore guarded by `npm run check:dependency-compat`; it must not be changed without repeating the extraction, compilation, test, coverage, and deployment-safety checks.
+
+## Install scripts
+
+`npm run check:install-scripts` fails when either the root or `dapp/` lockfile adds or changes a package with an install script. The allowlist fixes package path, version, optional status, registry tarball URL, and integrity digest. CI and deployment workflows run this check before installation, install with `--ignore-scripts`, and explicitly rebuild only the reviewed `esbuild` binary. Local setup uses `npm run install:reviewed` or `npm run dapp:ci:safe` to preserve the same order.
+
+| Package | Script purpose | Scope |
+| --- | --- | --- |
+| `esbuild` 0.28.1 | Installs/verifies the platform-specific binary used by Hardhat's TypeScript loader | Root, all supported platforms |
+| `esbuild` 0.27.2 | Installs/verifies the platform-specific binary used by Vite | `dapp/`, all supported platforms |
+| `fsevents` 2.3.3 | Optional native filesystem events support | Root and `dapp/`, macOS only |
+
+The Hardhat 2 paths `keccak` and `secp256k1` are absent from the migrated lockfile. Their reappearance is a policy failure until separately reviewed.

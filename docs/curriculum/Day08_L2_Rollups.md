@@ -26,7 +26,7 @@
 ---
 
 ## 1. 前提
-- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- Day3 までの環境構築が完了している（`npm run install:reviewed` / `.env`）
 - L2（例：Optimism）へ送る場合は、対象チェーン側に手数料分の ETH が必要だ（ブリッジ等で用意する）
 - 先に読む付録：[`docs/appendix/verify.md`](../appendix/verify.md)（任意：L2 でVerifyする場合）
 - 触るファイル（主なもの）：`scripts/deploy-generic.ts` / `scripts/measure-fee.ts` / `scripts/measure-contract.ts` / `metrics/metrics.csv`
@@ -132,15 +132,31 @@ Fusaka は Pectra 後のネットワークアップグレードで、PeerDAS（E
 
 `hardhat.config.ts`
 ```ts
+import { configVariable, defineConfig } from "hardhat/config";
+
 const testnetAccounts = process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [];
 
-networks: {
-  sepolia: { url: process.env.SEPOLIA_RPC_URL!, accounts: testnetAccounts },
-  optimismSepolia: { url: process.env.OPTIMISM_SEPOLIA_RPC_URL!, accounts: testnetAccounts },
-  optimism: { url: process.env.OPTIMISM_RPC_URL!, accounts: [] },
-  // 本番系はread / Verify専用。signerを設定しない。
-  // polygonZk: { url: process.env.POLYGON_ZKEVM_RPC_URL!, accounts: [] },
-}
+export default defineConfig({
+  networks: {
+    sepolia: {
+      type: "http", chainType: "l1", chainId: 11155111,
+      url: configVariable("SEPOLIA_RPC_URL"), accounts: testnetAccounts
+    },
+    optimismSepolia: {
+      type: "http", chainType: "op", chainId: 11155420,
+      url: configVariable("OPTIMISM_SEPOLIA_RPC_URL"), accounts: testnetAccounts
+    },
+    // 本番系はread / Verify専用。signerを設定しない。
+    optimism: {
+      type: "http", chainType: "op", chainId: 10,
+      url: configVariable("OPTIMISM_RPC_URL"), accounts: []
+    },
+    polygonZk: {
+      type: "http", chainType: "generic", chainId: 1101,
+      url: configVariable("POLYGON_ZKEVM_RPC_URL"), accounts: []
+    }
+  }
+});
 ```
 `.env.example`（Day8で最低限見る項目）
 ```bash

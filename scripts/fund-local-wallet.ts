@@ -1,4 +1,7 @@
-import { ethers, network } from 'hardhat';
+import { network } from 'hardhat';
+
+const connection = await network.create();
+const { ethers } = connection;
 
 function requireAddress(value: string | undefined, label: string): string {
   if (!value || !ethers.isAddress(value) || value === ethers.ZeroAddress) {
@@ -9,7 +12,7 @@ function requireAddress(value: string | undefined, label: string): string {
 
 async function main() {
   const networkInfo = await ethers.provider.getNetwork();
-  if (network.name !== 'localhost' || networkInfo.chainId !== 31337n) {
+  if (connection.networkName !== 'localhost' || networkInfo.chainId !== 31337n) {
     throw new Error('This helper is restricted to --network localhost with chainId 31337');
   }
 
@@ -54,19 +57,22 @@ async function main() {
   }
 
   const feeData = await ethers.provider.getFeeData();
-  const feeOverrides =
-    feeData.maxFeePerGas !== null
-      ? {
-          maxFeePerGas: feeData.maxFeePerGas,
-          maxPriorityFeePerGas: feeData.maxPriorityFeePerGas ?? 0n
-        }
-      : feeData.gasPrice !== null
-        ? { gasPrice: feeData.gasPrice }
-        : undefined;
-  if (!feeOverrides) {
+  let feeOverrides:
+    | { maxFeePerGas: bigint; maxPriorityFeePerGas: bigint }
+    | { gasPrice: bigint };
+  let feePerGas: bigint;
+  if (feeData.maxFeePerGas !== null) {
+    feePerGas = feeData.maxFeePerGas;
+    feeOverrides = {
+      maxFeePerGas: feeData.maxFeePerGas,
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas ?? 0n
+    };
+  } else if (feeData.gasPrice !== null) {
+    feePerGas = feeData.gasPrice;
+    feeOverrides = { gasPrice: feeData.gasPrice };
+  } else {
     throw new Error('Unable to determine localhost transaction fees');
   }
-  const feePerGas = 'maxFeePerGas' in feeOverrides ? feeOverrides.maxFeePerGas : feeOverrides.gasPrice;
   const ethGasLimit = await unlockedDeployer.estimateGas({
     to: recipient,
     value: ethValue,

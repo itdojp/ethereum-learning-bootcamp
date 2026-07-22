@@ -11,7 +11,7 @@
 ---
 
 ## 0. 前提
-- Day3 までの環境構築が完了している（`npm ci` / `.env`）
+- Day3 までの環境構築が完了している（`npm run install:reviewed` / `.env`）
 - Sepolia にデプロイする場合は、`SEPOLIA_RPC_URL` と `PRIVATE_KEY` を設定し、少額のテスト ETH を入れておく
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
 - 触るファイル（主なもの）：`contracts/WalletBox.sol` / `test/walletbox.ts` / `scripts/deploy-walletbox.ts`
@@ -125,7 +125,9 @@ contract WalletBox {
 #### 2.2.2 最小コード（`test/walletbox.ts`）
 ```ts
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 
 describe("WalletBox", () => {
   it("deploys with owner and note", async () => {
@@ -173,7 +175,9 @@ npx hardhat test
 ### 2.3 デプロイ（Sepolia）
 `scripts/deploy-walletbox.ts`
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 async function main(){
   const F = await ethers.getContractFactory("WalletBox");
   const c = await F.deploy("hello");
@@ -200,7 +204,7 @@ Etherscan（Sepolia）で `Deposited`/`Withdrawn` イベントを確認する。
 ## 3. 追加課題
 - `fallback()`を実装し未定義データ到着時の挙動をログ化。
 - OpenZeppelin `Ownable`版を別ブランチで作成し、`onlyOwner`と`NotOwner`の使い分けを比較。
-- `custom errors` と `require(message)` のgas差を`hardhat-gas-reporter`で計測。
+- `custom errors` と `require(message)` のgas差をHardhat 3組み込みgas statisticsで計測。
 
 ---
 

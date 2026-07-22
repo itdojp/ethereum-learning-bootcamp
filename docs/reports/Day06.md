@@ -1,41 +1,41 @@
-# Day06 実行ログ（2026-01 更新）
+# Day06 実行ログ（2026-07-22更新）
 
 ## 対象
-- `contracts/GasBench.sol`：`benchSumMemory/benchSumCalldata` を持つベンチ用コントラクト。
-- `test/gasbench.ts`：bench関数をTx実行して `hardhat-gas-reporter` に載せるテスト。
-- [`docs/curriculum/Day06_Local_Testing.md`](../curriculum/Day06_Local_Testing.md) は既に bench 方針を説明済み。
+- `contracts/GasBench.sol`：`benchSumMemory` / `benchSumCalldata` を持つベンチ用コントラクト。
+- `test/gasbench.ts`：bench関数をTx実行してHardhat 3組み込みgas statisticsに載せるテスト。
+- [`docs/curriculum/Day06_Local_Testing.md`](../curriculum/Day06_Local_Testing.md)：coverageとgas statisticsの実行手順。
 
 ## コマンド
 ```bash
-# GasBench のみ（gas reporter の表が出る）
-npx hardhat test test/gasbench.ts
-
-# 参考：Hello のみ（gas reporter の表が出る）
-npx hardhat test test/hello.ts
+npm run install:reviewed
+npm test
+npm run coverage
+npm run gas
 ```
-> Gas reporter を有効化しているため、テスト完了時に関数単位のgas表が出力される。
 
-## 取得した主な数値（USD列は`gasReporter`デフォルト）
+`npm run gas` は `hardhat --gas-stats test`、`npm run coverage` は `hardhat test --coverage` を実行する。追加pluginや外部RPCは使用しない。
 
-| Contract   | Method           | Gas (avg) |
-|------------|------------------|-----------|
-| GasBench   | `benchSumMemory` | 123,548   |
-| GasBench   | `benchSumCalldata` | 91,860  |
-| GasBench   | `emitMany`       | 28,944    |
-| GasBench   | `setS`           | 43,582    |
-| Hello      | `setMessage`     | 29,395    |
+## 取得した主な数値
 
-memory vs calldata の差分（123,548 vs 91,860）を gasReporter 上で確認でき、教材で述べている「calldata 優先」の理由を再現できた。
+実行環境: Node.js 22.22.2、Hardhat 3.11.0、Solidity 0.8.24。gas値はEVM・compiler設定・入力で変わるため、絶対値ではなく同一条件の差分として扱う。
 
-## テスト構成メモ
-- テストは `await c.waitForDeployment()`・`await tx.wait()` でTx完了を保証。
-- bench関数で `s = r` とストレージ書込みを行い、`pure/view` ではなく Tx として実行。
-- `emitMany(n)` の n=5 でイベントガスコストを比較可能。
+| Contract | Method | Gas |
+| --- | --- | ---: |
+| GasBench | `benchSumMemory` | 123,543 |
+| GasBench | `benchSumCalldata` | 91,860 |
+| GasBench | `emitMany` | 28,941 |
+| GasBench | `setS` | 43,579 |
+| Hello | `setMessage` | 29,388 |
 
-## 追加検証
-- `npm ci` → `npm test` を CI 相当の流れで実行し、全テスト `16 passing` を再確認。
+同じ入力で `benchSumCalldata` が `benchSumMemory` より小さくなり、「外部read-only入力はcalldataを優先する」という教材の説明を再現できた。
+
+## 検証結果
+- Hardhat Mocha tests: 16 passing
+- Solidity coverage: total line 86.07%、statement 86.07%
+- gas statistics: 関数別のMin / Average / Median / Max / callsを出力
+- 外部RPC、秘密鍵、価格APIは未使用
 
 ## まとめ
-1. bench関数経由で memory / calldata / event cost を数値化できる状態を構築済み。
-2. ガスレポートの定量結果を Day06 教材の解説値として引用できる。
-3. 今後は `npx hardhat coverage` などを追加すれば網羅率チェックへ拡張可能。
+1. memory / calldata / event costを同一lockfileとcompiler設定で比較できる。
+2. Hardhat 2向けcoverage/gas reporter pluginを除去し、Hardhat 3組み込み機能へ移行した。
+3. 数値は固定性能保証ではなく、変更前後の回帰検出に使う。

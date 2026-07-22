@@ -138,7 +138,9 @@ contract MyNFT is ERC721, Ownable, IERC2981 {
 ## 4. デプロイ・ミント
 `scripts/deploy-nft.ts`
 ```ts
-import { ethers } from "hardhat";
+import { network } from "hardhat";
+
+const { ethers } = await network.create();
 async function main(){
   const base = process.env.NFT_BASE!; // ipfs://<CID>/
   const bps  = Number(process.env.NFT_ROYALTY_BPS || 500);
@@ -230,7 +232,9 @@ contract FixedPriceMarket {
 `test/mynft.ts`
 ```ts
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 describe('MyNFT', () => {
   it('mints and returns tokenURI', async () => {

@@ -6,9 +6,8 @@
 
 ## 実行
 ```bash
-cd dapp
-npm ci
-npm run build
+npm run dapp:ci:safe
+npm --prefix dapp run build
 ```
 
 ### 結果（抜粋）
@@ -20,7 +19,7 @@ npm run build
 ## 次に行うとよい確認（ブラウザ必須）
 1) `cp dapp/.env.example dapp/.env.local`  
 2) `dapp/.env.local` に `VITE_CHAIN_ID` / `VITE_TOKEN_ADDRESS` を設定  
-3) `npm run dev` で `http://localhost:5173` を開き、Connect/Switch/Refresh/Send を確認
+3) `npm --prefix dapp run dev` で `http://localhost:5173` を開き、Connect/Switch/Refresh/Send を確認
 
 ## 補足
-- `npm audit`：0 vulnerabilities を確認。
+- 2026-01の実行時は`npm audit` 0件。2026-07-22の再監査ではdappにlow 1件（high/critical 0）を確認し、root migrationと分離して追跡する。

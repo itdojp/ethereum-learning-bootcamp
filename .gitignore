@@ -9,9 +9,11 @@ pnpm-debug.log*
 artifacts/
 cache/
 typechain-types/
+types/
 coverage/
 coverage.json
 gasReporterOutput.json
+.gas-snapshot
 
 ## Environment files
 .env

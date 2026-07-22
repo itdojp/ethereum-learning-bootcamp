@@ -1,5 +1,7 @@
 import { expect } from 'chai';
-import { ethers } from 'hardhat';
+import { network } from 'hardhat';
+
+const { ethers } = await network.create();
 
 describe('MyNFT', () => {
   it('mints and returns tokenURI', async () => {

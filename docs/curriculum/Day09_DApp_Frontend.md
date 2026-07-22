@@ -30,9 +30,8 @@
 
 ## 1. DApp の設定ファイルを用意する
 ```bash
-cd dapp
-npm ci
-cp .env.example .env.local
+npm run dapp:ci:safe
+cp dapp/.env.example dapp/.env.local
 ```
 
 `dapp/.env.local` を編集する：
@@ -160,7 +159,7 @@ npx hardhat run scripts/deploy-token.ts --network localhost
 LOCAL_WALLET_ADDRESS=0x... TOKEN_ADDRESS=0x... npm run fund:localhost
 
 # Terminal C（chain ID / token address を dapp/.env.local に設定済み）
-npm --prefix dapp ci
+npm run dapp:ci:safe
 test -f dapp/.env.local || cp dapp/.env.example dapp/.env.local
 npm --prefix dapp run dev
 ```

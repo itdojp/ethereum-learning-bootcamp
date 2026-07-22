@@ -9,41 +9,98 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['22.13.0', '24']
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: npm
-      - run: npm ci
+      - name: Check locked install scripts before execution
+        run: node tools/check-install-scripts.mjs
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Rebuild the reviewed esbuild binary
+        run: npm rebuild esbuild
       - run: npm run check:metadata
       - run: npm run check:toolchain
       - run: npm run check:dependency-compat
+      - run: npm run check:install-scripts
+      - run: npm run check:type
       - run: npm run test:deploy-inputs
       - run: npm run test:deployment-environment
       - run: npm run test:public-site
       - run: npm run check:deploy-safety
       - run: npm run check:docs-consistency
       - run: npm test
+      - run: npm run coverage
+      - run: npm run gas
       - run: npm run check:links
       - run: npm run check:md-style
       - run: npm run check:security
 
+  # Keep this job name stable. Classic branch protection requires `test`.
+  required-test:
+    name: test
+    needs: [test]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful test matrix
+        env:
+          MATRIX_RESULT: ${{ needs.test.result }}
+        run: |
+          echo "test matrix result: ${MATRIX_RESULT}"
+          if [ "${MATRIX_RESULT}" != "success" ]; then
+            echo "::error::test matrix did not succeed: ${MATRIX_RESULT}"
+            exit 1
+          fi
+
   dapp-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['22.13.0', '24']
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: dapp/package-lock.json
+      - name: Check locked install scripts before execution
+        run: node tools/check-install-scripts.mjs
       - name: Install (dapp)
         working-directory: dapp
-        run: npm ci
+        run: npm ci --ignore-scripts
+      - name: Rebuild the reviewed esbuild binary
+        working-directory: dapp
+        run: npm rebuild esbuild
       - name: Build (dapp)
         working-directory: dapp
         run: npm run build
+
+  # Keep this job name stable. Classic branch protection requires `dapp-build`.
+  required-dapp-build:
+    name: dapp-build
+    needs: [dapp-build]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful dapp-build matrix
+        env:
+          MATRIX_RESULT: ${{ needs['dapp-build'].result }}
+        run: |
+          echo "dapp-build matrix result: ${MATRIX_RESULT}"
+          if [ "${MATRIX_RESULT}" != "success" ]; then
+            echo "::error::dapp-build matrix did not succeed: ${MATRIX_RESULT}"
+            exit 1
+          fi

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
@@ -22,14 +21,6 @@ const day07 = fs.readFileSync(day07Path, 'utf8');
 const day08 = fs.readFileSync(day08Path, 'utf8');
 const ciAppendix = fs.readFileSync(ciAppendixPath, 'utf8');
 const errors = [];
-let Etherscan;
-let ETHERSCAN_V2_API_URL;
-
-try {
-  ({ Etherscan, ETHERSCAN_V2_API_URL } = require('@nomicfoundation/hardhat-verify/internal/etherscan'));
-} catch (error) {
-  errors.push(`hardhat-verify V2 contract import failed: ${error.message}`);
-}
 
 function check(condition, message) {
   if (!condition) errors.push(message);
@@ -182,7 +173,7 @@ for (const [name, yaml] of [['deploy', workflow], ['test', testWorkflow]]) {
 
 const forbiddenV1EtherscanEndpoint = /https?:\/\/api(?:-[a-z0-9-]+)?\.etherscan\.io\/api(?:\b|[/?#])/iu;
 const forbiddenKey = ['OPTIMISTIC_', 'ETHERSCAN_API_KEY'].join('');
-const ignoredDirectories = new Set(['.git', 'node_modules', 'artifacts', 'cache', 'coverage', 'dist', 'typechain-types']);
+const ignoredDirectories = new Set(['.git', 'node_modules', 'artifacts', 'cache', 'coverage', 'dist', 'types', 'typechain-types']);
 
 function walk(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -216,7 +207,10 @@ function walk(directory) {
 
 walk(root);
 
-check(/etherscan:\s*\{[\s\S]*?apiKey:\s*process\.env\.ETHERSCAN_API_KEY\s*\|\|\s*''/u.test(config), 'Hardhat must configure one Etherscan V2 API key string');
+check(
+  /verify:\s*\{[\s\S]*?etherscan:\s*\{[\s\S]*?apiKey:\s*process\.env\.ETHERSCAN_API_KEY\s*\|\|\s*''/u.test(config),
+  'Hardhat Verify 3 must configure one Etherscan API V2 key string'
+);
 check(!/apiKey:\s*\{/u.test(config), 'network-specific Etherscan key maps are forbidden');
 check(
   /mainnet:\s*\{[^}]*accounts:\s*\[\]/u.test(config) &&
@@ -224,32 +218,13 @@ check(
   'production Hardhat networks must not load signer accounts'
 );
 
-try {
-  assert.ok(Etherscan && ETHERSCAN_V2_API_URL, 'hardhat-verify V2 contract import is unavailable');
-  const instance = Etherscan.fromChainConfig('fixture-key', {
-    network: 'optimisticEthereum',
-    chainId: 10,
-    urls: {
-      apiURL: 'https://unused.invalid/api',
-      browserURL: 'https://optimistic.etherscan.io'
-    }
-  });
-  assert.equal(instance.apiUrl, ETHERSCAN_V2_API_URL);
-  assert.equal(instance.chainId, 10);
-} catch (error) {
-  errors.push(`hardhat-verify V2 runtime contract failed: ${error.message}`);
-}
-
 const hardhatExecutable = path.join(
   root,
   'node_modules',
   '.bin',
   process.platform === 'win32' ? 'hardhat.cmd' : 'hardhat'
 );
-const verify = spawnSync(hardhatExecutable, [
-  'verify',
-  '--list-networks'
-], {
+const verify = spawnSync(hardhatExecutable, ['verify', '--help'], {
   cwd: root,
   encoding: 'utf8',
   shell: process.platform === 'win32',
@@ -257,19 +232,63 @@ const verify = spawnSync(hardhatExecutable, [
 });
 
 if (verify.error) {
-  errors.push(`hardhat verify --list-networks could not start: ${verify.error.message}`);
+  errors.push(`hardhat verify --help could not start: ${verify.error.message}`);
 } else if (verify.status !== 0) {
-  errors.push(`hardhat verify --list-networks failed: ${verify.stderr || verify.stdout}`);
+  errors.push(`hardhat verify --help failed: ${verify.stderr || verify.stdout}`);
 } else {
-  check(/optimisticEthereum\s+│\s+10/u.test(verify.stdout), 'Hardhat verify must resolve Optimism mainnet chain id 10');
-  check(/optimismSepolia\s+│\s+11155420/u.test(verify.stdout), 'Hardhat verify must resolve Optimism Sepolia chain id 11155420');
-  check(/sepolia\s+│\s+11155111/u.test(verify.stdout), 'Hardhat verify must resolve Sepolia chain id 11155111');
+  check(/Verify a contract on all supported explorers/u.test(verify.stdout), 'Hardhat Verify 3 task must be registered');
+  check(/verify etherscan/u.test(verify.stdout), 'Hardhat Verify 3 must expose the Etherscan provider');
+}
+
+const chainProbe = spawnSync(process.execPath, [
+  '--input-type=module',
+  '--eval',
+  `import hre from 'hardhat';
+   const ids = [1n, 10n, 1101n, 11155111n, 11155420n];
+   console.log(JSON.stringify(ids.map((id) => {
+     const descriptor = hre.config.chainDescriptors.get(id);
+     return {
+       id: id.toString(),
+       name: descriptor?.name,
+       chainType: descriptor?.chainType,
+       url: descriptor?.blockExplorers?.etherscan?.url
+     };
+   })));`
+], {
+  cwd: root,
+  encoding: 'utf8',
+  env: { ...process.env, HARDHAT_DISABLE_TELEMETRY_PROMPT: 'true' }
+});
+
+if (chainProbe.error || chainProbe.status !== 0) {
+  errors.push(`Hardhat chain descriptor probe failed: ${chainProbe.error?.message || chainProbe.stderr}`);
+} else {
+  try {
+    const descriptors = JSON.parse(chainProbe.stdout.trim());
+    const expectedChains = new Map([
+      ['1', { chainType: 'l1', url: 'https://etherscan.io' }],
+      ['10', { chainType: 'op', url: 'https://optimistic.etherscan.io' }],
+      ['1101', { chainType: 'generic', url: 'https://zkevm.polygonscan.com' }],
+      ['11155111', { chainType: 'l1', url: 'https://sepolia.etherscan.io' }],
+      ['11155420', { chainType: 'op', url: 'https://sepolia-optimism.etherscan.io' }]
+    ]);
+    for (const descriptor of descriptors) {
+      const expected = expectedChains.get(descriptor.id);
+      check(
+        descriptor.url === expected?.url && descriptor.chainType === expected?.chainType,
+        `unexpected Etherscan descriptor for chain ${descriptor.id}: ${descriptor.url}`
+      );
+    }
+    check(descriptors.length === expectedChains.size, 'all required Etherscan chain descriptors must resolve');
+  } catch (error) {
+    errors.push(`Hardhat chain descriptor output is invalid: ${error.message}`);
+  }
 }
 
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 check(
-  pkg.devDependencies?.['@nomicfoundation/hardhat-verify'] === '2.1.3',
-  '@nomicfoundation/hardhat-verify must be an explicit exact dependency at 2.1.3'
+  pkg.devDependencies?.['@nomicfoundation/hardhat-verify'] === '3.0.21',
+  '@nomicfoundation/hardhat-verify must be an explicit exact dependency at 3.0.21'
 );
 
 if (errors.length) {
@@ -279,5 +298,5 @@ if (errors.length) {
 }
 
 console.log('Deploy and Etherscan safety check passed.');
-console.log(`Etherscan endpoint: ${ETHERSCAN_V2_API_URL}`);
-console.log('Resolved chains: Sepolia (11155111), Optimism Sepolia (11155420), Optimism (10).');
+console.log('Etherscan provider: Hardhat Verify 3 / API V2 single-key contract.');
+console.log('Resolved chains: Sepolia (11155111), Optimism Sepolia (11155420), Optimism (10), Polygon zkEVM (1101).');
