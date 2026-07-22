@@ -1,0 +1,10 @@
+name: Negative fixture for mutable Action tag
+
+on:
+  workflow_dispatch:
+
+jobs:
+  mutable-action:
+    runs-on: ubuntu-latest
+    steps:
+      - { uses: actions/checkout@v6 }
