@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { load } from 'js-yaml';
 
 const FULL_COMMIT_SHA = /^[0-9a-f]{40}$/;
+const FULL_DOCKER_DIGEST = /^docker:\/\/.+@sha256:[0-9a-f]{64}$/;
 const WORKFLOW_EXTENSIONS = new Set(['.yml', '.yaml']);
 
 export function classifyUsesReference(reference) {
@@ -13,6 +14,9 @@ export function classifyUsesReference(reference) {
     return { kind: 'local', reference };
   }
   if (reference.startsWith('docker://')) {
+    if (!FULL_DOCKER_DIGEST.test(reference)) {
+      throw new Error(`Docker uses reference is not pinned to a full sha256 digest: ${reference}`);
+    }
     return { kind: 'docker', reference };
   }
 

@@ -37,7 +37,16 @@ test('quoted uses keys are parsed as workflow data', () => {
 
 test('local, Docker, and reusable workflow references are classified explicitly', () => {
   assert.equal(classifyUsesReference('./.github/actions/local').kind, 'local');
-  assert.equal(classifyUsesReference('docker://alpine:3.22').kind, 'docker');
+  assert.equal(
+    classifyUsesReference(
+      'docker://alpine@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
+    ).kind,
+    'docker',
+  );
+  assert.throws(
+    () => classifyUsesReference('docker://alpine:3.22'),
+    /not pinned to a full sha256 digest/,
+  );
   assert.equal(
     classifyUsesReference(
       'example/repository/.github/workflows/reusable.yml@0123456789abcdef0123456789abcdef01234567',
