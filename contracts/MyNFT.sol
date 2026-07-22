@@ -9,14 +9,22 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 contract MyNFT is ERC721, Ownable, IERC2981 {
     using Strings for uint256;
+
+    error InvalidRoyaltyReceiver(address receiver);
+    error InvalidRoyaltyBps(uint96 royaltyBps);
+
+    uint96 private constant BPS_DENOMINATOR = 10_000;
     string private _base;
     address private _royaltyReceiver;
-    uint96 private _royaltyBps; // 10000 = 100%
+    uint96 private _royaltyBps; // 10_000 = 100%
 
     constructor(string memory base_, address royaltyReceiver_, uint96 royaltyBps_)
         ERC721("MyNFT", "MNFT")
         Ownable(msg.sender)
     {
+        if (royaltyReceiver_ == address(0)) revert InvalidRoyaltyReceiver(royaltyReceiver_);
+        if (royaltyBps_ > BPS_DENOMINATOR) revert InvalidRoyaltyBps(royaltyBps_);
+
         _base = base_;
         _royaltyReceiver = royaltyReceiver_;
         _royaltyBps = royaltyBps_;
@@ -52,7 +60,7 @@ contract MyNFT is ERC721, Ownable, IERC2981 {
         override
         returns (address receiver, uint256 royaltyAmount)
     {
-        return (_royaltyReceiver, (salePrice * _royaltyBps) / 10000);
+        return (_royaltyReceiver, (salePrice * _royaltyBps) / BPS_DENOMINATOR);
     }
 
     // NOTE: IERC2981 is IERC165-compliant; recognise its IID here and delegate the rest upstream.
