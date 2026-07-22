@@ -168,6 +168,7 @@ for (const [relative, content] of [
 }
 
 const graphInitContract = [
+  'npx hardhat compile',
   'npx --yes @graphprotocol/graph-cli@0.98.1 init',
   '"$SUBGRAPH_SLUG" \\',
   'subgraph/event-token \\',

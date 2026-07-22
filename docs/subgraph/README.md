@@ -26,6 +26,7 @@ export EVENT_TOKEN_ADDR=0x...
 export EVENT_TOKEN_START_BLOCK=12345678
 export EVENT_TOKEN_ABI=artifacts/contracts/EventToken.sol/EventToken.json
 
+npx hardhat compile
 npx --yes @graphprotocol/graph-cli@0.98.1 --version
 npx --yes @graphprotocol/graph-cli@0.98.1 init \
   "$SUBGRAPH_SLUG" \
