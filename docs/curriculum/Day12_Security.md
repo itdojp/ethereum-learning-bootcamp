@@ -13,7 +13,7 @@
 
 ## 0. セキュリティ実務レビューゲート
 
-確認日: **2026-05-23（Asia/Tokyo）**。この章の攻撃例は学習目的であり、実ネットワークや第三者資産に対して実行しない。
+確認日: **2026-07-22（Asia/Tokyo）**。この章の攻撃例は学習目的であり、実ネットワークや第三者資産に対して実行しない。
 
 - すべての検証は Hardhat Network、Anvil、または学習用 testnet アカウントに限定する。Mainnet、実資産、第三者 contract、許可のない fork target は対象外にする。
 - リカバリーフレーズ、秘密鍵、RPC/API キー、Explorer API キーをチャット、Issue、PR、ログ、スクリーンショット、AI ツールへ貼り付けない。
@@ -25,9 +25,9 @@
 
 ## 1. 前提
 - Hardhat 環境（Day3）。
-- 任意でFoundry（`foundryup` 済）。
+- 任意でFoundry v1.7.1（CIの固定版。`foundryup --install v1.7.1`で導入）。
 - 先に読む付録：[`docs/appendix/glossary.md`](../appendix/glossary.md)（用語に迷ったとき）
-- 触るファイル（主なもの）：`contracts/VulnBank.sol` / `contracts/SafeBank.sol` / `contracts/Attacker.sol` / `test/reentrancy.ts` / `contracts/AdminBox.sol`
+- 触るファイル（主なもの）：`contracts/VulnBank.sol` / `contracts/SafeBank.sol` / `contracts/Attacker.sol` / `test/reentrancy.ts` / `test/Invariant.t.sol` / `contracts/AdminBox.sol`
 - 今回触らないこと：すべての脆弱性の網羅（まずは頻出の再入と権限の基本から）
 - 最短手順（迷ったらここ）：2章のコントラクト/テストを動かして“攻撃できる/防げる”を体験 → `npx hardhat test test/reentrancy.ts` で確認
 
@@ -232,28 +232,44 @@ slither . --filter-paths "node_modules"
 Foundry はテストフレームワークで、fuzz（ランダム入力探索）や invariant（永続条件）を内蔵する。  
 Echidna は Foundry の一部ではなく、別系統のツールとしてプロパティベーステスト/ファジングに使われる。
 
-### 7.1 Invariant（永続条件）例（Foundry）
-`test/Invariant.t.sol`
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
-import "forge-std/Test.sol";
-import {SafeBank} from "../contracts/SafeBank.sol";
-contract Invariant is Test {
-    SafeBank b; address user;
-    function setUp() public { b = new SafeBank(); user = address(0xBEEF); }
-    function invariant_NoOverdraw() public {
-        // バンクの総残高 >= ユーザ残高合計（厳密版は配列管理）
-        assert(address(b).balance >= 0);
-    }
-}
-```
-実行：
-```bash
-forge test --match-contract Invariant -vvvv
+### 7.1 unit / fuzz / invariantの境界
+
+- **unit test**: 既知の入力と期待結果を1ケースずつ確認する。
+- **fuzz test**: 1回の呼び出しへ多様な入力を与える。
+- **invariant test**: 複数の呼び出し列を生成し、各呼び出し後も永続条件が成立するか確認する。
+
+`address(bank).balance >= 0`は、ETH balanceがunsigned integerであるため常に真であり、検出能力を持たない。本リポジトリの実行可能な正本は [`test/Invariant.t.sol`](https://github.com/itdojp/ethereum-learning-bootcamp/blob/main/test/Invariant.t.sol) である。本文中の次の説明は**概念を示すpseudocode**であり、コピー実行するコードではない。
+
+```text
+deposit(actor, bounded amount) または withdraw(actor, bounded amount) をランダムに反復
+各呼び出し後に次を検査:
+  contract assets == 追跡対象actorの内部台帳合計
+  contract assets == ghost deposits - ghost withdrawals
 ```
 
-### 7.2 Echidna（任意）
+実装はhandlerをfuzzerのtarget contractに限定し、3 actor、bounded input、`ghostDeposited` / `ghostWithdrawn`を使う。`fail_on_revert = true`により、handler自体の想定外revertもfailureとして扱う。
+
+### 7.2 実行と反証能力の確認
+
+```bash
+npm run install:reviewed
+foundryup --install v1.7.1
+npm run test:foundry
+```
+
+`npm run test:foundry`は次の2段階を実行する。
+
+1. `forge test --match-contract '^Invariant$'`で`SafeBank`のpropertyが成功する。
+2. 別profileの`test-negative/UnsafeAccountingInvariant.t.sol`で「deposit時に裏付けのない1 weiを台帳へ加算する」mutationを実行し、同じpropertyが非0終了することを要求する。
+
+negative fixtureは検出能力の証拠であり、通常green suiteへ常時失敗するtestを混在させない。CIはFoundry v1.7.1を固定し、stable required context `test`はNode matrixとFoundry jobの両方が成功した場合だけ成功する。
+
+参照（2026-07-22確認）:
+
+- Foundry invariant testing: https://getfoundry.sh/forge/invariant-testing
+- Foundry v1.7.1 release: https://github.com/foundry-rs/foundry/releases/tag/v1.7.1
+
+### 7.3 Echidna（任意）
 - 目的：ランダム化された呼び出し列で特性違反を探索。
 - セットアップは公式ドキュメント参照。時間があれば`VulnBank`に対して資産流出を検出させる設定を追加。
 
@@ -281,6 +297,7 @@ forge test --match-contract Invariant -vvvv
 |---|---|---|
 | `slither` が実行できない | 未インストール / PATH問題 | 章中の `pipx install slither-analyzer` を再確認する |
 | `forge` が見つからない | Foundry未導入 | Day3 の Foundry 手順（`foundryup`）を先に行う |
+| negative fixtureが成功扱いになる | propertyがmutationを検出できていない | `test-negative/UnsafeAccountingInvariant.t.sol`と`tools/test-foundry-invariant.sh`のfailure assertionを確認する |
 | 攻撃テストが再現しない | 前提（残高、呼び出し順）が崩れている | テスト内の初期入金額と `attack()` の送金額を再確認する |
 
 ---
@@ -303,6 +320,9 @@ forge test --match-contract Invariant -vvvv
 ### 確認コマンド（最小）
 ```bash
 npx hardhat test test/reentrancy.ts
+
+# 任意（Foundry v1.7.1が入っている場合）
+npm run test:foundry
 
 # 任意（Slither が入っている場合）
 slither .

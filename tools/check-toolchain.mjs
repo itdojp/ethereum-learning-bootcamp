@@ -22,6 +22,8 @@ const pkg = readJson('package.json');
 const lock = readJson('package-lock.json');
 const dappLock = readJson('dapp/package-lock.json');
 const config = readText('hardhat.config.ts');
+const foundryConfig = readText('foundry.toml');
+const testWorkflow = readText('.github/workflows/test.yml');
 const readme = readText('README.md');
 const rootLock = lock.packages?.[''];
 
@@ -81,6 +83,15 @@ check(
   'hardhat.config.ts must use the locked local solc-js path'
 );
 check(/version:\s*['"]0\.8\.24['"]/u.test(config), 'Hardhat must compile with Solidity 0.8.24');
+check(/solc_version\s*=\s*"0\.8\.24"/u.test(foundryConfig), 'Foundry must compile with Solidity 0.8.24');
+check(/runs\s*=\s*128/u.test(foundryConfig), 'Foundry invariant runs must remain 128');
+check(/depth\s*=\s*32/u.test(foundryConfig), 'Foundry invariant depth must remain 32');
+check(/fail_on_revert\s*=\s*true/u.test(foundryConfig), 'Foundry invariant handler reverts must fail the run');
+check(
+  /foundry-rs\/foundry-toolchain@b00af27efadbc7b4ca8b82abbd903b17cc874d2a/u.test(testWorkflow) &&
+    /version:\s*v1\.7\.1/u.test(testWorkflow),
+  'CI must use audited Foundry v1.7.1 through the pinned foundry-toolchain action'
+);
 check(
   /hardhatMainnet:\s*\{\s*type:\s*['"]edr-simulated['"],\s*chainType:\s*['"]l1['"]\s*\}/u.test(config),
   'Hardhat 3 must declare an explicit local EDR L1 network'
@@ -92,6 +103,7 @@ check(
 check(readme.includes('Hardhat 3.11.0'), 'README must state the audited Hardhat version');
 check(readme.includes('Node.js 22.13.0'), 'README must state the minimum Node.js version');
 check(readme.includes('Solidity 0.8.24'), 'README must state the Solidity version');
+check(readme.includes('Foundry v1.7.1'), 'README must state the audited Foundry version');
 
 if (errors.length > 0) {
   console.error('Toolchain consistency check failed:');
@@ -104,3 +116,4 @@ console.log('Node.js: >=22.13.0');
 console.log('Hardhat: 3.11.0');
 console.log('Solidity compiler: 0.8.24 (locked local solc-js)');
 console.log('OpenZeppelin Contracts: 5.0.2');
+console.log('Foundry: v1.7.1 (CI action pinned to b00af27efadbc7b4ca8b82abbd903b17cc874d2a)');

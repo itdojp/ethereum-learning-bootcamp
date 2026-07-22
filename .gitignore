@@ -8,6 +8,8 @@ pnpm-debug.log*
 ## Hardhat / Solidity
 artifacts/
 cache/
+out/
+out-negative/
 typechain-types/
 types/
 coverage/

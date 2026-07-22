@@ -122,7 +122,7 @@ function checkWorkflowInstallOrder(relative, expectedInstallCount) {
   });
 }
 
-checkWorkflowInstallOrder('.github/workflows/test.yml', 2);
+checkWorkflowInstallOrder('.github/workflows/test.yml', 3);
 checkWorkflowInstallOrder('.github/workflows/deploy.yml', 2);
 
 const expectedRootInstall =
