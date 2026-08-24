@@ -61,7 +61,7 @@
     "dotenv": "17.2.0",
     "ethers": "6.17.0",
     "hardhat": "3.11.0",
-    "js-yaml": "4.3.0",
+    "js-yaml": "4.3.1",
     "mocha": "11.7.6",
     "solc": "0.8.24",
     "typescript": "5.9.3"
